@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Archery",
+  "Author": "PeacefulEnd",
+  "Version": "REPLACE_ME_WITH_VERSION",
+  "Description": "Bows, crossbows and more for Stardew Valley.",
+  "UniqueID": "PeacefulEnd.Archery",
+  "EntryDll": "Archery.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:????" ],
+  "Dependencies": []
+}
