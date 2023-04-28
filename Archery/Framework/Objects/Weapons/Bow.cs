@@ -52,6 +52,7 @@ namespace Archery.Framework.Objects.Weapons
             Slingshot slingshot = who.CurrentTool as Slingshot;
 
             int backArmDistance = slingshot.GetBackArmDistance(who);
+            float currentChargePercentage = slingshot.GetSlingshotChargeTime();
             float frontArmRotation = GetFrontArmRotation(who, slingshot);
 
             // Get the layer depth
@@ -65,20 +66,27 @@ namespace Archery.Framework.Objects.Weapons
             {
                 case Game1.down:
                     // Draw the back arm
-                    specialOffset = new Vector2(0f, -backArmDistance / 2.5f);
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.bowArmsTexture, baseOffset + specialOffset, new Rectangle(0, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.bowArmsTexture, baseOffset + specialOffset, new Rectangle((currentChargePercentage > 0.8f ? 2 : currentChargePercentage > 0.5f ? 1 : 0) * 16, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
 
                     // Draw the bow
-                    specialOffset = new Vector2(frontArmRotation * 2f, 0f);
+                    specialOffset = new Vector2(4f -frontArmRotation * 2f, 0f);
                     drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset, new Rectangle(0, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + 0.001f);
 
                     // Draw the front arm
                     specialOffset = Vector2.Zero;
                     drawTool.SpriteBatch.Draw(Archery.assetManager.bowArmsTexture, baseOffset + specialOffset, new Rectangle(0, 32, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + 0.001f);
-                    break;
-            }
+                    
+                    return true;
+                case Game1.right:
+                    // Draw the back arm
+                    specialOffset = new Vector2(0f, -backArmDistance / 2.5f);
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.bowArmsTexture, baseOffset + specialOffset, new Rectangle(0, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
 
-            return true;
+
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private static float GetFrontArmRotation(Farmer who, Slingshot slingshot)
