@@ -15,7 +15,7 @@ using System.Threading;
 using static Archery.Framework.Interfaces.IFashionSenseApi;
 using static StardewValley.Program;
 
-namespace Archery.Framework
+namespace Archery
 {
     public class Archery : Mod
     {
