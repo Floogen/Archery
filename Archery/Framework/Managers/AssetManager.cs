@@ -13,10 +13,13 @@ namespace Archery.Framework.Managers
     {
         internal string assetFolderPath;
 
-        // UI textures
-        internal readonly Texture2D bowArmsTexture;
+        // Base textures
+        internal readonly Texture2D baseArmsTexture;
         internal readonly Texture2D baseBowTexture;
         internal readonly Texture2D iconBowTexture;
+
+        // Recolored textures
+        internal Texture2D recoloredArmsTexture;
 
         public AssetManager(IModHelper helper)
         {
@@ -24,7 +27,8 @@ namespace Archery.Framework.Managers
             assetFolderPath = helper.ModContent.GetInternalAssetName(Path.Combine("Framework", "Assets")).Name;
 
             // Load in the assets
-            bowArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
+            baseArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
+            recoloredArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
             baseBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BaseBow.png"));
             iconBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowIcon.png"));
         }

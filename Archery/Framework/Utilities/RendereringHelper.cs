@@ -1,0 +1,96 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using StardewValley;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Archery.Framework.Utilities
+{
+    internal class RendereringHelper
+    {
+        private static Color _skinDarkTone = new Color(107, 0, 58);
+        private static Color _skinMediumTone = new Color(224, 107, 101);
+        private static Color _skinLightTone = new Color(249, 174, 137);
+        private static Color _sleeveDarkTone = new Color(80, 80, 80);
+        private static Color _sleeveMediumTone = new Color(135, 135, 135);
+        private static Color _sleeveLightTone = new Color(154, 154, 154);
+
+        internal static void RecolorBowArms(Farmer farmer)
+        {
+            // Get the base texture and create a mask
+            Color[] data = new Color[Archery.assetManager.baseArmsTexture.Width * Archery.assetManager.baseArmsTexture.Height];
+            Archery.assetManager.baseArmsTexture.GetData(data);
+            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, Archery.assetManager.baseArmsTexture.Width, Archery.assetManager.baseArmsTexture.Height);
+
+            // Get the skin tones
+            int which = farmer.skin.Value;
+            Texture2D skinColors = Archery.modHelper.GameContent.Load<Texture2D>("Characters/Farmer/skinColors");
+            Color[] skinColorsData = new Color[skinColors.Width * skinColors.Height];
+            if (which < 0)
+            {
+                which = skinColors.Height - 1;
+            }
+            if (which > skinColors.Height - 1)
+            {
+                which = 0;
+            }
+            skinColors.GetData(skinColorsData);
+            Color skinDarkest = skinColorsData[which * 3 % (skinColors.Height * 3)];
+            Color skinMedium = skinColorsData[which * 3 % (skinColors.Height * 3) + 1];
+            Color skinLightest = skinColorsData[which * 3 % (skinColors.Height * 3) + 2];
+
+            // Get the shirt 
+            bool isSleevesShirt = farmer.GetShirtExtraData().Contains("Sleeveless");
+
+            Color shirtColor = farmer.GetShirtColor();
+            if (isSleevesShirt is false)
+            {
+                var responseToColor = Archery.apiManager.GetFashionSenseApi().GetAppearanceColor(Interfaces.IFashionSenseApi.Type.Sleeves, farmer);
+                if (responseToColor.Key is true)
+                {
+                    shirtColor = responseToColor.Value;
+                }
+            }
+
+            // Start the recoloring
+            for (int i = 0; i < data.Length; i++)
+            {
+                // Skin tones
+                if (data[i] == _skinLightTone)
+                {
+                    data[i] = skinLightest;
+                }
+                else if (data[i] == _skinMediumTone)
+                {
+                    data[i] = skinMedium;
+                }
+                else if (data[i] == _skinDarkTone)
+                {
+                    data[i] = skinDarkest;
+                }
+
+                // Sleeve tones
+                if (data[i] == _sleeveLightTone)
+                {
+                    data[i] = isSleevesShirt ? skinLightest : Utility.MultiplyColor(_sleeveLightTone, shirtColor);
+                }
+                else if (data[i] == _sleeveMediumTone)
+                {
+                    data[i] = isSleevesShirt ? skinMedium : Utility.MultiplyColor(_sleeveMediumTone, shirtColor);
+                }
+                else if (data[i] == _sleeveDarkTone)
+                {
+                    data[i] = isSleevesShirt ? skinDarkest : Utility.MultiplyColor(_sleeveDarkTone, shirtColor);
+                }
+            }
+
+            // Set the mask texture and push it to recoloredArmsTexture
+            maskedTexture.SetData(data);
+            Archery.assetManager.recoloredArmsTexture = maskedTexture;
+        }
+    }
+}

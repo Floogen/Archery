@@ -2,6 +2,7 @@
 using Archery.Framework.Managers;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
+using Archery.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,8 +64,15 @@ namespace Archery.Framework
             // Hook into the APIs we utilize
             if (Helper.ModRegistry.IsLoaded("PeacefulEnd.FashionSense") && apiManager.HookIntoFashionSense(Helper))
             {
+                apiManager.GetFashionSenseApi().SetSpriteDirtyTriggered += OnVanillaRecolorMethodTriggered;
+
                 apiManager.GetFashionSenseApi().RegisterAppearanceDrawOverride(IFashionSenseApi.Type.Sleeves, ModManifest, Bow.Draw);
             }
+        }
+
+        private void OnVanillaRecolorMethodTriggered(object sender, EventArgs e)
+        {
+            RendereringHelper.RecolorBowArms(Game1.player);
         }
     }
 }
