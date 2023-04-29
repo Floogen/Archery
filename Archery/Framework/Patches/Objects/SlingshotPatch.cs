@@ -1,13 +1,13 @@
-﻿using HarmonyLib;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Archery.Framework.Objects.Projectiles;
+using Archery.Framework.Objects.Weapons;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using Archery.Framework.Objects.Weapons;
-using StardewValley.Tools;
 using StardewValley.Projectiles;
-using Archery.Framework.Objects.Projectiles;
+using StardewValley.Tools;
+using System;
 
 namespace Archery.Framework.Patches.Objects
 {

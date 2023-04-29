@@ -4,16 +4,9 @@ using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Tools;
 using System;
-using System.Reflection;
-using System.Threading;
-using static Archery.Framework.Interfaces.IFashionSenseApi;
-using static StardewValley.Program;
 
 namespace Archery
 {

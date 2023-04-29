@@ -1,19 +1,10 @@
-﻿using StardewValley.Tools;
-using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Archery.Framework.Utilities;
-using static Archery.Framework.Interfaces.IFashionSenseApi;
-using Archery.Framework.Managers;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using System.Threading;
+﻿using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using StardewValley.Monsters;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using StardewValley.Tools;
+using System;
+using static Archery.Framework.Interfaces.IFashionSenseApi;
 
 namespace Archery.Framework.Objects.Weapons
 {
