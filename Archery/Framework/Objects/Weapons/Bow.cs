@@ -185,7 +185,7 @@ namespace Archery.Framework.Objects.Weapons
             return (armFrame * 16) + startingOffset;
         }
 
-        private static float GetFrontArmRotation(Farmer who, Slingshot slingshot)
+        internal static float GetFrontArmRotation(Farmer who, Slingshot slingshot)
         {
             Point point = Utility.Vector2ToPoint(slingshot.AdjustForHeight(Utility.PointToVector2(slingshot.aimPos.Value)));
             int mouseX = point.X;

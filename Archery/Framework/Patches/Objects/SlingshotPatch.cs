@@ -7,6 +7,7 @@ using System;
 using Archery.Framework.Objects.Weapons;
 using StardewValley.Tools;
 using StardewValley.Projectiles;
+using Archery.Framework.Objects.Projectiles;
 
 namespace Archery.Framework.Patches.Objects
 {
@@ -119,10 +120,23 @@ namespace Archery.Framework.Patches.Objects
                         v.X *= -1f;
                         v.Y *= -1f;
                     }
-                    location.projectiles.Add(new BasicProjectile((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, (float)(Math.PI / (double)(64f + (float)Game1.random.Next(-63, 64))), 0f - v.X, 0f - v.Y, shoot_origin - new Vector2(32f, 32f), collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
+
+                    switch (who.FacingDirection)
+                    {
+                        case Game1.left:
+                            shoot_origin += new Vector2(0f, -64f);
+                            break;
+                        case Game1.down:
+                            shoot_origin += new Vector2(-64f, 0f);
+                            break;
+                    }
+                    var arrow = new Arrow((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, (float)(Math.PI / (double)(64f + (float)Game1.random.Next(-63, 64))), 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
                     {
                         IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
-                    });
+                    };
+                    arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, __instance);
+
+                    location.projectiles.Add(arrow);
                 }
             }
             else
