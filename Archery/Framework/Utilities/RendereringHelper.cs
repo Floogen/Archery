@@ -54,7 +54,16 @@ namespace Archery.Framework.Utilities
                 {
                     shirtColor = responseToColor.Value;
                 }
+                else
+                {
+                    responseToColor = Archery.apiManager.GetFashionSenseApi().GetAppearanceColor(Interfaces.IFashionSenseApi.Type.Shirt, farmer);
+                    if (responseToColor.Key is true)
+                    {
+                        shirtColor = responseToColor.Value;
+                    }
+                }
             }
+            Archery.monitor.Log(shirtColor.ToString(), LogLevel.Debug);
 
             // Start the recoloring
             for (int i = 0; i < data.Length; i++)
