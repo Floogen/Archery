@@ -18,6 +18,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Framework\Assets\BaseArrow.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Framework\Assets\BowArms.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

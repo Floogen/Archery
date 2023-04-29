@@ -67,6 +67,7 @@ namespace Archery.Framework.Objects.Weapons
 
             int movingArmStartingFrame = GetMovingArmFrame(who.FacingDirection, currentChargePercentage);
             int bowFrame = GetBowFrame(who.FacingDirection, currentChargePercentage);
+            int arrowFrame = GetArrowFrame(who.FacingDirection, currentChargePercentage);
             switch (who.FacingDirection)
             {
                 case Game1.down:
@@ -95,6 +96,9 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the bow
                     drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset + (who.FacingDirection == Game1.left ? new Vector2(-8f, 0f) : new Vector2(8f, 0f)), new Rectangle(bowFrame, 0, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
+                    // Draw the arrow
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.baseArrowTexture, baseOffset + specialOffset, new Rectangle(4, 7, 8, 1), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+
                     // Draw the front arm
                     drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
@@ -115,6 +119,25 @@ namespace Archery.Framework.Objects.Weapons
                 default:
                     return false;
             }
+        }
+
+        // TODO: Have the BowModel determine the frame value based on the charge percentage
+        private static int GetArrowFrame(int facingDirection, float bowChargePercentage)
+        {
+            int bowFrame = 0;
+            switch (facingDirection)
+            {
+                case Game1.down:
+                    break;
+                case Game1.right:
+                case Game1.left:
+                    bowFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
+                    break;
+                case Game1.up:
+                    break;
+            }
+
+            return bowFrame;
         }
 
         // TODO: Have the BowModel determine the frame value based on the charge percentage

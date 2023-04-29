@@ -16,6 +16,7 @@ namespace Archery.Framework.Managers
         // Base textures
         internal readonly Texture2D baseArmsTexture;
         internal readonly Texture2D baseBowTexture;
+        internal readonly Texture2D baseArrowTexture;
         internal readonly Texture2D iconBowTexture;
 
         // Recolored textures
@@ -30,6 +31,7 @@ namespace Archery.Framework.Managers
             baseArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
             recoloredArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
             baseBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BaseBow.png"));
+            baseArrowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BaseArrow.png"));
             iconBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowIcon.png"));
         }
     }
