@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System.IO;
+using xTile;
 
 namespace Archery.Framework.Managers
 {
@@ -13,6 +14,9 @@ namespace Archery.Framework.Managers
         internal readonly Texture2D baseBowTexture;
         internal readonly Texture2D baseArrowTexture;
         internal readonly Texture2D iconBowTexture;
+
+        // Maps
+        internal readonly string arenaMapPath;
 
         // Recolored textures
         internal Texture2D recoloredArmsTexture;
@@ -28,6 +32,8 @@ namespace Archery.Framework.Managers
             baseBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BaseBow.png"));
             baseArrowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BaseArrow.png"));
             iconBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowIcon.png"));
+
+            arenaMapPath = Path.Combine(assetFolderPath, "Maps", "Arena.tmx");
         }
     }
 }

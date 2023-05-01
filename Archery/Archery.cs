@@ -47,6 +47,7 @@ namespace Archery
 
             // Add in our debug commands
             helper.ConsoleCommands.Add("archery_get_bow", "Gives a basic bow.\n\nUsage: archery_get_bow", delegate { Game1.player.addItemByMenuIfNecessary(Bow.CreateInstance()); });
+            helper.ConsoleCommands.Add("archery_arena", "Gives a basic bow.\n\nUsage: archery_arena", Toolkit.TeleportToArena);
 
             // Hook into the game events
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;

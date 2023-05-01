@@ -30,6 +30,9 @@
 		<None Update="Framework\Assets\BowIcon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Framework\Assets\Maps\Arena.tmx">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="i18n\default.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
