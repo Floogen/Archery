@@ -34,6 +34,16 @@ namespace Archery.Framework.Objects.Items
             return false;
         }
 
+        public static string GetInternalId(Item item)
+        {
+            if (IsValid(item) is false || item.modData.TryGetValue(ModDataKeys.ARROW_ITEM_FLAG, out var id) is false)
+            {
+                return String.Empty;
+            }
+
+            return id;
+        }
+
         internal static string GetName(Object instance)
         {
             // TODO: Implement grabbing the arrow name from content pack

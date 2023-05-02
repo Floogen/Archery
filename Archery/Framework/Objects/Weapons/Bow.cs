@@ -1,10 +1,12 @@
-﻿using Archery.Framework.Utilities;
+﻿using Archery.Framework.Objects.Items;
+using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Tools;
 using System;
 using static Archery.Framework.Interfaces.IFashionSenseApi;
+using Object = StardewValley.Object;
 
 namespace Archery.Framework.Objects.Weapons
 {
@@ -32,6 +34,17 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static bool Use(Tool tool, GameLocation location, int x, int y, Farmer who)
         {
+            return false;
+        }
+
+        internal static bool CanThisBeAttached(Tool tool, Object item)
+        {
+            // TODO: Implement check against BowModel to verify it supports this arrow
+            if (Arrow.IsValid(item) is true)
+            {
+                return true;
+            }
+
             return false;
         }
 

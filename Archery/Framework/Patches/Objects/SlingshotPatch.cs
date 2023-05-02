@@ -8,6 +8,9 @@ using StardewValley;
 using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
+using System.Drawing;
+using xTile.Dimensions;
+using Object = StardewValley.Object;
 
 namespace Archery.Framework.Patches.Objects
 {
@@ -24,6 +27,7 @@ namespace Archery.Framework.Patches.Objects
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
         }
@@ -143,6 +147,14 @@ namespace Archery.Framework.Patches.Objects
             ___canPlaySound = true;
 
             return false;
+        }
+
+        private static void CanThisBeAttachedPostfix(Slingshot __instance, ref bool __result, Object o)
+        {
+            if (Bow.IsValid(__instance))
+            {
+                __result = Bow.CanThisBeAttached(__instance, o);
+            }
         }
 
         private static void UpdateAimPosReversePatch(Slingshot __instance)
