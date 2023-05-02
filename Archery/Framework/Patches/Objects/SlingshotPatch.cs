@@ -127,7 +127,7 @@ namespace Archery.Framework.Patches.Objects
                         v.Y *= -1f;
                     }
 
-                    var arrow = new Arrow((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
+                    var arrow = new ArrowProjectile((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
                     {
                         IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                     };

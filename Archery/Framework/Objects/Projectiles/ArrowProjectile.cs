@@ -8,13 +8,13 @@ using StardewValley.Projectiles;
 
 namespace Archery.Framework.Objects.Projectiles
 {
-    internal class Arrow : BasicProjectile
+    internal class ArrowProjectile : BasicProjectile
     {
         // TODO: Make these content pack values
         private static Rectangle _arrowBounds = new Rectangle(4, 7, 8, 1);
         private static Rectangle _arrowCollisionBox = new Rectangle(0, 0, 4, 4);
 
-        public Arrow(int damageToFarmer, int parentSheetIndex, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, parentSheetIndex, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(int damageToFarmer, int parentSheetIndex, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, parentSheetIndex, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
         {
             base.xVelocity.Value /= 4f;
             base.yVelocity.Value /= 4f;
@@ -179,10 +179,21 @@ namespace Archery.Framework.Objects.Projectiles
             float current_scale = 4f * base.localScale;
             float alpha = 1f; // base.startingAlpha;
 
+            // Draw the arrow
             b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, base.position), _arrowBounds, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
             //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
+
+            // TODO: Draw the arrow trail / tail
+            /*
+            for (int i = this.tail.Count - 1; i >= 0; i--)
+            {
+                b.Draw(this.spriteFromObjectSheet ? Game1.objectSpriteSheet : Projectile.projectileSheet, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == this.tail.Count - 1) ? ((Vector2)this.position) : this.tail.ElementAt(i + 1), this.tail.ElementAt(i), (float)this.tailCounter / 50f) + new Vector2(0f, 0f - (float)this.height) + new Vector2(32f, 32f)), Game1.getSourceRectForStandardTileSheet(this.spriteFromObjectSheet ? Game1.objectSpriteSheet : Projectile.projectileSheet, this.currentTileSheetIndex, 16, 16), this.color.Value * alpha, this.rotation, new Vector2(8f, 8f), current_scale, SpriteEffects.None, (this.position.Y - (float)(this.tail.Count - i) + 96f) / 10000f);
+                alpha -= 1f / (float)this.tail.Count;
+                current_scale = 0.8f * (float)(4 - 4 / (i + 4));
+            }
+            */
         }
     }
 }
