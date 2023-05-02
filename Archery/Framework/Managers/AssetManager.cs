@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System.IO;
-using xTile;
 
 namespace Archery.Framework.Managers
 {

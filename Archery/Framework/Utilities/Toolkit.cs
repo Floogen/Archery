@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.GameData.HomeRenovations;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

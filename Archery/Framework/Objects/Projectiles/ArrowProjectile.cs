@@ -1,9 +1,6 @@
-﻿using Archery.Framework.Objects.Weapons;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.GameData.Movies;
-using StardewValley.Monsters;
 using StardewValley.Projectiles;
 
 namespace Archery.Framework.Objects.Projectiles

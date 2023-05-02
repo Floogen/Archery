@@ -8,8 +8,6 @@ using StardewValley;
 using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
-using System.Drawing;
-using xTile.Dimensions;
 using Object = StardewValley.Object;
 
 namespace Archery.Framework.Patches.Objects
