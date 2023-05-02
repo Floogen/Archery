@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Archery.Framework.Objects.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.GameData.Movies;
+using StardewValley.Monsters;
 using StardewValley.Projectiles;
 
 namespace Archery.Framework.Objects.Projectiles
@@ -26,25 +28,39 @@ namespace Archery.Framework.Objects.Projectiles
         public override void draw(SpriteBatch b)
         {
             // TODO: Clean Arrow.draw up
-            float current_scale = 4f * this.localScale;
+            float current_scale = 4f * base.localScale;
             float alpha = 1f; // base.startingAlpha;
 
-            b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, this.position), _arrowBounds, this.color.Value * alpha, this.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (this.position.Y + 96f) / 10000f);
+            b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, base.position), _arrowBounds, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
-            Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
+            //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
         }
 
         public override bool isColliding(GameLocation location)
         {
+            var collisionBox = this.getBoundingBox();
+            foreach (var monster in location.characters)
+            {
+                if (monster.IsMonster is false)
+                {
+                    continue;
+                }
+
+                if (monster.GetBoundingBox().Intersects(collisionBox))
+                {
+                    return true;
+                }
+            }
+
             return base.isColliding(location);
         }
 
         public override Rectangle getBoundingBox()
         {
-            Vector2 pos = this.position.Value;
+            Vector2 pos = base.position.Value;
 
-            float current_scale = this.localScale * 4f;
+            float current_scale = base.localScale * 4f;
             int damageSizeWidth = (int)(_arrowCollisionBox.Width * current_scale);
             int damageSizeHeight = (int)(_arrowCollisionBox.Height * current_scale);
 
