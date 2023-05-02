@@ -33,6 +33,11 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance))
             {
                 spriteBatch.Draw(Archery.assetManager.iconBowTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, 3f, SpriteEffects.None, layerDepth);
+
+                if (drawStackNumber != 0 && __instance.attachments != null && __instance.attachments[0] != null)
+                {
+                    Utility.drawTinyDigits(__instance.attachments[0].Stack, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(__instance.attachments[0].Stack, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
+                }
                 return false;
             }
 
