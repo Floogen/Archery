@@ -1,15 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.GameData.HomeRenovations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using xTile.Dimensions;
 
 namespace Archery.Framework.Utilities
 {
     internal class Toolkit
     {
         internal const string ARENA_MAP_NAME = "Custom_PeacefulEnd.Archery.Arena";
+        internal static Texture2D _recolorableBaseTexture;
+        internal static Color _hitboxColor = new Color(216, 55, 0, 210);
 
         internal static float IncrementAndGetLayerDepth(ref float layerDepth)
         {
@@ -56,6 +59,17 @@ namespace Archery.Framework.Utilities
 
             // Warp the farmer to the arena
             Game1.warpFarmer(ARENA_MAP_NAME, 16, 19, false);
+        }
+
+        internal static void DrawHitBox(SpriteBatch b, Rectangle bounds, float rotation = 0f)
+        {
+            if (_recolorableBaseTexture is null)
+            {
+                _recolorableBaseTexture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
+                _recolorableBaseTexture.SetData(new[] { Color.White });
+            }
+
+            b.Draw(_recolorableBaseTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(bounds.X, bounds.Y)), bounds, _hitboxColor, rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
 }

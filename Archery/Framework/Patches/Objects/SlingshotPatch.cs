@@ -46,6 +46,7 @@ namespace Archery.Framework.Patches.Objects
                 return true;
             }
 
+            // TODO: Clean SlingshotPatch.PerformFirePrefix up
             if (__instance.attachments[0] != null)
             {
                 UpdateAimPosReversePatch(__instance);
@@ -121,16 +122,7 @@ namespace Archery.Framework.Patches.Objects
                         v.Y *= -1f;
                     }
 
-                    switch (who.FacingDirection)
-                    {
-                        case Game1.left:
-                            shoot_origin += new Vector2(0f, -64f);
-                            break;
-                        case Game1.down:
-                            shoot_origin += new Vector2(-64f, 0f);
-                            break;
-                    }
-                    var arrow = new Arrow((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, (float)(Math.PI / (double)(64f + (float)Game1.random.Next(-63, 64))), 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
+                    var arrow = new Arrow((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
                     {
                         IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                     };
