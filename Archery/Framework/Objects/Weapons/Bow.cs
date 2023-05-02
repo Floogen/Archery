@@ -13,6 +13,8 @@ namespace Archery.Framework.Objects.Weapons
         public static Slingshot CreateInstance()
         {
             var bow = new Slingshot();
+
+            // TODO: Set this value to the content pack's bow identifier
             bow.modData[ModDataKeys.BOW_WEAPON_FLAG] = true.ToString();
 
             return bow;

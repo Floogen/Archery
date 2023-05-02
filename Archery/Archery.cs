@@ -3,6 +3,7 @@ using Archery.Framework.Managers;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
+using FishingTrawler.Framework.Patches.Objects;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
@@ -36,6 +37,7 @@ namespace Archery
                 var harmony = new Harmony(ModManifest.UniqueID);
 
                 // Apply Object patches
+                new ObjectPatch(monitor, modHelper).Apply(harmony);
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);
             }
