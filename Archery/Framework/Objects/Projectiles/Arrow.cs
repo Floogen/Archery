@@ -143,18 +143,6 @@ namespace Archery.Framework.Objects.Projectiles
             base.behaviorOnCollisionWithMonster(n, location);
         }
 
-        public override void draw(SpriteBatch b)
-        {
-            // TODO: Clean Arrow.draw up
-            float current_scale = 4f * base.localScale;
-            float alpha = 1f; // base.startingAlpha;
-
-            b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, base.position), _arrowBounds, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
-
-            // TODO: Make this a config / button option
-            //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
-        }
-
         public override bool isColliding(GameLocation location)
         {
             var collisionBox = this.getBoundingBox();
@@ -183,6 +171,18 @@ namespace Archery.Framework.Objects.Projectiles
             int damageSizeHeight = (int)(_arrowCollisionBox.Height * current_scale);
 
             return new Rectangle((int)pos.X - damageSizeWidth / 2, (int)pos.Y - damageSizeHeight / 2, damageSizeWidth, damageSizeHeight);
+        }
+
+        public override void draw(SpriteBatch b)
+        {
+            // TODO: Clean Arrow.draw up
+            float current_scale = 4f * base.localScale;
+            float alpha = 1f; // base.startingAlpha;
+
+            b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, base.position), _arrowBounds, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+
+            // TODO: Make this a config / button option
+            //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
         }
     }
 }
