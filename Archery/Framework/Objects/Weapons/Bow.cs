@@ -11,24 +11,14 @@ using Object = StardewValley.Object;
 
 namespace Archery.Framework.Objects.Weapons
 {
-    internal class Bow
+    internal class Bow : InstancedObject
     {
         public static Slingshot CreateInstance(WeaponModel weaponModel)
         {
             var bow = new Slingshot();
-            bow.modData[ModDataKeys.BOW_WEAPON_FLAG] = weaponModel.Id;
+            bow.modData[ModDataKeys.WEAPON_FLAG] = weaponModel.Id;
 
             return bow;
-        }
-
-        public static bool IsValid(Tool tool)
-        {
-            if (tool is not null && tool.modData.ContainsKey(ModDataKeys.BOW_WEAPON_FLAG))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         internal static bool Use(Tool tool, GameLocation location, int x, int y, Farmer who)
@@ -50,7 +40,7 @@ namespace Archery.Framework.Objects.Weapons
         internal static float GetSlingshotChargeTimePostfix(Tool tool)
         {
             // TODO: Implement check against BowModel to get required charging time
-            if (IsValid(tool) is true && tool is Slingshot slingshot)
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot)
             {
                 var requiredChargingTime = 1000f;
                 var pullStartTimeInMilliseconds = slingshot.pullStartTime * 1000;
@@ -65,7 +55,7 @@ namespace Archery.Framework.Objects.Weapons
         {
             Farmer who = drawTool.Farmer;
 
-            if (who.UsingTool is false || IsValid(who.CurrentTool) is false)
+            if (who.UsingTool is false || Bow.IsValid(who.CurrentTool) is false)
             {
                 return false;
             }

@@ -6,8 +6,6 @@ namespace Archery.Framework.Models.Weapons
     public class WeaponModel : BaseModel
     {
         public WeaponType Type { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
 
         public RandomRange DamageRange { get; set; }
         public float ProjectileSpeed { get; set; }

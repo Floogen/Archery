@@ -38,9 +38,9 @@ namespace Archery.Framework.Managers
             _contentPackModels.Add(baseModel);
         }
 
-        internal List<T> GetAllModels<T>() where T : BaseModel
+        internal List<BaseModel> GetAllModels()
         {
-            return _contentPackModels.Where(t => t is T) as List<T>;
+            return _contentPackModels;
         }
 
         internal T GetSpecificModel<T>(string modelId) where T : BaseModel
@@ -50,19 +50,19 @@ namespace Archery.Framework.Managers
 
         internal WeaponModel GetRandomWeaponModel(WeaponType type)
         {
-            var typedModels = GetAllModels<BaseModel>().Where(m => m is WeaponModel weaponModel && weaponModel.Type == type).ToList();
+            var typedModels = GetAllModels().Where(m => m is WeaponModel weaponModel && weaponModel.Type == type);
             if (typedModels.Count() == 0)
             {
                 return null;
             }
 
             var randomModelIndex = Game1.random.Next(typedModels.Count());
-            return (WeaponModel)typedModels[randomModelIndex];
+            return (WeaponModel)typedModels.ToList()[randomModelIndex];
         }
 
         internal AmmoModel GetRandomAmmoModel(AmmoType type)
         {
-            var typedModels = GetAllModels<BaseModel>().Where(m => m is AmmoModel ammoModel && ammoModel.Type == type).ToList();
+            var typedModels = GetAllModels().Where(m => m is AmmoModel ammoModel && ammoModel.Type == type).ToList();
             if (typedModels.Count() == 0)
             {
                 return null;

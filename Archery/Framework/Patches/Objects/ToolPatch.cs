@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Objects.Weapons;
+﻿using Archery.Framework.Objects.Items;
+using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -31,7 +32,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.IsValid(__instance))
             {
-                __result = "Bow";
+                __result = Bow.GetName(__instance);
                 return;
             }
         }
@@ -40,7 +41,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.IsValid(__instance))
             {
-                __result = "This is a bow.";
+                __result = Bow.GetDescription(__instance);
                 return;
             }
         }

@@ -3,9 +3,9 @@
     public class ModDataKeys
     {
         // Weapon related
-        internal const string BOW_WEAPON_FLAG = "PeacefulEnd.Archery.Bow";
+        internal const string WEAPON_FLAG = "PeacefulEnd.Archery.Weapon";
 
         // Item related
-        internal const string ARROW_ITEM_FLAG = "PeacefulEnd.Archery.Arrow";
+        internal const string AMMO_FLAG = "PeacefulEnd.Archery.Ammo";
     }
 }

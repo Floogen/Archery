@@ -5,6 +5,9 @@ namespace Archery.Framework.Models
 {
     public class BaseModel
     {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }
         internal Texture2D Texture { get; set; }
