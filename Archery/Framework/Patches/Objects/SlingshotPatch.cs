@@ -38,9 +38,10 @@ namespace Archery.Framework.Patches.Objects
             {
                 spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Sprite.Scale, SpriteEffects.None, layerDepth);
 
-                if (drawStackNumber != 0 && __instance.attachments != null && __instance.attachments[0] != null)
+                int ammoCount = Bow.GetAmmoCount(__instance);
+                if (drawStackNumber != 0 && ammoCount > 0)
                 {
-                    Utility.drawTinyDigits(__instance.attachments[0].Stack, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(__instance.attachments[0].Stack, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
+                    Utility.drawTinyDigits(ammoCount, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(ammoCount, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
                 }
                 return false;
             }
@@ -56,7 +57,7 @@ namespace Archery.Framework.Patches.Objects
             }
 
             // TODO: Clean SlingshotPatch.PerformFirePrefix up
-            if (__instance.attachments[0] != null)
+            if (Bow.GetAmmoCount(__instance) > 0)
             {
                 UpdateAimPosReversePatch(__instance);
 

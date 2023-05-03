@@ -48,6 +48,14 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return default(float);
+        internal static int GetAmmoCount(Tool tool)
+        {
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && slingshot.attachments is not null && slingshot.attachments[0] is not null)
+            {
+                return slingshot.attachments[0].Stack;
+            }
+
+            return 0;
         }
 
         internal static bool Draw(IDrawTool drawTool)
