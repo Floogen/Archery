@@ -17,12 +17,11 @@ namespace Archery.Framework.Objects
         {
             if (item is not null)
             {
-                string modDataKey;
-                if (item.modData.TryGetValue(ModDataKeys.WEAPON_FLAG, out modDataKey))
+                if (item.modData.ContainsKey(ModDataKeys.WEAPON_FLAG))
                 {
                     return ModDataKeys.WEAPON_FLAG;
                 }
-                else if (item.modData.TryGetValue(ModDataKeys.AMMO_FLAG, out modDataKey))
+                else if (item.modData.ContainsKey(ModDataKeys.AMMO_FLAG))
                 {
                     return ModDataKeys.AMMO_FLAG;
                 }
