@@ -151,7 +151,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             // TODO: Determine if projectile should show debris with AmmoModel.CreateDebrisOnImpact
             // Draw debris based on ammo's sprite
-            Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Sprite.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, 6);
+            Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Icon.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, 6);
 
             // Damage the monster
             location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);

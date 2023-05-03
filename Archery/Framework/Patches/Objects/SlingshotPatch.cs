@@ -36,7 +36,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel is not null)
             {
-                spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Sprite.Scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (drawStackNumber != 0 && ammoCount > 0)

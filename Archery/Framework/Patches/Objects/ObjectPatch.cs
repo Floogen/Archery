@@ -48,7 +48,7 @@ namespace FishingTrawler.Framework.Patches.Objects
         {
             if (Arrow.GetModel<AmmoModel>(__instance) is AmmoModel arrowModel && arrowModel is not null)
             {
-                spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Sprite.Scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
                 if (drawStackNumber != 0 && __instance.Stack > 0)
                 {
