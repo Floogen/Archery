@@ -12,6 +12,17 @@ namespace Archery.Framework.Models.Weapons
         public DebrisModel Debris { get; set; }
 
         public int BaseDamage { get; set; }
+        public float BreakChance { get; set; } = 1.0f;
+
+        internal bool CanBreak()
+        {
+            return BreakChance > 0;
+        }
+
+        internal bool ShouldAlwaysBreak()
+        {
+            return BreakChance >= 1f;
+        }
 
         internal override void SetId(IContentPack contentPack)
         {

@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -147,12 +148,20 @@ namespace Archery.Framework.Objects.Projectiles
                 return;
             }
 
-            // TODO: Handle if projectile should break on impact based on AmmoModel.BreakChance
-
-            // Draw debris based on ammo's sprite
-            if (_ammoModel.Debris is not null)
+            // See if the ammo should break
+            var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
+            if (_ammoModel.CanBreak() && (_ammoModel.ShouldAlwaysBreak() || Game1.random.NextDouble() < _ammoModel.BreakChance - playerLuckChance))
             {
-                Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Debris.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, _ammoModel.Debris.Amount);
+                // Draw debris based on ammo's sprite
+                if (_ammoModel.Debris is not null)
+                {
+                    Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Debris.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, _ammoModel.Debris.Amount);
+                }
+            }
+            else
+            {
+                // Drop the ammo
+                Game1.createItemDebris(Arrow.CreateInstance(_ammoModel), n.getStandingPosition(), n.FacingDirection, location);
             }
 
             // Damage the monster
