@@ -3,7 +3,6 @@ using Archery.Framework.Models.Display;
 using Archery.Framework.Models.Enums;
 using StardewModdingAPI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Archery.Framework.Models.Weapons
@@ -12,25 +11,24 @@ namespace Archery.Framework.Models.Weapons
     {
         public AmmoType Type { get; set; }
         public DebrisModel Debris { get; set; }
-        public List<WorldSpriteModel> Sprite { get; set; }
 
         public int BaseDamage { get; set; }
         public float BreakChance { get; set; } = 1.0f;
 
         internal WorldSpriteModel GetSpriteFromDirection(int direction)
         {
-            if (Sprite is null || Sprite.Count == 0)
+            if (DirectionalSprites is null)
             {
                 return null;
             }
 
-            var selectedSprite = Sprite.FirstOrDefault(s => (int)s.Direction == direction);
-            if (selectedSprite is null)
+            var spritesInGivenDirection = DirectionalSprites.GetSpritesFromDirection((Direction)direction);
+            if (spritesInGivenDirection.Count == 0)
             {
-                selectedSprite = Sprite.FirstOrDefault(s => s.Direction == Direction.All);
+                spritesInGivenDirection = DirectionalSprites.GetSpritesFromDirection(Direction.Any);
             }
 
-            return selectedSprite;
+            return spritesInGivenDirection.FirstOrDefault();
         }
 
         internal bool CanBreak()

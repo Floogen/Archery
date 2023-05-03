@@ -9,6 +9,7 @@ namespace Archery.Framework.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public ItemSpriteModel Icon { get; set; }
+        public DirectionalSpriteModel DirectionalSprites { get; set; }
 
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }
