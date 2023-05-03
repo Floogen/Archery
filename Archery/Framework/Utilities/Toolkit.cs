@@ -96,6 +96,30 @@ namespace Archery.Framework.Utilities
                         actualTorch.initializeLightSource(actualTorch.TileLocation);
                     }
                 }
+
+                // Add the target dummies, if DGA and the relevant pack is installed
+                var dgaAPI = Archery.apiManager.GetDynamicGameAssetsApi();
+                if (dgaAPI is not null)
+                {
+                    List<Vector2> dummyTiles = new List<Vector2>()
+                    {
+                        new Vector2(16, 15),
+                        new Vector2(13, 19),
+                        new Vector2(20, 19),
+                        new Vector2(17, 22)
+                    };
+
+                    foreach (var tile in dummyTiles)
+                    {
+                        var targetDummy = dgaAPI.SpawnDGAItem("PeacefulEnd.PracticeDummy/PracticeDummy") as StardewValley.Object;
+                        if (arena.objects.ContainsKey(tile) || targetDummy is null)
+                        {
+                            continue;
+                        }
+
+                        targetDummy.placementAction(arena, (int)tile.X * 64, (int)tile.Y * 64, null);
+                    }
+                }
             }
 
             // Warp the farmer to the arena

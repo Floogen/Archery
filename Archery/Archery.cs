@@ -74,6 +74,10 @@ namespace Archery
 
                 apiManager.GetFashionSenseApi().RegisterAppearanceDrawOverride(IFashionSenseApi.Type.Sleeves, ModManifest, Bow.Draw);
             }
+            if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets") && apiManager.HookIntoDynamicGameAssets(Helper))
+            {
+                // Do nothing
+            }
 
             // Load any owned content packs
             LoadContentPacks();

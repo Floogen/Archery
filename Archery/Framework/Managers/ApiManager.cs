@@ -7,6 +7,7 @@ namespace Archery.Framework.Managers
     {
         private IMonitor _monitor;
         private IFashionSenseApi _fashionSenseApi;
+        private IDynamicGameAssetsApi dynamicGameAssetsApi;
 
         public ApiManager(IMonitor monitor)
         {
@@ -30,6 +31,25 @@ namespace Archery.Framework.Managers
         public IFashionSenseApi GetFashionSenseApi()
         {
             return _fashionSenseApi;
+        }
+
+        internal bool HookIntoDynamicGameAssets(IModHelper helper)
+        {
+            dynamicGameAssetsApi = helper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
+
+            if (dynamicGameAssetsApi is null)
+            {
+                _monitor.Log("Failed to hook into spacechase0.DynamicGameAssets.", LogLevel.Error);
+                return false;
+            }
+
+            _monitor.Log("Successfully hooked into spacechase0.DynamicGameAssets.", LogLevel.Debug);
+            return true;
+        }
+
+        public IDynamicGameAssetsApi GetDynamicGameAssetsApi()
+        {
+            return dynamicGameAssetsApi;
         }
     }
 }
