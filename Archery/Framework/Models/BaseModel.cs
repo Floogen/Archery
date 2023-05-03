@@ -13,5 +13,11 @@ namespace Archery.Framework.Models
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }
         internal Texture2D Texture { get; set; }
+        internal string TexturePath { get; set; }
+
+        internal virtual void SetId(IContentPack contentPack)
+        {
+
+        }
     }
 }

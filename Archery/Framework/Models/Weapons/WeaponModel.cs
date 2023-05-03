@@ -1,5 +1,7 @@
 ﻿using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
+using StardewModdingAPI;
+using System;
 
 namespace Archery.Framework.Models.Weapons
 {
@@ -24,6 +26,11 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return false;
             }
+        }
+
+        internal override void SetId(IContentPack contentPack)
+        {
+            Id = String.Concat(contentPack.Manifest.UniqueID, "/", Type, "/", Name);
         }
     }
 }

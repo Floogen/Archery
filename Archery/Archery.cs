@@ -1,5 +1,7 @@
 ﻿using Archery.Framework.Interfaces;
 using Archery.Framework.Managers;
+using Archery.Framework.Models;
+using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
@@ -99,18 +101,36 @@ namespace Archery
 
                 // Load Weapons
                 Monitor.Log($"Loading weapons from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
-                AddWeaponContentPacks(contentPack);
+                AddContentPacks<WeaponModel>(contentPack, PackType.Weapon);
 
                 // Load Ammo
                 Monitor.Log($"Loading ammo from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
-                AddAmmoContentPacks(contentPack);
+                AddContentPacks<AmmoModel>(contentPack, PackType.Ammo);
             }
         }
 
-        private void AddWeaponContentPacks(IContentPack contentPack)
+        private void AddContentPacks<T>(IContentPack contentPack, PackType type) where T : BaseModel
         {
-            string folderKeyword = "Weapons";
-            string fileKeyword = "weapon";
+            string folderKeyword = String.Empty;
+            string fileKeyword = String.Empty;
+
+            switch (type)
+            {
+                case PackType.Ammo:
+                    folderKeyword = "Ammo";
+                    fileKeyword = "ammo";
+                    break;
+                case PackType.Weapon:
+                    folderKeyword = "Weapons";
+                    fileKeyword = "weapon";
+                    break;
+            }
+
+            if (String.IsNullOrEmpty(folderKeyword) || String.IsNullOrEmpty(fileKeyword))
+            {
+                Monitor.Log($"Skipping the content pack {contentPack.Manifest.Name} due to an internal error", LogLevel.Warn);
+                return;
+            }
 
             try
             {
@@ -121,15 +141,15 @@ namespace Archery
                     return;
                 }
 
-                var hairFolders = directoryPath.GetDirectories("*", SearchOption.AllDirectories);
-                if (hairFolders.Count() == 0)
+                var modelFolders = directoryPath.GetDirectories("*", SearchOption.AllDirectories);
+                if (modelFolders.Count() == 0)
                 {
                     Monitor.Log($"No sub-folders found under {folderKeyword} for the content pack {contentPack.Manifest.Name}", LogLevel.Warn);
                     return;
                 }
 
-                // Load in the hairs
-                foreach (var textureFolder in hairFolders)
+                // Load in the models
+                foreach (var textureFolder in modelFolders)
                 {
                     if (!File.Exists(Path.Combine(textureFolder.FullName, $"{fileKeyword}.json")))
                     {
@@ -145,118 +165,40 @@ namespace Archery
                     var modelPath = Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.json");
 
                     // Parse the model and assign it the content pack's owner
-                    WeaponModel weaponModel = contentPack.ReadJsonFile<WeaponModel>(modelPath);
-                    weaponModel.ContentPack = contentPack;
-                    weaponModel.Id = String.Concat(contentPack.Manifest.UniqueID, "/", weaponModel.Type, "/", weaponModel.Name);
+                    var model = contentPack.ReadJsonFile<T>(modelPath);
+                    model.ContentPack = contentPack;
+                    model.SetId(contentPack);
 
                     // Verify the required Name property is set
-                    if (String.IsNullOrEmpty(weaponModel.Name))
+                    if (String.IsNullOrEmpty(model.Name))
                     {
-                        Monitor.Log($"Unable to add {fileKeyword} from {weaponModel.ContentPack.Manifest.Author}: Missing the Name property", LogLevel.Warn);
+                        Monitor.Log($"Unable to add {fileKeyword} from {model.ContentPack.Manifest.Author}: Missing the Name property", LogLevel.Warn);
                         continue;
                     }
 
-                    // Verify that a hairstyle with the name doesn't exist in this pack
-                    if (modelManager.GetSpecificModel<WeaponModel>(weaponModel.Id) != null)
+                    // Verify that a model with the name doesn't exist in this pack
+                    if (modelManager.GetSpecificModel<WeaponModel>(model.Id) != null)
                     {
-                        Monitor.Log($"Unable to add {fileKeyword} from {contentPack.Manifest.Name}: This pack already contains a hairstyle with the name of {weaponModel.Name}", LogLevel.Warn);
+                        Monitor.Log($"Unable to add {fileKeyword} from {contentPack.Manifest.Name}: This pack already contains a hairstyle with the name of {model.Name}", LogLevel.Warn);
                         continue;
                     }
 
                     // Verify we are given a texture and if so, track it
                     if (!File.Exists(Path.Combine(textureFolder.FullName, $"{fileKeyword}.png")))
                     {
-                        Monitor.Log($"Unable to add {fileKeyword} for {weaponModel.Name} from {contentPack.Manifest.Name}: No associated {fileKeyword}.png given", LogLevel.Warn);
+                        Monitor.Log($"Unable to add {fileKeyword} for {model.Name} from {contentPack.Manifest.Name}: No associated {fileKeyword}.png given", LogLevel.Warn);
                         continue;
                     }
 
                     // Load in the texture
-                    weaponModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name);
+                    model.TexturePath = contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name;
+                    model.Texture = contentPack.ModContent.Load<Texture2D>(model.TexturePath);
 
                     // Track the model
-                    modelManager.AddModel(weaponModel);
+                    modelManager.AddModel(model);
 
                     // Log it
-                    Monitor.Log(weaponModel.ToString(), LogLevel.Trace);
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Error loading {fileKeyword} from content pack {contentPack.Manifest.Name}: {ex}", LogLevel.Error);
-            }
-        }
-
-        private void AddAmmoContentPacks(IContentPack contentPack)
-        {
-            string folderKeyword = "Ammo";
-            string fileKeyword = "ammo";
-
-            try
-            {
-                var directoryPath = new DirectoryInfo(Path.Combine(contentPack.DirectoryPath, folderKeyword));
-                if (!directoryPath.Exists)
-                {
-                    Monitor.Log($"No {folderKeyword} folder found for the content pack {contentPack.Manifest.Name}", LogLevel.Trace);
-                    return;
-                }
-
-                var hairFolders = directoryPath.GetDirectories("*", SearchOption.AllDirectories);
-                if (hairFolders.Count() == 0)
-                {
-                    Monitor.Log($"No sub-folders found under {folderKeyword} for the content pack {contentPack.Manifest.Name}", LogLevel.Warn);
-                    return;
-                }
-
-                // Load in the hairs
-                foreach (var textureFolder in hairFolders)
-                {
-                    if (!File.Exists(Path.Combine(textureFolder.FullName, $"{fileKeyword}.json")))
-                    {
-                        if (textureFolder.GetDirectories().Count() == 0)
-                        {
-                            Monitor.Log($"Content pack {contentPack.Manifest.Name} is missing a {fileKeyword}.json under {textureFolder.Name}", LogLevel.Warn);
-                        }
-
-                        continue;
-                    }
-
-                    var parentFolderName = textureFolder.Parent.FullName.Replace(contentPack.DirectoryPath + Path.DirectorySeparatorChar, String.Empty);
-                    var modelPath = Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.json");
-
-                    // Parse the model and assign it the content pack's owner
-                    AmmoModel ammoModel = contentPack.ReadJsonFile<AmmoModel>(modelPath);
-                    ammoModel.ContentPack = contentPack;
-                    ammoModel.Id = String.Concat(contentPack.Manifest.UniqueID, "/", ammoModel.Type, "/", ammoModel.Name);
-
-                    // Verify the required Name property is set
-                    if (String.IsNullOrEmpty(ammoModel.Name))
-                    {
-                        Monitor.Log($"Unable to add {fileKeyword} from {ammoModel.ContentPack.Manifest.Author}: Missing the Name property", LogLevel.Warn);
-                        continue;
-                    }
-
-                    // Verify that a hairstyle with the name doesn't exist in this pack
-                    if (modelManager.GetSpecificModel<WeaponModel>(ammoModel.Id) != null)
-                    {
-                        Monitor.Log($"Unable to add {fileKeyword} from {contentPack.Manifest.Name}: This pack already contains a hairstyle with the name of {ammoModel.Name}", LogLevel.Warn);
-                        continue;
-                    }
-
-                    // Verify we are given a texture and if so, track it
-                    if (!File.Exists(Path.Combine(textureFolder.FullName, $"{fileKeyword}.png")))
-                    {
-                        Monitor.Log($"Unable to add {fileKeyword} for {ammoModel.Name} from {contentPack.Manifest.Name}: No associated {fileKeyword}.png given", LogLevel.Warn);
-                        continue;
-                    }
-
-                    // Load in the texture
-                    ammoModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name);
-
-                    // Track the model
-                    modelManager.AddModel(ammoModel);
-
-                    // Log it
-                    Monitor.Log(ammoModel.ToString(), LogLevel.Trace);
+                    Monitor.Log(model.ToString(), LogLevel.Trace);
                 }
             }
             catch (Exception ex)
