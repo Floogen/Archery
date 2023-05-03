@@ -66,6 +66,7 @@ namespace Archery.Framework.Objects.Weapons
             {
                 return false;
             }
+            bool shouldDrawArrow = Bow.GetAmmoCount(who.CurrentTool) > 0;
 
             // Get slingshot and related data
             Slingshot slingshot = who.CurrentTool as Slingshot;
@@ -113,8 +114,10 @@ namespace Archery.Framework.Objects.Weapons
                     drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset + (who.FacingDirection == Game1.left ? new Vector2(-8f, 0f) : new Vector2(8f, 0f)), new Rectangle(bowFrame, 0, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the arrow
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.baseArrowTexture, baseOffset + specialOffset, new Rectangle(4, 7, 8, 1), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
-
+                    if (shouldDrawArrow)
+                    {
+                        drawTool.SpriteBatch.Draw(Archery.assetManager.baseArrowTexture, baseOffset + specialOffset, new Rectangle(4, 7, 8, 1), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    }
                     // Draw the front arm
                     drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
