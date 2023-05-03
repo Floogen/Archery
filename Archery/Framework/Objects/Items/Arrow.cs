@@ -1,7 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
 using Archery.Framework.Utilities;
-using StardewValley;
-using System;
 using Object = StardewValley.Object;
 
 namespace Archery.Framework.Objects.Items

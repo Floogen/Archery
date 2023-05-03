@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Objects.Items;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Patches;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -45,9 +46,9 @@ namespace FishingTrawler.Framework.Patches.Objects
 
         private static bool DrawInMenuPrefix(Object __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, ref Color color, bool drawShadow)
         {
-            if (Arrow.IsValid(__instance))
+            if (Arrow.GetModel<AmmoModel>(__instance) is AmmoModel arrowModel && arrowModel is not null)
             {
-                //spriteBatch.Draw(Archery.assetManager.GetArrowTexture(MOD_DATA_VALUE_HERE), location + new Vector2(32f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Sprite.Scale, SpriteEffects.None, layerDepth);
 
                 return false;
             }

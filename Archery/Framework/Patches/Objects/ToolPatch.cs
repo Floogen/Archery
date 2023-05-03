@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Objects.Items;
-using Archery.Framework.Objects.Weapons;
+﻿using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;

@@ -1,13 +1,7 @@
 ﻿using Archery.Framework.Models;
-using Archery.Framework.Models.Weapons;
 using Archery.Framework.Utilities;
 using StardewValley;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Object = StardewValley.Object;
 
 namespace Archery.Framework.Objects
 {

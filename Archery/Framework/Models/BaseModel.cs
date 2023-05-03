@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Archery.Framework.Models.Display;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
 namespace Archery.Framework.Models
@@ -7,6 +8,7 @@ namespace Archery.Framework.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public SpriteModel Sprite { get; set; }
 
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }

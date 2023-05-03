@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Objects.Projectiles;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -33,9 +34,9 @@ namespace Archery.Framework.Patches.Objects
 
         private static bool DrawInMenuPrefix(Slingshot __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
-            if (Bow.IsValid(__instance))
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel is not null)
             {
-                spriteBatch.Draw(Archery.assetManager.iconBowTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, 3f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Sprite.Scale, SpriteEffects.None, layerDepth);
 
                 if (drawStackNumber != 0 && __instance.attachments != null && __instance.attachments[0] != null)
                 {
