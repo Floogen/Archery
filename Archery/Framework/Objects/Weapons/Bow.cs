@@ -48,6 +48,20 @@ namespace Archery.Framework.Objects.Weapons
             return false;
         }
 
+        internal static float GetSlingshotChargeTimePostfix(Tool tool)
+        {
+            // TODO: Implement check against BowModel to get required charging time
+            if (IsValid(tool) is true && tool is Slingshot slingshot)
+            {
+                var requiredChargingTime = 1000f;
+                var pullStartTimeInMilliseconds = slingshot.pullStartTime * 1000;
+
+                return Utility.Clamp((float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds - pullStartTimeInMilliseconds) / (double)requiredChargingTime), 0f, 1f);
+            }
+
+            return default(float);
+        }
+
         internal static bool Draw(IDrawTool drawTool)
         {
             Farmer who = drawTool.Farmer;

@@ -26,6 +26,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
         }
@@ -152,6 +153,14 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance))
             {
                 __result = Bow.CanThisBeAttached(__instance, o);
+            }
+        }
+
+        private static void GetSlingshotChargeTimePostfix(Slingshot __instance, ref float __result)
+        {
+            if (Bow.IsValid(__instance))
+            {
+                __result = Bow.GetSlingshotChargeTimePostfix(__instance);
             }
         }
 
