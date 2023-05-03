@@ -51,7 +51,8 @@ namespace Archery.Framework.Patches.Objects
 
         private static bool PerformFirePrefix(Slingshot __instance, ref bool ___canPlaySound, GameLocation location, Farmer who)
         {
-            if (Bow.IsValid(__instance) is false)
+            var weaponModel = Bow.GetModel<WeaponModel>(__instance);
+            if (weaponModel is null)
             {
                 return true;
             }
@@ -64,8 +65,10 @@ namespace Archery.Framework.Patches.Objects
                 int mouseX = __instance.aimPos.X;
                 int mouseY = __instance.aimPos.Y;
                 int backArmDistance = __instance.GetBackArmDistance(who);
+
                 Vector2 shoot_origin = __instance.GetShootOrigin(who);
-                Vector2 v = Utility.getVelocityTowardPoint(__instance.GetShootOrigin(who), __instance.AdjustForHeight(new Vector2(mouseX, mouseY)), (float)(15 + Game1.random.Next(4, 6)) * (1f + who.weaponSpeedModifier));
+                Vector2 v = Utility.getVelocityTowardPoint(__instance.GetShootOrigin(who), __instance.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
+
                 if (backArmDistance > 4 && !___canPlaySound)
                 {
                     StardewValley.Object ammunition = (StardewValley.Object)__instance.attachments[0].getOne();
