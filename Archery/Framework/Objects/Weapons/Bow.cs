@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Objects.Items;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,12 +13,10 @@ namespace Archery.Framework.Objects.Weapons
 {
     internal class Bow
     {
-        public static Slingshot CreateInstance()
+        public static Slingshot CreateInstance(WeaponModel weaponModel)
         {
             var bow = new Slingshot();
-
-            // TODO: Set this value to the content pack's bow identifier
-            bow.modData[ModDataKeys.BOW_WEAPON_FLAG] = true.ToString();
+            bow.modData[ModDataKeys.BOW_WEAPON_FLAG] = weaponModel.Id;
 
             return bow;
         }

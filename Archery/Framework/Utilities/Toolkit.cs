@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System.Collections.Generic;
@@ -16,6 +18,26 @@ namespace Archery.Framework.Utilities
         {
             layerDepth += 0.00001f;
             return layerDepth;
+        }
+
+        internal static void GiveBow(string command, string[] args)
+        {
+            var bowFilter = args.Length > 0 ? args[0] : null;
+
+            WeaponModel weaponModel = null;
+            if (string.IsNullOrEmpty(bowFilter) is false)
+            {
+                weaponModel = Archery.modelManager.GetSpecificModel<WeaponModel>(bowFilter);
+            }
+            else
+            {
+                weaponModel = Archery.modelManager.GetRandomWeaponModel(Models.Enums.WeaponType.Bow);
+            }
+
+            if (weaponModel is not null)
+            {
+                Game1.player.addItemByMenuIfNecessary(Bow.CreateInstance(weaponModel));
+            }
         }
 
         internal static void TeleportToArena(string command, string[] args)
