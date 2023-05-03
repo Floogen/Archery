@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Projectiles;
 
 namespace Archery.Framework.Objects.Projectiles
@@ -136,7 +137,13 @@ namespace Archery.Framework.Objects.Projectiles
 
         public override void behaviorOnCollisionWithMonster(NPC n, GameLocation location)
         {
-            base.behaviorOnCollisionWithMonster(n, location);
+            if (n is not Monster)
+            {
+                return;
+            }
+
+            //base.explosionAnimation
+            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
         }
 
         public override bool isColliding(GameLocation location)

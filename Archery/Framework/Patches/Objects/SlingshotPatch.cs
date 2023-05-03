@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
@@ -6,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
 using Object = StardewValley.Object;
@@ -16,6 +16,7 @@ namespace Archery.Framework.Patches.Objects
     internal class SlingshotPatch : PatchTemplate
     {
         private readonly Type _object = typeof(Slingshot);
+        private const int VANILLA_STONE_SPRITE_ID = 390;
 
         public SlingshotPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
         {
@@ -52,7 +53,8 @@ namespace Archery.Framework.Patches.Objects
         private static bool PerformFirePrefix(Slingshot __instance, ref bool ___canPlaySound, GameLocation location, Farmer who)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(__instance);
-            if (weaponModel is null)
+            var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(__instance));
+            if (weaponModel is null || ammoModel is null)
             {
                 return true;
             }
@@ -71,71 +73,24 @@ namespace Archery.Framework.Patches.Objects
 
                 if (backArmDistance > 4 && !___canPlaySound)
                 {
-                    StardewValley.Object ammunition = (StardewValley.Object)__instance.attachments[0].getOne();
+                    // Get the ammo to be used
                     __instance.attachments[0].Stack--;
                     if (__instance.attachments[0].Stack <= 0)
                     {
                         __instance.attachments[0] = null;
                     }
-                    int damage = 1;
-                    BasicProjectile.onCollisionBehavior collisionBehavior = null;
+
+                    // TODO: Implement firing and collision sounds
                     string collisionSound = "hammer";
-                    float damageMod = 1f;
-                    if (__instance.InitialParentTileIndex == 33)
-                    {
-                        damageMod = 2f;
-                    }
-                    else if (__instance.InitialParentTileIndex == 34)
-                    {
-                        damageMod = 4f;
-                    }
-                    switch (ammunition.ParentSheetIndex)
-                    {
-                        case 388:
-                            damage = 2;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 390:
-                            damage = 5;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 378:
-                            damage = 10;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 380:
-                            damage = 20;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 384:
-                            damage = 30;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 382:
-                            damage = 15;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 386:
-                            damage = 50;
-                            ammunition.ParentSheetIndex++;
-                            break;
-                        case 441:
-                            damage = 20;
-                            collisionBehavior = BasicProjectile.explodeOnImpact;
-                            collisionSound = "explosion";
-                            break;
-                    }
-                    if (ammunition.Category == -5)
-                    {
-                        collisionSound = "slimedead";
-                    }
+
                     if (!Game1.options.useLegacySlingshotFiring)
                     {
                         v.X *= -1f;
                         v.Y *= -1f;
                     }
 
-                    var arrow = new ArrowProjectile((int)(damageMod * (float)(damage + Game1.random.Next(-(damage / 2), damage + 2)) * (1f + who.attackIncreaseModifier)), ammunition.ParentSheetIndex, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true, collisionBehavior)
+                    int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
+                    var arrow = new ArrowProjectile((int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), VANILLA_STONE_SPRITE_ID, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true)
                     {
                         IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                     };
