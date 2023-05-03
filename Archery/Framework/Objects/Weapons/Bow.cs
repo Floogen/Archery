@@ -39,10 +39,9 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static float GetSlingshotChargeTimePostfix(Tool tool)
         {
-            // TODO: Implement check against BowModel to get required charging time
-            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot)
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
-                var requiredChargingTime = 1000f;
+                var requiredChargingTime = weaponModel.ChargeTimeRequiredMilliseconds;
                 var pullStartTimeInMilliseconds = slingshot.pullStartTime * 1000;
 
                 return Utility.Clamp((float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds - pullStartTimeInMilliseconds) / (double)requiredChargingTime), 0f, 1f);
