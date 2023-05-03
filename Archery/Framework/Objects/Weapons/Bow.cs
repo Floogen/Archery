@@ -80,7 +80,13 @@ namespace Archery.Framework.Objects.Weapons
             {
                 return false;
             }
-            bool shouldDrawArrow = Bow.GetAmmoCount(who.CurrentTool) > 0;
+
+            // Get the required models
+            var ammoItem = Bow.GetAmmoItem(who.CurrentTool);
+
+            var ammoModel = Arrow.GetModel<AmmoModel>(ammoItem);
+
+            bool shouldDrawArrow = ammoItem is not null && ammoItem.Stack > 0;
 
             // Get slingshot and related data
             Slingshot slingshot = who.CurrentTool as Slingshot;
@@ -130,7 +136,11 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow)
                     {
-                        drawTool.SpriteBatch.Draw(Archery.assetManager.baseArrowTexture, baseOffset + specialOffset, new Rectangle(4, 7, 8, 1), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        var ammoSprite = ammoModel.GetSpriteFromDirection(who.FacingDirection);
+                        if (ammoSprite is not null)
+                        {
+                            drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset, ammoSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        }
                     }
                     // Draw the front arm
                     drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));

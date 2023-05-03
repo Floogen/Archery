@@ -17,10 +17,12 @@ namespace Archery.Framework.Objects.Projectiles
         private const int VANILLA_STONE_SPRITE_ID = 390;
 
         private AmmoModel _ammoModel;
+        private int _startingDirection;
 
-        public ArrowProjectile(AmmoModel model, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(AmmoModel model, int startingDirection, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
         {
             _ammoModel = model;
+            _startingDirection = startingDirection;
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -200,12 +202,17 @@ namespace Archery.Framework.Objects.Projectiles
 
         public override void draw(SpriteBatch b)
         {
-            // TODO: Clean Arrow.draw up
             float current_scale = 4f * base.localScale;
-            float alpha = 1f; // base.startingAlpha;
+            float alpha = 1f;
 
             // Draw the arrow
-            b.Draw(Archery.assetManager.baseArrowTexture, Game1.GlobalToLocal(Game1.viewport, base.position), _arrowBounds, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+            var ammoSprite = _ammoModel.GetSpriteFromDirection(_startingDirection);
+            if (ammoSprite is null)
+            {
+                return;
+            }
+
+            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
             //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());

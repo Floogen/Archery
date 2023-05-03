@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewValley;
-using System;
-using System.Collections.Generic;
-using static StardewValley.FarmerSprite;
-
-namespace Archery.Framework.Interfaces
+﻿namespace Archery.Framework.Interfaces
 {
     public interface IDynamicGameAssetsApi
     {
