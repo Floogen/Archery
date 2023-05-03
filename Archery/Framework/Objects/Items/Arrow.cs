@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Utilities;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Utilities;
 using StardewValley;
 using System;
 using Object = StardewValley.Object;
@@ -9,12 +10,10 @@ namespace Archery.Framework.Objects.Items
     {
         private const int ARROW_BASE_ID = 26;
 
-        public static Object CreateInstance()
+        public static Object CreateInstance(AmmoModel ammoModel)
         {
             var arrow = new Object(ARROW_BASE_ID, 1);
-
-            // TODO: Set this value to the content pack's arrow identifier
-            arrow.modData[ModDataKeys.ARROW_ITEM_FLAG] = true.ToString();
+            arrow.modData[ModDataKeys.ARROW_ITEM_FLAG] = ammoModel.Id;
 
             return arrow;
         }

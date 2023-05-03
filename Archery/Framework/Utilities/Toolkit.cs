@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -37,6 +38,26 @@ namespace Archery.Framework.Utilities
             if (weaponModel is not null)
             {
                 Game1.player.addItemByMenuIfNecessary(Bow.CreateInstance(weaponModel));
+            }
+        }
+
+        internal static void GiveArrow(string command, string[] args)
+        {
+            var arrowFilter = args.Length > 0 ? args[0] : null;
+
+            AmmoModel ammoModel = null;
+            if (string.IsNullOrEmpty(arrowFilter) is false)
+            {
+                ammoModel = Archery.modelManager.GetSpecificModel<AmmoModel>(arrowFilter);
+            }
+            else
+            {
+                ammoModel = Archery.modelManager.GetRandomAmmoModel(Models.Enums.AmmoType.Arrow);
+            }
+
+            if (ammoModel is not null)
+            {
+                Game1.player.addItemByMenuIfNecessary(Arrow.CreateInstance(ammoModel));
             }
         }
 

@@ -55,6 +55,7 @@ namespace Archery
 
             // Add in our debug commands
             helper.ConsoleCommands.Add("archery_get_bow", "Gives a random bow, unless a bow id is given.\n\nUsage: archery_get_bow [bow_id]", Toolkit.GiveBow);
+            helper.ConsoleCommands.Add("archery_get_arrow", "Gives a random arrow, unless an arrow id is given.\n\nUsage: archery_get_arrow [arrow_id]", Toolkit.GiveArrow);
             helper.ConsoleCommands.Add("archery_arena", "Teleports to an arena for debugging bows.\n\nUsage: archery_arena", Toolkit.TeleportToArena);
             helper.ConsoleCommands.Add("archery_reload", "Reloads all Archery content packs. Can specify a manifest unique ID to only reload that pack.\n\nUsage: archery_reload [manifest_unique_id]", ReloadArchery);
 
