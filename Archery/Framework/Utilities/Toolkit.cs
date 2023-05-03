@@ -57,7 +57,7 @@ namespace Archery.Framework.Utilities
 
             if (ammoModel is not null)
             {
-                Game1.player.addItemByMenuIfNecessary(Arrow.CreateInstance(ammoModel));
+                Game1.player.addItemByMenuIfNecessary(Arrow.CreateInstance(ammoModel, 999));
             }
         }
 

@@ -8,9 +8,9 @@ namespace Archery.Framework.Objects.Items
     {
         private const int ARROW_BASE_ID = 590;
 
-        public static Object CreateInstance(AmmoModel ammoModel)
+        public static Object CreateInstance(AmmoModel ammoModel, int stackCount = 1)
         {
-            var arrow = new Object(ARROW_BASE_ID, 1);
+            var arrow = new Object(ARROW_BASE_ID, stackCount);
             arrow.modData[ModDataKeys.AMMO_FLAG] = ammoModel.Id;
 
             return arrow;
