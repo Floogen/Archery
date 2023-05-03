@@ -49,7 +49,11 @@ namespace FishingTrawler.Framework.Patches.Objects
             if (Arrow.GetModel<AmmoModel>(__instance) is AmmoModel arrowModel && arrowModel is not null)
             {
                 spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Sprite.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Sprite.Scale, SpriteEffects.None, layerDepth);
-
+                
+                if (drawStackNumber != 0 && __instance.Stack > 0)
+                {
+                    Utility.drawTinyDigits(__instance.Stack, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(__instance.Stack, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
+                }
                 return false;
             }
 
