@@ -16,7 +16,6 @@ namespace Archery.Framework.Patches.Objects
     internal class SlingshotPatch : PatchTemplate
     {
         private readonly Type _object = typeof(Slingshot);
-        private const int VANILLA_STONE_SPRITE_ID = 390;
 
         public SlingshotPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
         {
@@ -90,7 +89,7 @@ namespace Archery.Framework.Patches.Objects
                     }
 
                     int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                    var arrow = new ArrowProjectile((int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), VANILLA_STONE_SPRITE_ID, 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true)
+                    var arrow = new ArrowProjectile(ammoModel, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, who, spriteFromObjectSheet: true)
                     {
                         IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                     };

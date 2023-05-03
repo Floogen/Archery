@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Archery.Framework.Models.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Monsters;
@@ -12,9 +13,13 @@ namespace Archery.Framework.Objects.Projectiles
         private static Rectangle _arrowBounds = new Rectangle(4, 7, 8, 1);
         private static Rectangle _arrowCollisionBox = new Rectangle(0, 0, 4, 4);
 
-        public ArrowProjectile(int damageToFarmer, int parentSheetIndex, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, parentSheetIndex, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
-        {
+        private const int VANILLA_STONE_SPRITE_ID = 390;
 
+        private AmmoModel _ammoModel;
+
+        public ArrowProjectile(AmmoModel model, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
+        {
+            _ammoModel = model;
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -124,7 +129,7 @@ namespace Archery.Framework.Objects.Projectiles
                     NPC i = location.doesPositionCollideWithCharacter(this.getBoundingBox());
                     if (i is not null && i.IsMonster)
                     {
-                        base.behaviorOnCollisionWithMonster(i, location);
+                        this.behaviorOnCollisionWithMonster(i, location);
                         return true;
                     }
                 }
@@ -142,7 +147,13 @@ namespace Archery.Framework.Objects.Projectiles
                 return;
             }
 
-            //base.explosionAnimation
+            // TODO: Handle if projectile should break on impact based on AmmoModel.BreakChance
+
+            // TODO: Determine if projectile should show debris with AmmoModel.CreateDebrisOnImpact
+            // Draw debris based on ammo's sprite
+            Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Sprite.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, 6);
+
+            // Damage the monster
             location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
         }
 
