@@ -28,10 +28,12 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static bool CanThisBeAttached(Tool tool, Object item)
         {
-            // TODO: Implement check against BowModel to verify it supports this arrow
-            if (Arrow.IsValid(item) is true)
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
-                return true;
+                if (item is null || (Arrow.GetModel<AmmoModel>(item) is AmmoModel ammoModel && weaponModel.IsValidAmmoType(ammoModel.Type)))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -47,7 +49,9 @@ namespace Archery.Framework.Objects.Weapons
                 return Utility.Clamp((float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds - pullStartTimeInMilliseconds) / (double)requiredChargingTime), 0f, 1f);
             }
 
-            return default(float);
+            return 0f;
+        }
+
         internal static int GetAmmoCount(Tool tool)
         {
             if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && slingshot.attachments is not null && slingshot.attachments[0] is not null)
