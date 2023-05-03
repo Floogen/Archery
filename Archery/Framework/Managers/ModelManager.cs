@@ -1,26 +1,43 @@
 ﻿using Archery.Framework.Models;
-using Archery.Framework.Models.Weapons;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 namespace Archery.Framework.Managers
 {
     internal class ModelManager
     {
         private IMonitor _monitor;
-        private List<ContentPackBase> _contentPacks;
-        private Dictionary<string, WeaponModel> _idToWeaponModels;
-        private Dictionary<string, AmmoModel> _idToAmmoModels;
+        private List<BaseModel> _contentPackModels;
 
         public ModelManager(IMonitor monitor)
         {
             _monitor = monitor;
 
-            _contentPacks = new List<ContentPackBase>();
-            _idToWeaponModels = new Dictionary<string, WeaponModel>();
-            _idToAmmoModels = new Dictionary<string, AmmoModel>();
+            Reset();
+        }
+
+        public void Reset(string packId = null)
+        {
+            if (String.IsNullOrEmpty(packId) is true)
+            {
+                _contentPackModels = new List<BaseModel>();
+            }
+            else
+            {
+                _contentPackModels = _contentPackModels.Where(a => a.ContentPack.Manifest.UniqueID.Equals(packId, StringComparison.OrdinalIgnoreCase) is false).ToList();
+            }
+        }
+
+        internal void AddModel(BaseModel baseModel)
+        {
+            _contentPackModels.Add(baseModel);
+        }
+
+        internal T GetSpecificModel<T>(string modelId) where T : BaseModel
+        {
+            return (T)_contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T);
         }
     }
 }
