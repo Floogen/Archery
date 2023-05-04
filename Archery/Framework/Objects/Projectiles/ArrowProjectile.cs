@@ -12,7 +12,6 @@ namespace Archery.Framework.Objects.Projectiles
     internal class ArrowProjectile : BasicProjectile
     {
         // TODO: Make these content pack values
-        private static Rectangle _arrowBounds = new Rectangle(4, 7, 8, 1);
         private static Rectangle _arrowCollisionBox = new Rectangle(0, 0, 4, 4);
 
         private const int VANILLA_STONE_SPRITE_ID = 390;
@@ -217,7 +216,7 @@ namespace Archery.Framework.Objects.Projectiles
                 return;
             }
 
-            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * alpha, base.rotation, _arrowBounds.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * alpha, base.rotation, ammoSprite.Source.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
             //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
