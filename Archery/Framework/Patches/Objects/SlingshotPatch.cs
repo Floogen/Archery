@@ -1,6 +1,4 @@
 ﻿using Archery.Framework.Models.Weapons;
-using Archery.Framework.Objects.Items;
-using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
 using HarmonyLib;
@@ -53,63 +51,14 @@ namespace Archery.Framework.Patches.Objects
 
         private static bool PerformFirePrefix(Slingshot __instance, ref bool ___canPlaySound, GameLocation location, Farmer who)
         {
-            var weaponModel = Bow.GetModel<WeaponModel>(__instance);
-            var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(__instance));
-            if (weaponModel is null || ammoModel is null)
+            if (Bow.IsValid(__instance))
             {
-                return true;
+                Bow.PerformFire(__instance, ref ___canPlaySound, location, who);
+
+                return false;
             }
 
-            // TODO: Clean SlingshotPatch.PerformFirePrefix up
-            if (Bow.GetAmmoCount(__instance) > 0)
-            {
-                UpdateAimPosReversePatch(__instance);
-
-                int mouseX = __instance.aimPos.X;
-                int mouseY = __instance.aimPos.Y;
-                int backArmDistance = __instance.GetBackArmDistance(who);
-
-                Vector2 shoot_origin = __instance.GetShootOrigin(who);
-                Vector2 v = Utility.getVelocityTowardPoint(__instance.GetShootOrigin(who), __instance.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
-
-                if (backArmDistance > 4 && !___canPlaySound)
-                {
-                    // Get the ammo to be used
-                    __instance.attachments[0].Stack--;
-                    if (__instance.attachments[0].Stack <= 0)
-                    {
-                        __instance.attachments[0] = null;
-                    }
-
-                    // TODO: Implement firing and collision sounds
-                    string collisionSound = "hammer";
-
-                    if (!Game1.options.useLegacySlingshotFiring)
-                    {
-                        v.X *= -1f;
-                        v.Y *= -1f;
-                    }
-
-                    int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                    var arrow = new ArrowProjectile(ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, collisionSound, "", explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
-                    {
-                        IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
-                    };
-                    arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, __instance);
-
-                    location.projectiles.Add(arrow);
-
-                    // Play firing sound
-                    Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
-                }
-            }
-            else
-            {
-                Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
-            }
-            ___canPlaySound = true;
-
-            return false;
+            return true;
         }
 
         private static void BeginUsingPostfix(Slingshot __instance, GameLocation location, int x, int y, Farmer who)
@@ -138,7 +87,7 @@ namespace Archery.Framework.Patches.Objects
             }
         }
 
-        private static void UpdateAimPosReversePatch(Slingshot __instance)
+        internal static void UpdateAimPosReversePatch(Slingshot __instance)
         {
             new NotImplementedException("It's a stub!");
         }

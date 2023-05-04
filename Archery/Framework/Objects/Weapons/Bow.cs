@@ -1,5 +1,7 @@
 ﻿using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
+using Archery.Framework.Objects.Projectiles;
+using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,6 +72,64 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return 0;
+        }
+
+        internal static void PerformFire(Slingshot slingshot, ref bool canPlaySound, GameLocation location, Farmer who)
+        {
+            var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
+            var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
+            if (weaponModel is null || ammoModel is null)
+            {
+                return;
+            }
+
+            // TODO: Clean Bow.PerformFire up
+            if (Bow.GetAmmoCount(slingshot) > 0)
+            {
+                SlingshotPatch.UpdateAimPosReversePatch(slingshot);
+
+                int mouseX = slingshot.aimPos.X;
+                int mouseY = slingshot.aimPos.Y;
+                int backArmDistance = slingshot.GetBackArmDistance(who);
+
+                Vector2 shoot_origin = slingshot.GetShootOrigin(who);
+                Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
+
+                if (backArmDistance > 4 && !canPlaySound)
+                {
+                    // Get the ammo to be used
+                    slingshot.attachments[0].Stack--;
+                    if (slingshot.attachments[0].Stack <= 0)
+                    {
+                        slingshot.attachments[0] = null;
+                    }
+
+                    if (!Game1.options.useLegacySlingshotFiring)
+                    {
+                        v.X *= -1f;
+                        v.Y *= -1f;
+                    }
+
+                    int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
+                    var arrow = new ArrowProjectile(ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                    {
+                        IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
+                    };
+                    arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
+
+                    location.projectiles.Add(arrow);
+
+                    // Play firing sound
+                    Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
+                }
+            }
+            else
+            {
+                Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
+            }
+
+            // TODO: Need to handle Slingshot.tickUpdate to not play the default sound
+            canPlaySound = true;
         }
 
         internal static bool Draw(IDrawTool drawTool)
