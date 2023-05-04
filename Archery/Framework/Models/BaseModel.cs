@@ -36,6 +36,20 @@ namespace Archery.Framework.Models
 
             return GetValidOrDefaultSprite(who, spritesInGivenDirection);
         }
+
+        internal WorldSpriteModel GetValidOrDefaultSprite(Farmer who, List<WorldSpriteModel> sprites)
+        {
+            foreach (var sprite in sprites)
+            {
+                if (sprite.AreConditionsValid(who))
+                {
+                    return sprite;
+                }
+            }
+
+            return sprites.FirstOrDefault();
+        }
+
         internal virtual void SetId(IContentPack contentPack)
         {
 
