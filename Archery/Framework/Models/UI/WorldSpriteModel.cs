@@ -2,6 +2,7 @@
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace Archery.Framework.Models.Display
 {
     public class WorldSpriteModel : ItemSpriteModel
     {
+        public Vector2 Offset { get; set; }
+
         public List<Condition> Conditions { get; set; } = new List<Condition>();
 
         internal bool AreConditionsValid(Farmer who)
