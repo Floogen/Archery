@@ -1,0 +1,57 @@
+{
+  "Type": "Arrow",
+  "Name": "Basic Arrow",
+  "Description": "A basic arrow made of wood.",
+
+  "Icon": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    }
+  },
+  "ProjectileSprite": {
+    "Source": {
+      "X": 20,
+      "Y": 7,
+      "Width": 8,
+      "Height": 1
+    }
+  },
+
+  "DirectionalSprites": {
+    "Sideways": [
+      {
+        "Source": {
+          "X": 20,
+          "Y": 7,
+          "Width": 8,
+          "Height": 1
+        }
+      }
+    ],
+    "Down": [
+      {
+        "Source": {
+          "X": 0,
+          "Y": 16,
+          "Width": 16,
+          "Height": 16
+        }
+      }
+    ]
+  },
+
+  "BreakChance": 0.9,
+  "Debris": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    },
+    "Amount": 6
+  },
+  "BaseDamage": 3
+}

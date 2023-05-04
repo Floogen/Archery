@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Example Archery Pack",
+  "Author": "ExampleAuthor",
+  "Version": "1.0.0",
+  "Description": "Example pack for the Archery framework.",
+  "UniqueID": "ExampleAuthor.ExampleArcheryPack",
+  "UpdateKeys": [],
+  "Dependencies": [],
+  "ContentPackFor": {
+    "UniqueID": "PeacefulEnd.Archery",
+    "MinimumVersion": "1.0.0"
+  }
+}

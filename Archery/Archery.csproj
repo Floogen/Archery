@@ -18,20 +18,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Examples\[Archery] Example Pack\Ammo\Basic Arrow\ammo.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Framework\Assets\BaseArrow.png">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\BaseBow.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Framework\Assets\BowArms.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Framework\Assets\BaseBow.png">
+		<None Update="Examples\[Archery] Example Pack\Weapons\Basic Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Framework\Assets\BowIcon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Framework\Assets\Maps\Arena.tmx">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="i18n\default.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -54,8 +60,10 @@
 			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\Archery-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
 
 			powershell Remove-Item -Path '$(GameModsPath)\Archery' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\Archery Examples' -Recurse -Force
 
 			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery" "$(GameModsPath)\Archery"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\Examples\*" "$(GameModsPath)\Archery Examples"
 		</PostBuildEvent>
 	</PropertyGroup>
 </Project>
