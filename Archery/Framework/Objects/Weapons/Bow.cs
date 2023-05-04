@@ -84,6 +84,7 @@ namespace Archery.Framework.Objects.Weapons
             // Get the required models
             var ammoItem = Bow.GetAmmoItem(who.CurrentTool);
 
+            var bowModel = Bow.GetModel<WeaponModel>(who.CurrentTool);
             var ammoModel = Arrow.GetModel<AmmoModel>(ammoItem);
 
             bool shouldDrawArrow = ammoItem is not null && ammoItem.Stack > 0;
@@ -103,8 +104,16 @@ namespace Archery.Framework.Objects.Weapons
             var baseOffset = drawTool.Position + drawTool.Origin + drawTool.PositionOffset + who.armOffset;
 
             int movingArmStartingFrame = GetMovingArmFrame(who.FacingDirection, currentChargePercentage);
-            int bowFrame = GetBowFrame(who.FacingDirection, currentChargePercentage);
             int arrowFrame = GetArrowFrame(who.FacingDirection, currentChargePercentage);
+
+            // Get the arrow and bow sprites
+            var ammoSprite = ammoModel.GetSpriteFromDirection(who);
+            var bowSprite = bowModel.GetSpriteFromDirection(who);
+
+            // Get the flip effect
+            var flipEffect = who.FacingDirection == Game1.left ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            var bowFlipOverride = bowSprite.GetSpriteEffects() is SpriteEffects.None ? flipEffect : bowSprite.GetSpriteEffects();
+
             switch (who.FacingDirection)
             {
                 case Game1.down:
@@ -113,7 +122,7 @@ namespace Archery.Framework.Objects.Weapons
 
                     // Draw the bow
                     specialOffset = new Vector2(4f - frontArmRotation * 2f, 0f);
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset, new Rectangle(bowFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset, bowSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the front arm
                     specialOffset = Vector2.Zero;
@@ -122,24 +131,22 @@ namespace Archery.Framework.Objects.Weapons
                     return true;
                 case Game1.right:
                 case Game1.left:
-                    var flipEffect = who.FacingDirection == Game1.left ? SpriteEffects.FlipVertically : SpriteEffects.None;
                     originOffset = who.FacingDirection == Game1.left ? new Vector2(0f, -16f) : new Vector2(0f, -16f);
                     specialOffset = who.FacingDirection == Game1.left ? new Vector2(56f, -60f) : new Vector2(8f, -60f);
 
                     // Draw the back arm
                     // TODO: Get player's layer depth via IDrawTool
                     drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(48, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, 5.9E-05f);
-
+                    
                     // Draw the bow
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset + (who.FacingDirection == Game1.left ? new Vector2(-8f, 0f) : new Vector2(8f, 0f)), new Rectangle(bowFrame, 0, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset + (who.FacingDirection == Game1.left ? new Vector2(-8f, 0f) : new Vector2(8f, 0f)), bowSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the arrow
                     if (shouldDrawArrow)
                     {
-                        var ammoSprite = ammoModel.GetSpriteFromDirection(who);
                         if (ammoSprite is not null)
                         {
-                            drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset, ammoSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                            drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset, ammoSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), ammoSprite.Scale * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                         }
                     }
                     // Draw the front arm
@@ -152,7 +159,7 @@ namespace Archery.Framework.Objects.Weapons
 
                     // Draw the bow
                     specialOffset = new Vector2((frontArmRotation - 6f) * 4f, 0f);
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.baseBowTexture, baseOffset + specialOffset, new Rectangle(bowFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset, bowSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the front arm
                     specialOffset = Vector2.Zero;
@@ -181,28 +188,6 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return bowFrame;
-        }
-
-        // TODO: Have the BowModel determine the frame value based on the charge percentage
-        private static int GetBowFrame(int facingDirection, float bowChargePercentage)
-        {
-            int bowFrame = 0;
-            int startingOffset = 0;
-            switch (facingDirection)
-            {
-                case Game1.down:
-                    break;
-                case Game1.right:
-                case Game1.left:
-                    bowFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
-                    startingOffset = 16;
-                    break;
-                case Game1.up:
-                    startingOffset = 64;
-                    break;
-            }
-
-            return (bowFrame * 16) + startingOffset;
         }
 
         private static int GetMovingArmFrame(int facingDirection, float bowChargePercentage)
