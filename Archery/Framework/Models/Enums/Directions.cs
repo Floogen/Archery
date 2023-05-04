@@ -6,6 +6,7 @@
         Right,
         Down,
         Left,
+        Sideways,
         Any
     }
 }

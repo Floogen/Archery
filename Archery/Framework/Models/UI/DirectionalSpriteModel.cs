@@ -9,6 +9,7 @@ namespace Archery.Framework.Models.Display
         public List<WorldSpriteModel> Right { get; set; } = new List<WorldSpriteModel>();
         public List<WorldSpriteModel> Down { get; set; } = new List<WorldSpriteModel>();
         public List<WorldSpriteModel> Left { get; set; } = new List<WorldSpriteModel>();
+        public List<WorldSpriteModel> Sideways { get; set; } = new List<WorldSpriteModel>();
         public List<WorldSpriteModel> Any { get; set; } = new List<WorldSpriteModel>();
 
         public List<WorldSpriteModel> GetSpritesFromDirection(Direction direction)
@@ -28,6 +29,10 @@ namespace Archery.Framework.Models.Display
             else if (direction is Direction.Left && Left.Count > 0)
             {
                 return Left;
+            }
+            else if ((direction is Direction.Left || direction is Direction.Right) && Sideways.Count > 0)
+            {
+                return Sideways;
             }
             else if (Any.Count > 0)
             {
