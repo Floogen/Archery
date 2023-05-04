@@ -136,7 +136,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow)
                     {
-                        var ammoSprite = ammoModel.GetSpriteFromDirection(who.FacingDirection);
+                        var ammoSprite = ammoModel.GetSpriteFromDirection(who);
                         if (ammoSprite is not null)
                         {
                             drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset, ammoSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));

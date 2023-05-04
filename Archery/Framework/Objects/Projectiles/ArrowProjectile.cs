@@ -17,12 +17,12 @@ namespace Archery.Framework.Objects.Projectiles
         private const int VANILLA_STONE_SPRITE_ID = 390;
 
         private AmmoModel _ammoModel;
-        private int _startingDirection;
+        private Farmer _owner;
 
-        public ArrowProjectile(AmmoModel model, int startingDirection, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, firer, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(AmmoModel model, Farmer owner, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _ammoModel = model;
-            _startingDirection = startingDirection;
+            _owner = owner;
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -206,7 +206,7 @@ namespace Archery.Framework.Objects.Projectiles
             float alpha = 1f;
 
             // Draw the arrow
-            var ammoSprite = _ammoModel.GetSpriteFromDirection(_startingDirection);
+            var ammoSprite = _ammoModel.GetSpriteFromDirection(_owner);
             if (ammoSprite is null)
             {
                 return;
