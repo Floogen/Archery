@@ -1,6 +1,10 @@
 ﻿using Archery.Framework.Models.Display;
+using Archery.Framework.Models.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models
 {
@@ -16,6 +20,22 @@ namespace Archery.Framework.Models
         internal Texture2D Texture { get; set; }
         internal string TexturePath { get; set; }
 
+
+        internal WorldSpriteModel GetSpriteFromDirection(Farmer who)
+        {
+            if (who is null || DirectionalSprites is null)
+            {
+                return null;
+            }
+
+            var spritesInGivenDirection = DirectionalSprites.GetSpritesFromDirection((Direction)who.FacingDirection);
+            if (spritesInGivenDirection.Count == 0)
+            {
+                spritesInGivenDirection = DirectionalSprites.GetSpritesFromDirection(Direction.Any);
+            }
+
+            return GetValidOrDefaultSprite(who, spritesInGivenDirection);
+        }
         internal virtual void SetId(IContentPack contentPack)
         {
 
