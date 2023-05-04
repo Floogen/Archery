@@ -59,6 +59,12 @@ namespace Archery.Framework.Models.Generic
                 case Comparison.LessThan:
                     passed = numericalValue < comparisonValue;
                     break;
+                case Comparison.GreaterThanOrEqualTo:
+                    passed = numericalValue >= comparisonValue;
+                    break;
+                case Comparison.LessThanOrEqualTo:
+                    passed = numericalValue <= comparisonValue;
+                    break;
             }
             if (Inverse)
             {
@@ -82,6 +88,12 @@ namespace Archery.Framework.Models.Generic
                     break;
                 case Comparison.LessThan:
                     passed = numericalValue < comparisonValue;
+                    break;
+                case Comparison.GreaterThanOrEqualTo:
+                    passed = numericalValue >= comparisonValue;
+                    break;
+                case Comparison.LessThanOrEqualTo:
+                    passed = numericalValue <= comparisonValue;
                     break;
             }
             if (Inverse)
