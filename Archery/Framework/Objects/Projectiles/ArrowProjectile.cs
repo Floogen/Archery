@@ -1,5 +1,6 @@
 ﻿using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
+using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -140,6 +141,10 @@ namespace Archery.Framework.Objects.Projectiles
 
             // Note: behaviorOnCollisionWithOther handles collisions with walls / barriers, will want to override
             base.behaviorOnCollisionWithOther(location);
+
+            // Play ammo impact sound
+            Toolkit.PlaySound(_ammoModel.ImpactSound, _ammoModel.Id, base.position.Value);
+
             return true;
         }
 

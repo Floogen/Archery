@@ -2,6 +2,7 @@
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
+using Archery.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +27,7 @@ namespace Archery.Framework.Patches.Objects
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(BeginUsingPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
 
@@ -96,6 +98,9 @@ namespace Archery.Framework.Patches.Objects
                     arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, __instance);
 
                     location.projectiles.Add(arrow);
+
+                    // Play firing sound
+                    Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
                 }
             }
             else
@@ -105,6 +110,16 @@ namespace Archery.Framework.Patches.Objects
             ___canPlaySound = true;
 
             return false;
+        }
+
+        private static void BeginUsingPostfix(Slingshot __instance, GameLocation location, int x, int y, Farmer who)
+        {
+            var weaponModel = Bow.GetModel<WeaponModel>(__instance);
+            if (weaponModel is not null)
+            {
+                // Play charging sound
+                Toolkit.PlaySound(weaponModel.ChargingSound, weaponModel.Id, who.getStandingPosition());
+            }
         }
 
         private static void CanThisBeAttachedPostfix(Slingshot __instance, ref bool __result, Object o)

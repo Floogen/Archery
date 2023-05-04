@@ -198,6 +198,27 @@ namespace Archery
                     model.TexturePath = contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name;
                     model.Texture = contentPack.ModContent.Load<Texture2D>(model.TexturePath);
 
+                    // Verify that any sound names given are valid
+                    switch (model)
+                    {
+                        case WeaponModel weaponModel:
+                            if (weaponModel.ChargingSound is not null && weaponModel.ChargingSound.IsValid() is false)
+                            {
+                                Monitor.LogOnce($"The ChargingSound.Name {weaponModel.ChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                            }
+                            if (weaponModel.FiringSound is not null && weaponModel.FiringSound.IsValid() is false)
+                            {
+                                Monitor.LogOnce($"The FiringSound.Name {weaponModel.FiringSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                            }
+                            break;
+                        case AmmoModel ammoModel:
+                            if (ammoModel.ImpactSound is not null && ammoModel.ImpactSound.IsValid() is false)
+                            {
+                                Monitor.LogOnce($"The ImpactSound.Name {ammoModel.ImpactSound} does not exist for the ammo {model.Id}", LogLevel.Warn);
+                            }
+                            break;
+                    }
+
                     // Track the model
                     modelManager.AddModel(model);
 

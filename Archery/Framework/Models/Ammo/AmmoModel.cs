@@ -1,6 +1,7 @@
 ﻿using Archery.Framework.Models.Ammo;
 using Archery.Framework.Models.Display;
 using Archery.Framework.Models.Enums;
+using Archery.Framework.Models.Generic;
 using StardewModdingAPI;
 using System;
 
@@ -14,6 +15,8 @@ namespace Archery.Framework.Models.Weapons
 
         public int BaseDamage { get; set; }
         public float BreakChance { get; set; } = 1.0f;
+
+        public Sound ImpactSound { get; set; }
 
         internal bool CanBreak()
         {

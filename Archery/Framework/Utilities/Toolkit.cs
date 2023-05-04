@@ -1,9 +1,11 @@
-﻿using Archery.Framework.Models.Weapons;
+﻿using Archery.Framework.Models.Generic;
+using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +21,51 @@ namespace Archery.Framework.Utilities
         {
             layerDepth += 0.00001f;
             return layerDepth;
+        }
+
+        internal static void PlaySound(Sound sound, string sourceId, Vector2 sourcePosition)
+        {
+            if (sound is null || sound.IsValid() is false || Game1.soundBank is null)
+            {
+                return;
+            }
+
+            int actualPitch = 1200;
+            if (sound.Pitch != -1)
+            {
+                actualPitch = sound.Pitch + sound.PitchRandomness.Get(Game1.random);
+            }
+
+            try
+            {
+                ICue cue = Game1.soundBank.GetCue(sound.Name);
+                cue.SetVariable("Pitch", actualPitch);
+
+                var actualVolume = sound.Volume;
+                if (sound.MaxDistance > 0)
+                {
+                    float distance = Vector2.Distance(sourcePosition, Game1.player.getStandingPosition());
+                    actualVolume = Math.Min(1f, 1f - distance / sound.MaxDistance) * sound.Volume * Math.Min(Game1.ambientPlayerVolume, Game1.options.ambientVolumeLevel);
+                }
+                cue.Volume = actualVolume;
+
+                cue.Play();
+                try
+                {
+                    if (!cue.IsPitchBeingControlledByRPC)
+                    {
+                        cue.Pitch = Utility.Lerp(-1f, 1f, actualPitch / 2400f);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Archery.monitor.LogOnce($"Failed to play ({sound.Name}) given for {sourceId}: {ex}", StardewModdingAPI.LogLevel.Warn);
+                }
+            }
+            catch (Exception ex2)
+            {
+                Archery.monitor.LogOnce($"Failed to play ({sound.Name}) given for {sourceId}: {ex2}", StardewModdingAPI.LogLevel.Warn);
+            }
         }
 
         internal static void GiveBow(string command, string[] args)
