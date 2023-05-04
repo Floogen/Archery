@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Archery.Framework.Models.Display
 {
@@ -9,5 +10,23 @@ namespace Archery.Framework.Models.Display
 
         public bool FlipHorizontally { get; set; }
         public bool FlipVertically { get; set; }
+
+        public SpriteEffects GetSpriteEffects()
+        {
+            if (FlipHorizontally && FlipVertically)
+            {
+                return SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
+            }
+            else if (FlipHorizontally)
+            {
+                return SpriteEffects.FlipHorizontally;
+            }
+            else if (FlipVertically)
+            {
+                return SpriteEffects.FlipVertically;
+            }
+
+            return SpriteEffects.None;
+        }
     }
 }
