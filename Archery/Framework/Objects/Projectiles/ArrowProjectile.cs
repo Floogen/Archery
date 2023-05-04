@@ -206,7 +206,7 @@ namespace Archery.Framework.Objects.Projectiles
             float alpha = 1f;
 
             // Draw the arrow
-            var ammoSprite = _ammoModel.GetSpriteFromDirection(_owner);
+            var ammoSprite = _ammoModel.ProjectileSprite;
             if (ammoSprite is null)
             {
                 return;
