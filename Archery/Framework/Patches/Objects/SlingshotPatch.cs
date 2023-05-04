@@ -4,6 +4,7 @@ using Archery.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
@@ -25,6 +26,7 @@ namespace Archery.Framework.Patches.Objects
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.tickUpdate), new[] { typeof(GameTime), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(TickUpdatePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(BeginUsingPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
@@ -49,6 +51,18 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
+        private static bool TickUpdatePrefix(Slingshot __instance, ref bool ___canPlaySound, ref Farmer ___lastUser, NetEvent0 ___finishEvent, GameTime time, Farmer who)
+        {
+            if (Bow.IsValid(__instance))
+            {
+                Bow.TickUpdate(__instance, ref ___canPlaySound, ref ___lastUser, ___finishEvent, time, who);
+
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool PerformFirePrefix(Slingshot __instance, ref bool ___canPlaySound, GameLocation location, Farmer who)
         {
             if (Bow.IsValid(__instance))
@@ -67,7 +81,7 @@ namespace Archery.Framework.Patches.Objects
             if (weaponModel is not null)
             {
                 // Play charging sound
-                Toolkit.PlaySound(weaponModel.ChargingSound, weaponModel.Id, who.getStandingPosition());
+                Toolkit.PlaySound(weaponModel.StartChargingSound, weaponModel.Id, who.getStandingPosition());
             }
         }
 

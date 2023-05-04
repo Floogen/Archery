@@ -5,6 +5,7 @@ using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewValley;
 using StardewValley.Tools;
 using System;
@@ -72,6 +73,112 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return 0;
+        }
+
+        internal static void TickUpdate(Slingshot slingshot, ref bool canPlaySound, ref Farmer lastUser, NetEvent0 finishEvent, GameTime time, Farmer who)
+        {
+            var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
+            if (weaponModel is null)
+            {
+                return;
+            }
+
+            lastUser = who;
+            finishEvent.Poll();
+            if (!who.usingSlingshot)
+            {
+                return;
+            }
+
+            if (who.IsLocalPlayer)
+            {
+                SlingshotPatch.UpdateAimPosReversePatch(slingshot);
+                int mouseX = slingshot.aimPos.X;
+                int mouseY = slingshot.aimPos.Y;
+
+                Game1.debugOutput = "playerPos: " + who.getStandingPosition().ToString() + ", mousePos: " + mouseX + ", " + mouseY;
+                slingshot.mouseDragAmount++;
+                if (!Game1.options.useLegacySlingshotFiring)
+                {
+                    Vector2 shoot_origin = slingshot.GetShootOrigin(who);
+                    Vector2 aim_offset = slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)) - shoot_origin;
+                    if (Math.Abs(aim_offset.X) > Math.Abs(aim_offset.Y))
+                    {
+                        if (aim_offset.X < 0f)
+                        {
+                            who.faceDirection(3);
+                        }
+
+                        if (aim_offset.X > 0f)
+                        {
+                            who.faceDirection(1);
+                        }
+                    }
+                    else
+                    {
+                        if (aim_offset.Y < 0f)
+                        {
+                            who.faceDirection(0);
+                        }
+
+                        if (aim_offset.Y > 0f)
+                        {
+                            who.faceDirection(2);
+                        }
+                    }
+                }
+                else
+                {
+                    who.faceGeneralDirection(new Vector2(mouseX, mouseY), 0, opposite: true);
+                }
+
+                if (!Game1.options.useLegacySlingshotFiring)
+                {
+                    if (canPlaySound && slingshot.GetSlingshotChargeTime() >= 1f)
+                    {
+                        Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
+                        canPlaySound = false;
+                    }
+                }
+                else if (canPlaySound && (Math.Abs(mouseX - slingshot.lastClickX) > 8 || Math.Abs(mouseY - slingshot.lastClickY) > 8) && slingshot.mouseDragAmount > 4)
+                {
+                    who.currentLocation.playSound("slingshot");
+                    canPlaySound = false;
+                }
+
+                if (!slingshot.CanAutoFire())
+                {
+                    slingshot.lastClickX = mouseX;
+                    slingshot.lastClickY = mouseY;
+                }
+
+                if (Game1.options.useLegacySlingshotFiring)
+                {
+                    Game1.mouseCursor = -1;
+                }
+
+                if (slingshot.CanAutoFire())
+                {
+                    bool first_fire = false;
+                    if (slingshot.GetBackArmDistance(who) >= 20 && slingshot.nextAutoFire < 0f)
+                    {
+                        slingshot.nextAutoFire = 0f;
+                        first_fire = true;
+                    }
+                    if (slingshot.nextAutoFire > 0f || first_fire)
+                    {
+                        slingshot.nextAutoFire -= (float)time.ElapsedGameTime.TotalSeconds;
+                        if (slingshot.nextAutoFire <= 0f)
+                        {
+                            slingshot.PerformFire(who.currentLocation, who);
+                            slingshot.nextAutoFire = slingshot.GetAutoFireRate();
+                        }
+                    }
+                }
+            }
+
+            int offset = ((who.FacingDirection == 3 || who.FacingDirection == 1) ? 1 : ((who.FacingDirection == 0) ? 2 : 0));
+            who.FarmerSprite.setCurrentFrame(42 + offset);
         }
 
         internal static void PerformFire(Slingshot slingshot, ref bool canPlaySound, GameLocation location, Farmer who)

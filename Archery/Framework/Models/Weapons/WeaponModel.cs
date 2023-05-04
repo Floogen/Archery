@@ -13,7 +13,8 @@ namespace Archery.Framework.Models.Weapons
         public float ProjectileSpeed { get; set; }
         public float ChargeTimeRequiredMilliseconds { get; set; } = 1000f;
 
-        public Sound ChargingSound { get; set; }
+        public Sound StartChargingSound { get; set; }
+        public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
 
         internal bool IsValidAmmoType(AmmoType ammoType)

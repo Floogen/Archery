@@ -202,9 +202,13 @@ namespace Archery
                     switch (model)
                     {
                         case WeaponModel weaponModel:
-                            if (weaponModel.ChargingSound is not null && weaponModel.ChargingSound.IsValid() is false)
+                            if (weaponModel.StartChargingSound is not null && weaponModel.StartChargingSound.IsValid() is false)
                             {
-                                Monitor.LogOnce($"The ChargingSound.Name {weaponModel.ChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                                Monitor.LogOnce($"The StartChargingSound.Name {weaponModel.StartChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                            }
+                            if (weaponModel.FinishChargingSound is not null && weaponModel.FinishChargingSound.IsValid() is false)
+                            {
+                                Monitor.LogOnce($"The FinishChargingSound.Name {weaponModel.FinishChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
                             }
                             if (weaponModel.FiringSound is not null && weaponModel.FiringSound.IsValid() is false)
                             {
