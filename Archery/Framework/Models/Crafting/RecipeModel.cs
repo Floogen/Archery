@@ -10,8 +10,7 @@ namespace Archery.Framework.Models.Crafting
         public List<IngredientModel> Ingredients { get; set; }
         public int OutputAmount { get; set; }
         public RandomRange ExtraOutputRange { get; set; }
-
-        public List<RequirementModel> Requirements { get; set; }
+        public string UnlockCondition { get; set; }
 
         internal bool IsValid()
         {
@@ -60,20 +59,7 @@ namespace Archery.Framework.Models.Crafting
 
         internal bool HasRequirements(Farmer who)
         {
-            if (Requirements is null)
-            {
-                return true;
-            }
-
-            foreach (var requirement in Requirements.Where(r => r.IsValid()))
-            {
-                if (requirement.DoesFarmerPass(who) is false)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return GameStateQuery.CheckConditions(UnlockCondition, target_farmer: who);
         }
     }
 }
