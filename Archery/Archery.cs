@@ -6,7 +6,6 @@ using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
-using FishingTrawler.Framework.Patches.Objects;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace FishingTrawler.Framework.Patches.Objects
+namespace Archery.Framework.Patches.Objects
 {
     internal class ObjectPatch : PatchTemplate
     {
