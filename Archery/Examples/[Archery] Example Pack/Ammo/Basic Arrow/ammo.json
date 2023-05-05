@@ -1,7 +1,7 @@
 {
   "Type": "Arrow",
   "Name": "Basic Arrow",
-  "Description": "A basic arrow made of wood.",
+  "Description": "A basic arrow made of wood with stone tips.",
 
   "Icon": {
     "Source": {
@@ -53,5 +53,19 @@
     },
     "Amount": 6
   },
-  "BaseDamage": 3
+  "BaseDamage": 3,
+
+  "Recipe": {
+    "Ingredients": [
+      {
+        "Id": 388,
+        "Amount": 5
+      },
+      {
+        "Id": 390,
+        "Amount": 2
+      }
+    ],
+    "OutputAmount": 5
+  }
 }

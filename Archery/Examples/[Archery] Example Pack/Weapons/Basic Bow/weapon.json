@@ -92,5 +92,18 @@
     "Max": 10
   },
   "ProjectileSpeed": 10.5,
-  "ChargeTimeRequiredMilliseconds": 300
+  "ChargeTimeRequiredMilliseconds": 300,
+
+  "Recipe": {
+    "Ingredients": [
+      {
+        "Id": 388,
+        "Amount": 5
+      },
+      {
+        "Id": 440,
+        "Amount": 1
+      }
+    ]
+  }
 }
