@@ -126,6 +126,9 @@ namespace Archery
                 Monitor.Log($"Loading ammo from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
                 AddContentPacks<AmmoModel>(contentPack, PackType.Ammo);
             }
+
+            // Set up the backported GameStateQuery
+            GameStateQuery.SetupQueryTypes();
         }
 
         private void AddContentPacks<T>(IContentPack contentPack, PackType type) where T : BaseModel
