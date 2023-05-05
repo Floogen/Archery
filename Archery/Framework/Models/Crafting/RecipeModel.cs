@@ -8,7 +8,7 @@ namespace Archery.Framework.Models.Crafting
 {
     public class RecipeModel
     {
-        public List<IngredientModel> Ingredients { get; set; }
+        public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
         public string UnlockCondition { get; set; }
 

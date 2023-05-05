@@ -21,10 +21,19 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(string), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(CraftingRecipePostfix)));
+            if (_helper.ModRegistry.IsLoaded("leclair.bettercrafting") is false)
+            {
+                _monitor.Log($"Applying CraftingRecipePatch...", LogLevel.Trace);
 
-            harmony.Patch(AccessTools.Method(_object, nameof(CraftingRecipe.drawMenuView), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawMenuViewPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(CraftingRecipe.createItem), null), postfix: new HarmonyMethod(GetType(), nameof(CreateItemPostfix)));
+                harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(string), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(CraftingRecipePostfix)));
+
+                harmony.Patch(AccessTools.Method(_object, nameof(CraftingRecipe.drawMenuView), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawMenuViewPrefix)));
+                harmony.Patch(AccessTools.Method(_object, nameof(CraftingRecipe.createItem), null), postfix: new HarmonyMethod(GetType(), nameof(CreateItemPostfix)));
+            }
+            else
+            {
+                _monitor.Log($"Skipped applying CraftingRecipePatch, due to Better Crafting being loaded!", LogLevel.Trace);
+            }
         }
 
         private static void CraftingRecipePostfix(CraftingRecipe __instance, ref string ___DisplayName, ref string ___description, string name, bool isCookingRecipe)

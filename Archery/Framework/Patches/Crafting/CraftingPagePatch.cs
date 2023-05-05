@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -20,12 +21,21 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, "layoutRecipes", new[] { typeof(List<string>) }), postfix: new HarmonyMethod(GetType(), nameof(LayoutRecipesPostfix)));
+            if (_helper.ModRegistry.IsLoaded("leclair.bettercrafting") is false)
+            {
+                _monitor.Log($"Applying CraftingPagePatch...", LogLevel.Trace);
 
-            harmony.CreateReversePatcher(AccessTools.Method(_object, "spaceOccupied", null), new HarmonyMethod(GetType(), nameof(SpaceOccupiedReversePatch))).Patch();
-            harmony.CreateReversePatcher(AccessTools.Method(_object, "craftingPageY", null), new HarmonyMethod(GetType(), nameof(CraftingPageYReversePatch))).Patch();
-            harmony.CreateReversePatcher(AccessTools.Method(_object, "createNewPageLayout", null), new HarmonyMethod(GetType(), nameof(CreateNewPageLayoutReversePatch))).Patch();
-            harmony.CreateReversePatcher(AccessTools.Method(_object, "createNewPage", null), new HarmonyMethod(GetType(), nameof(CreateNewPageReversePatch))).Patch();
+                harmony.Patch(AccessTools.Method(_object, "layoutRecipes", new[] { typeof(List<string>) }), postfix: new HarmonyMethod(GetType(), nameof(LayoutRecipesPostfix)));
+
+                harmony.CreateReversePatcher(AccessTools.Method(_object, "spaceOccupied", null), new HarmonyMethod(GetType(), nameof(SpaceOccupiedReversePatch))).Patch();
+                harmony.CreateReversePatcher(AccessTools.Method(_object, "craftingPageY", null), new HarmonyMethod(GetType(), nameof(CraftingPageYReversePatch))).Patch();
+                harmony.CreateReversePatcher(AccessTools.Method(_object, "createNewPageLayout", null), new HarmonyMethod(GetType(), nameof(CreateNewPageLayoutReversePatch))).Patch();
+                harmony.CreateReversePatcher(AccessTools.Method(_object, "createNewPage", null), new HarmonyMethod(GetType(), nameof(CreateNewPageReversePatch))).Patch();
+            }
+            else
+            {
+                _monitor.Log($"Skipped applying CraftingPagePatch, due to Better Crafting being loaded!", LogLevel.Trace);
+            }
         }
 
         private static void LayoutRecipesPostfix(CraftingPage __instance, List<string> playerRecipes)

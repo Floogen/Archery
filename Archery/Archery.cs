@@ -1,6 +1,7 @@
 ﻿using Archery.Framework.Interfaces;
 using Archery.Framework.Managers;
 using Archery.Framework.Models;
+using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
@@ -14,6 +15,7 @@ using StardewValley;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Archery
 {
@@ -77,6 +79,8 @@ namespace Archery
                 e.Edit(asset =>
                 {
                     var data = asset.AsDictionary<string, string>().Data;
+
+                    // Add the valid recipes
                     foreach (var model in modelManager.GetAllModels().Where(m => m.Recipe is not null && m.Recipe.IsValid()))
                     {
                         data[model.Id] = model.Recipe.GetData();
@@ -94,9 +98,15 @@ namespace Archery
 
                 apiManager.GetFashionSenseApi().RegisterAppearanceDrawOverride(IFashionSenseApi.Type.Sleeves, ModManifest, Bow.Draw);
             }
+
             if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets") && apiManager.HookIntoDynamicGameAssets(Helper))
             {
                 // Do nothing
+            }
+
+            if (Helper.ModRegistry.IsLoaded("leclair.bettercrafting") && apiManager.HookIntoBetterCrafting(Helper))
+            {
+                apiManager.SyncRecipesWithBetterCrafting();
             }
 
             // Load any owned content packs
@@ -137,6 +147,12 @@ namespace Archery
 
             // Invalidate Data/CraftingRecipes
             Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
+
+            // Add recipes to custom category via Better Crafting
+            if (apiManager.GetBetterCraftingApi() is not null)
+            {
+                apiManager.AddRecipesToCategoryWithBetterCrafting();
+            }
         }
 
         private void AddContentPacks<T>(IContentPack contentPack, PackType type) where T : BaseModel
