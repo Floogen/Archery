@@ -63,6 +63,22 @@ namespace Archery
 
             // Hook into the game events
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Content.AssetRequested += OnAssetRequested;
+        }
+
+        private void OnAssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, string>().Data;
+                    foreach (var model in modelManager.GetAllModels().Where(m => m.Recipe is not null && m.Recipe.IsValid()))
+                    {
+                        data[model.Id] = model.Recipe.GetData();
+                    }
+                });
+            }
         }
 
         private void OnGameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
