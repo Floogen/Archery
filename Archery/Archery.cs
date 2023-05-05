@@ -129,6 +129,9 @@ namespace Archery
 
             // Set up the backported GameStateQuery
             GameStateQuery.SetupQueryTypes();
+
+            // Invalidate Data/CraftingRecipes
+            Helper.GameContent.InvalidateCache("Data/CraftingRecipes");
         }
 
         private void AddContentPacks<T>(IContentPack contentPack, PackType type) where T : BaseModel
