@@ -51,7 +51,7 @@ namespace Archery.Framework.Patches.Objects
         private static bool DrawMenuViewPrefix(CraftingRecipe __instance, string ___name, SpriteBatch b, int x, int y, float layerDepth = 0.88f, bool shadow = true)
         {
             var baseModel = Archery.modelManager.GetSpecificModel<BaseModel>(___name);
-            if (baseModel is null || baseModel.Recipe is null || baseModel.Recipe.IsValid() is false)
+            if (baseModel is null)
             {
                 return true;
             }

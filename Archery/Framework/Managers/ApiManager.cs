@@ -97,19 +97,10 @@ namespace Archery.Framework.Managers
             }
 
             // Create the Archery category
-            betterCraftingApi.CreateDefaultCategory(false, "PeacefulEnd.Archery", () => "Archery", Archery.modelManager.GetModelsWithValidRecipes().Select(m => m.Id), archeryIcon);
-        }
-
-        public void AddRecipesToCategoryWithBetterCrafting()
-        {
-            // Get the recipe IDs
-            var recipeIds = Archery.modelManager.GetModelsWithValidRecipes().Select(m => m.Id);
+            betterCraftingApi.CreateDefaultCategory(false, "PeacefulEnd.Archery", () => "Archery", iconRecipe: archeryIcon);
 
             // Add to the Archery category
-            betterCraftingApi.AddRecipesToDefaultCategory(false, "PeacefulEnd.Archery", recipeIds);
-
-            // Invalidate the cache
-            betterCraftingApi.InvalidateRecipeCache();
+            betterCraftingApi.AddRecipesToDefaultCategory(false, "PeacefulEnd.Archery", validModelIds);
         }
     }
 }

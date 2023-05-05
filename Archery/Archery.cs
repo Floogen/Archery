@@ -106,7 +106,7 @@ namespace Archery
 
             if (Helper.ModRegistry.IsLoaded("leclair.bettercrafting") && apiManager.HookIntoBetterCrafting(Helper))
             {
-                apiManager.SyncRecipesWithBetterCrafting();
+                // Do nothing
             }
 
             // Load any owned content packs
@@ -151,7 +151,7 @@ namespace Archery
             // Add recipes to custom category via Better Crafting
             if (apiManager.GetBetterCraftingApi() is not null)
             {
-                apiManager.AddRecipesToCategoryWithBetterCrafting();
+                apiManager.SyncRecipesWithBetterCrafting();
             }
         }
 

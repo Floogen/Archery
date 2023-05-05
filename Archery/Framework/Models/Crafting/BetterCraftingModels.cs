@@ -34,9 +34,9 @@ namespace Archery.Framework.Models.Crafting
 
         public Rectangle SourceRectangle => _baseModel.Icon.Source;
 
-        public int GridHeight => _baseModel.Icon.Source.Height;
+        public int GridHeight => 1;
 
-        public int GridWidth => _baseModel.Icon.Source.Width;
+        public int GridWidth => 1;
 
         public int QuantityPerCraft => _baseModel.Recipe.OutputAmount;
 
@@ -103,7 +103,6 @@ namespace Archery.Framework.Models.Crafting
             {
                 return null;
             }
-
 
             List<IIngredient> ingredients = new List<IIngredient>();
             foreach (var ingredient in baseModel.Recipe.Ingredients)
