@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Models.Generic;
-using Archery.Framework.Utilities.Backport;
+﻿using Archery.Framework.Utilities.Backport;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,7 @@ namespace Archery.Framework.Models.Crafting
     public class RecipeModel
     {
         public List<IngredientModel> Ingredients { get; set; }
-        public int OutputAmount { get; set; }
-        public RandomRange ExtraOutputRange { get; set; }
+        public int OutputAmount { get; set; } = 1;
         public string UnlockCondition { get; set; }
 
         internal bool IsValid()
@@ -24,11 +22,8 @@ namespace Archery.Framework.Models.Crafting
             return true;
         }
 
-        internal int GetOutputStack()
-        {
-            return OutputAmount + (ExtraOutputRange is null ? 0 : ExtraOutputRange.Get(Game1.random));
-        }
-
+        // TODO: Instead of working around vanilla logic, just patch CraftingRecipe constructor to create instance via RecipeModel
+        // ^ Would also need to patch CraftingPage.layoutRecipes to include our custom recipes that are unlocked
         internal string GetData()
         {
             // Append the ingredients
@@ -37,8 +32,8 @@ namespace Archery.Framework.Models.Crafting
             // Append the unused field
             data += "/Home";
 
-            // Append the default output item and yield (CraftingRecipePatch.CreateItemPrefix will return the correct stack value)
-            data += $"/590 1";
+            // Append the default output item with yield (CraftingRecipePatch.CreateItemPrefix will return the correct stack value)
+            data += $"/590 {OutputAmount}";
 
             // Append the BigCraftable flag
             data += $"/false";

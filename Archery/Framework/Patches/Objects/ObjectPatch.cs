@@ -1,6 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
-using Archery.Framework.Patches;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

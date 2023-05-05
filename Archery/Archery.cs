@@ -6,6 +6,7 @@ using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
+using Archery.Framework.Utilities.Backport;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -42,6 +43,10 @@ namespace Archery
             try
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
+
+                // Apply Crafting patches
+                new CraftingRecipePatch(monitor, modHelper).Apply(harmony);
+                new CraftingPagePatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Object patches
                 new ObjectPatch(monitor, modHelper).Apply(harmony);

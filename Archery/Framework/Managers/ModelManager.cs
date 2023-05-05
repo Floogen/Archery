@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models;
+using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using StardewModdingAPI;
@@ -46,6 +47,16 @@ namespace Archery.Framework.Managers
         internal T GetSpecificModel<T>(string modelId) where T : BaseModel
         {
             return (T)_contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T);
+        }
+
+        internal List<BaseModel> GetModelsWithValidRecipes()
+        {
+            return GetAllModels().Where(m => m.Recipe is not null && m.Recipe.IsValid()).ToList();
+        }
+
+        internal List<RecipeModel> GetValidRecipes()
+        {
+            return GetModelsWithValidRecipes().Select(m => m.Recipe).ToList();
         }
 
         internal WeaponModel GetRandomWeaponModel(WeaponType type)
