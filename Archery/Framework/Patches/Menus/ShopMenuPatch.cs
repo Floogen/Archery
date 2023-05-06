@@ -108,7 +108,7 @@ namespace Archery.Framework.Patches.Objects
                 shopMenu.itemPriceAndStock.Add(item, new int[2]
                 {
                     model.Shop.Price,
-                    item.Stack
+                    model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock()
                 });
             }
 
