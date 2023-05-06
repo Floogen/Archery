@@ -49,7 +49,7 @@ namespace Archery.Framework.Patches.Objects
             {
                 spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
-                if (drawStackNumber != 0 && __instance.Stack > 0)
+                if (drawStackNumber != 0 && __instance.Stack > 0 && __instance.Stack != int.MaxValue)
                 {
                     Utility.drawTinyDigits(__instance.Stack, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(__instance.Stack, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
                 }

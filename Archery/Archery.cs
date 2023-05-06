@@ -52,6 +52,9 @@ namespace Archery
                 new ObjectPatch(monitor, modHelper).Apply(harmony);
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);
+
+                // Apply Menu patches
+                new ShopMenuPatch(monitor, modHelper).Apply(harmony);
             }
             catch (Exception e)
             {
