@@ -37,7 +37,7 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static bool CanThisBeAttached(Tool tool, Object item)
         {
-            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo() is false)
             {
                 if (item is null || (Arrow.GetModel<AmmoModel>(item) is AmmoModel ammoModel && weaponModel.IsValidAmmoType(ammoModel.Type)))
                 {
