@@ -6,12 +6,11 @@ using System.Linq;
 
 namespace Archery.Framework.Models.Crafting
 {
-    public class RecipeModel
+    public class RecipeModel : QueryableModel
     {
         internal string ParentId { get; set; }
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
-        public string UnlockCondition { get; set; }
 
         internal bool IsValid()
         {
@@ -74,11 +73,6 @@ namespace Archery.Framework.Models.Crafting
             }
 
             return true;
-        }
-
-        internal bool HasRequirements(Farmer who)
-        {
-            return GameStateQuery.CheckConditions(UnlockCondition, target_farmer: who);
         }
     }
 }
