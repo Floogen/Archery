@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
 using HarmonyLib;
@@ -38,12 +39,25 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel is not null)
             {
+                bool isRecipe = InstancedObject.IsRecipe(__instance);
+
+                if (isRecipe)
+                {
+                    transparency = 0.5f;
+                    scaleSize *= 0.75f;
+                }
+
                 spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
                 {
                     Utility.drawTinyDigits(ammoCount, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(ammoCount, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
+                }
+
+                if (isRecipe)
+                {
+                    spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(16f, 16f), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 451, 16, 16), color, 0f, Vector2.Zero, 3f, SpriteEffects.None, layerDepth + 0.0001f);
                 }
                 return false;
             }
