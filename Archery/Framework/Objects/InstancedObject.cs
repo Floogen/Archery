@@ -79,7 +79,7 @@ namespace Archery.Framework.Objects
                 var model = GetModel<BaseModel>(item);
                 if (model is not null)
                 {
-                    return model.Name;
+                    return model.Description;
                 }
             }
 
