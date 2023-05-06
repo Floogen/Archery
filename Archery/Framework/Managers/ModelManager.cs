@@ -44,6 +44,11 @@ namespace Archery.Framework.Managers
             return _contentPackModels;
         }
 
+        internal bool DoesModelExist<T>(string modelId) where T : BaseModel
+        {
+            return _contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T) is not null;
+        }
+
         internal T GetSpecificModel<T>(string modelId) where T : BaseModel
         {
             return (T)_contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T);

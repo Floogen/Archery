@@ -41,7 +41,7 @@ namespace Archery.Framework.Patches.Objects
                 spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
-                if (drawStackNumber != 0 && ammoCount > 0)
+                if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
                 {
                     Utility.drawTinyDigits(ammoCount, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(ammoCount, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
                 }

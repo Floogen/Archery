@@ -21,6 +21,12 @@ namespace Archery.Framework.Objects.Weapons
             var bow = new Slingshot();
             bow.modData[ModDataKeys.WEAPON_FLAG] = weaponModel.Id;
 
+            // Hide attachment slot from bows with internal ammo
+            if (weaponModel.UsesInternalAmmo())
+            {
+                bow.numAttachmentSlots.Value = 0;
+            }
+
             return bow;
         }
 
@@ -57,9 +63,16 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static Object GetAmmoItem(Tool tool)
         {
-            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && slingshot.attachments is not null && slingshot.attachments[0] is not null)
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
-                return slingshot.attachments[0];
+                if (tool is Slingshot slingshot && slingshot.attachments is not null && slingshot.attachments[0] is not null)
+                {
+                    return slingshot.attachments[0];
+                }
+                else if (weaponModel.UsesInternalAmmo())
+                {
+                    return Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(weaponModel.InternalAmmoId));
+                }
             }
 
             return null;
@@ -205,7 +218,7 @@ namespace Archery.Framework.Objects.Weapons
                 if (backArmDistance > 4 && !canPlaySound)
                 {
                     // Get the ammo to be used
-                    if (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance)
+                    if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
                     {
                         slingshot.attachments[0].Stack--;
                         if (slingshot.attachments[0].Stack <= 0)
@@ -256,6 +269,11 @@ namespace Archery.Framework.Objects.Weapons
 
             var bowModel = Bow.GetModel<WeaponModel>(who.CurrentTool);
             var ammoModel = Arrow.GetModel<AmmoModel>(ammoItem);
+
+            if (bowModel is null || ammoModel is null)
+            {
+                return false;
+            }
 
             bool shouldDrawArrow = ammoItem is not null && ammoItem.Stack > 0;
 

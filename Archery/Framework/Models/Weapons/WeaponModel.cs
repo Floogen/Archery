@@ -14,6 +14,8 @@ namespace Archery.Framework.Models.Weapons
         public float ChargeTimeRequiredMilliseconds { get; set; } = 1000f;
         public float ConsumeAmmoChance { get; set; } = 1f;
 
+        public string InternalAmmoId { get; set; }
+
         public Sound StartChargingSound { get; set; }
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
@@ -31,6 +33,11 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return false;
             }
+        }
+
+        internal bool UsesInternalAmmo()
+        {
+            return String.IsNullOrEmpty(InternalAmmoId) is false && Archery.modelManager.DoesModelExist<AmmoModel>(InternalAmmoId);
         }
 
         internal bool ShouldAlwaysConsumeAmmo()

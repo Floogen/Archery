@@ -1,7 +1,6 @@
 ﻿using Archery.Framework.Interfaces;
 using Archery.Framework.Managers;
 using Archery.Framework.Models;
-using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
@@ -15,7 +14,6 @@ using StardewValley;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace Archery
 {

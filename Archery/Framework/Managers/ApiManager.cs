@@ -1,12 +1,11 @@
 ﻿using Archery.Framework.Interfaces;
+using Archery.Framework.Models.Crafting;
+using Archery.Framework.Models.Weapons;
 using Leclair.Stardew.BetterCrafting;
 using StardewModdingAPI;
-using Archery.Framework.Models.Crafting;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
-using Archery.Framework.Models.Weapons;
+using System.Linq;
 
 namespace Archery.Framework.Managers
 {
