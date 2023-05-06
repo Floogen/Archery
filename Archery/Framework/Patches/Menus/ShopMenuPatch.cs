@@ -1,5 +1,6 @@
 ﻿using Archery.Framework.Models;
 using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(List<ISalable>), typeof(int), typeof(string), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ShopMenuPostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(ShopMenu.setItemPriceAndStock), new[] { typeof(Dictionary<ISalable, int[]>) }), postfix: new HarmonyMethod(GetType(), nameof(SetItemPriceAndStockPostfix)));
+            harmony.Patch(AccessTools.Method(_object, "tryToPurchaseItem", new[] { typeof(ISalable), typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(TryToPurchaseItemPostfix)));
         }
 
         private static void ShopMenuPostfix(ShopMenu __instance, ref List<ISalable> ___forSale, ref Dictionary<ISalable, int[]> ___itemPriceAndStock, List<ISalable> itemsForSale, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
@@ -42,6 +44,20 @@ namespace Archery.Framework.Patches.Objects
         private static void SetItemPriceAndStockPostfix(ShopMenu __instance, Dictionary<ISalable, int[]> new_stock)
         {
             HandleCustomStock(__instance);
+        }
+
+        private static void TryToPurchaseItemPostfix(ShopMenu __instance, ISalable item, ISalable held_item, int numberToBuy, int x, int y, int indexInForSaleList)
+        {
+            foreach (Item itemForSale in __instance.forSale)
+            {
+                if (InstancedObject.IsValid(itemForSale) && Bow.GetModel<BaseModel>(itemForSale) is BaseModel model)
+                {
+                    if (model.Shop.HasInfiniteStock() is false)
+                    {
+                        model.Shop.RemainingStock = itemForSale.Stack;
+                    }
+                }
+            }
         }
 
         private static void HandleCustomStock(ShopMenu shopMenu)
@@ -70,7 +86,7 @@ namespace Archery.Framework.Patches.Objects
                     default:
                         continue;
                 }
-                item.Stack = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.Stock;
+                item.Stack = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock();
 
                 shopMenu.forSale.Add(item);
                 shopMenu.itemPriceAndStock.Add(item, new int[2]

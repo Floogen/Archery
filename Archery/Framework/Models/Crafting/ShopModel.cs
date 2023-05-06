@@ -9,7 +9,13 @@ namespace Archery.Framework.Models.Crafting
         public string Context { get; set; }
 
         public int Stock { get; set; } = 1;
+        internal int? RemainingStock { get; set; }
         public int Price { get; set; }
+
+        internal int GetActualStock()
+        {
+            return RemainingStock is null ? Stock : RemainingStock.Value;
+        }
 
         internal bool HasInfiniteStock()
         {
@@ -23,9 +29,12 @@ namespace Archery.Framework.Models.Crafting
                 return false;
             }
 
-            if (Stock < 0 && HasInfiniteStock() is false)
+            if (HasInfiniteStock() is false)
             {
-                return false;
+                if (Stock <= 0 || (RemainingStock is not null && RemainingStock <= 0))
+                {
+                    return false;
+                }
             }
 
             return true;
