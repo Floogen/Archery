@@ -95,6 +95,7 @@
   "ChargeTimeRequiredMilliseconds": 300,
 
   "Recipe": {
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bow/Basic Bow",
     "Ingredients": [
       {
         "Id": 388,
@@ -104,6 +105,21 @@
         "Id": 440,
         "Amount": 1
       }
-    ]
+    ],
+
+    "Shop": {
+      "Owner": "Marlon",
+      "Stock": 1,
+      "Price": 500,
+
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bow/Basic Bow"
+    }
+  },
+
+  // Sell an infinite number at Marlon's shop
+  "Shop": {
+    "Owner": "Marlon",
+    "Stock": -1,
+    "Price": 100
   }
 }
