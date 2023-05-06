@@ -1,4 +1,4 @@
-﻿using Archery.Framework.Utilities.Backport;
+﻿using Archery.Framework.Models.Generic;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,8 @@ namespace Archery.Framework.Models.Crafting
         internal string ParentId { get; set; }
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
+
+        public ShopModel Shop { get; set; }
 
         internal bool IsValid()
         {

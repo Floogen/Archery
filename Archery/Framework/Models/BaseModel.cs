@@ -18,6 +18,7 @@ namespace Archery.Framework.Models
         public DirectionalSpriteModel DirectionalSprites { get; set; }
 
         public RecipeModel Recipe { get; set; }
+        public ShopModel Shop { get; set; }
 
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }
