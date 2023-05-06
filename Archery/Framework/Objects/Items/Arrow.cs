@@ -15,5 +15,13 @@ namespace Archery.Framework.Objects.Items
 
             return arrow;
         }
+
+        public static Object CreateRecipe(AmmoModel ammoModel)
+        {
+            var recipe = CreateInstance(ammoModel);
+            recipe.modData[ModDataKeys.RECIPE_FLAG] = true.ToString();
+
+            return recipe;
+        }
     }
 }
