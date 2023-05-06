@@ -8,6 +8,7 @@ namespace Archery.Framework.Models.Crafting
 {
     public class RecipeModel
     {
+        internal string ParentId { get; set; }
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
         public string UnlockCondition { get; set; }
@@ -22,8 +23,6 @@ namespace Archery.Framework.Models.Crafting
             return true;
         }
 
-        // TODO: Instead of working around vanilla logic, just patch CraftingRecipe constructor to create instance via RecipeModel
-        // ^ Would also need to patch CraftingPage.layoutRecipes to include our custom recipes that are unlocked
         internal string GetData()
         {
             // Append the ingredients

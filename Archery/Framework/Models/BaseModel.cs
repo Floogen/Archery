@@ -65,7 +65,10 @@ namespace Archery.Framework.Models
 
         internal virtual void SetId(IContentPack contentPack)
         {
-
+            if (Recipe is not null)
+            {
+                Recipe.ParentId = Id;
+            }
         }
     }
 }
