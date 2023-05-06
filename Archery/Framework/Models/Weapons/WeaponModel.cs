@@ -12,6 +12,7 @@ namespace Archery.Framework.Models.Weapons
         public RandomRange DamageRange { get; set; }
         public float ProjectileSpeed { get; set; }
         public float ChargeTimeRequiredMilliseconds { get; set; } = 1000f;
+        public float ConsumeAmmoChance { get; set; } = 1f;
 
         public Sound StartChargingSound { get; set; }
         public Sound FinishChargingSound { get; set; }
@@ -30,6 +31,11 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return false;
             }
+        }
+
+        internal bool ShouldAlwaysConsumeAmmo()
+        {
+            return ConsumeAmmoChance >= 1f;
         }
 
         internal override void SetId(IContentPack contentPack)

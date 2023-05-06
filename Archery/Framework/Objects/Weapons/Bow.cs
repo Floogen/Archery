@@ -205,10 +205,13 @@ namespace Archery.Framework.Objects.Weapons
                 if (backArmDistance > 4 && !canPlaySound)
                 {
                     // Get the ammo to be used
-                    slingshot.attachments[0].Stack--;
-                    if (slingshot.attachments[0].Stack <= 0)
+                    if (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance)
                     {
-                        slingshot.attachments[0] = null;
+                        slingshot.attachments[0].Stack--;
+                        if (slingshot.attachments[0].Stack <= 0)
+                        {
+                            slingshot.attachments[0] = null;
+                        }
                     }
 
                     if (!Game1.options.useLegacySlingshotFiring)
