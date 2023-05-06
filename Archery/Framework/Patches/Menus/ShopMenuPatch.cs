@@ -46,7 +46,7 @@ namespace Archery.Framework.Patches.Objects
             HandleCustomStock(__instance);
         }
 
-        private static void TryToPurchaseItemPostfix(ShopMenu __instance, ISalable item, ISalable held_item, int numberToBuy, int x, int y, int indexInForSaleList)
+        private static void TryToPurchaseItemPostfix(ShopMenu __instance, ISalable item, ref ISalable held_item, int numberToBuy, int x, int y, int indexInForSaleList)
         {
             foreach (Item itemForSale in __instance.forSale)
             {
@@ -55,6 +55,22 @@ namespace Archery.Framework.Patches.Objects
                     if (model.Shop.HasInfiniteStock() is false)
                     {
                         model.Shop.RemainingStock = itemForSale.Stack;
+                    }
+
+                    if (InstancedObject.IsRecipe(itemForSale))
+                    {
+                        try
+                        {
+                            Game1.player.craftingRecipes.Add(model.Id, 0);
+                            Game1.playSound("newRecipe");
+                        }
+                        catch (Exception)
+                        {
+                            _monitor.Log($"Failed to learn custom recipe {model.Id} in shop {_shopOwner} at {__instance.storeContext}!");
+                        }
+
+                        held_item = null;
+                        __instance.heldItem = null;
                     }
                 }
             }
@@ -117,10 +133,10 @@ namespace Archery.Framework.Patches.Objects
                 switch (Archery.modelManager.GetSpecificModel<BaseModel>(recipe.ParentId))
                 {
                     case WeaponModel weaponModel:
-                        item = Bow.CreateInstance(weaponModel);
+                        item = Bow.CreateRecipe(weaponModel);
                         break;
                     case AmmoModel ammoModel:
-                        item = Arrow.CreateInstance(ammoModel);
+                        item = Arrow.CreateRecipe(ammoModel);
                         break;
                     default:
                         continue;

@@ -34,6 +34,16 @@ namespace Archery.Framework.Objects
             return false;
         }
 
+        public static bool IsRecipe(Item item)
+        {
+            if (item is not null && item.modData.ContainsKey(ModDataKeys.RECIPE_FLAG))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static string GetInternalId(Item item)
         {
             if (IsValid(item) is false || item.modData.TryGetValue(GetKey(item), out var id) is false)
