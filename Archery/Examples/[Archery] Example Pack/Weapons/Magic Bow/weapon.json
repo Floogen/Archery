@@ -1,0 +1,110 @@
+{
+  "Type": "Bow",
+  "Name": "Magic Bow",
+  "Description": "A magic bow that requires no arrows to fire.",
+
+  "Icon": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    },
+    "Scale": 3.0
+  },
+  "DirectionalSprites": {
+    "Up": [
+      {
+        "Source": {
+          "X": 64,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        }
+      }
+    ],
+    "Down": [
+      {
+        "Source": {
+          "X": 0,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        }
+      }
+    ],
+    "Sideways": [
+      {
+        "Source": {
+          "X": 16,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.5
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 32,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.8
+          },
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.5
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 48,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.8
+          }
+        ]
+      }
+    ]
+  },
+
+  "DamageRange": {
+    "Min": 5,
+    "Max": 10
+  },
+  "ProjectileSpeed": 10.5,
+  "ChargeTimeRequiredMilliseconds": 300,
+  "InternalAmmoId": "ExampleAuthor.ExampleArcheryPack/Arrow/Basic Arrow",
+
+  "Recipe": {
+    "Ingredients": [
+      {
+        "Id": 388,
+        "Amount": 5
+      },
+      {
+        "Id": 440,
+        "Amount": 1
+      }
+    ]
+  }
+}

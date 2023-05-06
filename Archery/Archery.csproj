@@ -27,6 +27,9 @@
 		<None Update="Examples\[Archery] Example Pack\Ammo\Basic Arrow\ammo.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Examples\[Archery] Example Pack\Weapons\Magic Bow\weapon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Framework\Assets\BowArms.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
