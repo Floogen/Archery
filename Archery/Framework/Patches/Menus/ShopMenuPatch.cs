@@ -48,30 +48,28 @@ namespace Archery.Framework.Patches.Objects
 
         private static void TryToPurchaseItemPostfix(ShopMenu __instance, ISalable item, ref ISalable held_item, int numberToBuy, int x, int y, int indexInForSaleList)
         {
-            foreach (Item itemForSale in __instance.forSale)
+            Item itemForSale = item as Item;
+            if (InstancedObject.IsValid(itemForSale) && Bow.GetModel<BaseModel>(itemForSale) is BaseModel model)
             {
-                if (InstancedObject.IsValid(itemForSale) && Bow.GetModel<BaseModel>(itemForSale) is BaseModel model)
+                if (model.Shop.HasInfiniteStock() is false)
                 {
-                    if (model.Shop.HasInfiniteStock() is false)
+                    model.Shop.RemainingStock = itemForSale.Stack;
+                }
+
+                if (InstancedObject.IsRecipe(itemForSale))
+                {
+                    try
                     {
-                        model.Shop.RemainingStock = itemForSale.Stack;
+                        Game1.player.craftingRecipes.Add(model.Id, 0);
+                        Game1.playSound("newRecipe");
+                    }
+                    catch (Exception)
+                    {
+                        _monitor.Log($"Failed to learn custom recipe {model.Id} in shop {_shopOwner} at {__instance.storeContext}!");
                     }
 
-                    if (InstancedObject.IsRecipe(itemForSale))
-                    {
-                        try
-                        {
-                            Game1.player.craftingRecipes.Add(model.Id, 0);
-                            Game1.playSound("newRecipe");
-                        }
-                        catch (Exception)
-                        {
-                            _monitor.Log($"Failed to learn custom recipe {model.Id} in shop {_shopOwner} at {__instance.storeContext}!");
-                        }
-
-                        held_item = null;
-                        __instance.heldItem = null;
-                    }
+                    held_item = null;
+                    __instance.heldItem = null;
                 }
             }
         }
