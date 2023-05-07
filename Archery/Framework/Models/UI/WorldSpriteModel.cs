@@ -14,8 +14,6 @@ namespace Archery.Framework.Models.Display
     public class WorldSpriteModel : ItemSpriteModel
     {
         // Only used by WeaponModel
-        public Vector2 FrontArmOffset { get; set; }
-        public Vector2 BackArmOffset { get; set; }
         public List<ArmSpriteModel> Arms { get; set; } = new List<ArmSpriteModel>();
 
         public List<Condition> Conditions { get; set; } = new List<Condition>();
