@@ -241,10 +241,11 @@ namespace Archery
                     model.TexturePath = contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name;
                     model.Texture = contentPack.ModContent.Load<Texture2D>(model.TexturePath);
 
-                    // Verify that any sound names given are valid
+                    // Handle model specific properties
                     switch (model)
                     {
                         case WeaponModel weaponModel:
+                            // Verify that any sound names given are valid
                             if (weaponModel.StartChargingSound is not null && weaponModel.StartChargingSound.IsValid() is false)
                             {
                                 Monitor.LogOnce($"The StartChargingSound.Name {weaponModel.StartChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
@@ -257,8 +258,15 @@ namespace Archery
                             {
                                 Monitor.LogOnce($"The FiringSound.Name {weaponModel.FiringSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
                             }
+
+                            // Load in the optional arm textures, if given
+                            if (File.Exists(Path.Combine(textureFolder.FullName, $"arms.png")))
+                            {
+                                weaponModel.ArmsTexture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"arms.png")).Name);
+                            }
                             break;
                         case AmmoModel ammoModel:
+                            // Verify that any sound names given are valid
                             if (ammoModel.ImpactSound is not null && ammoModel.ImpactSound.IsValid() is false)
                             {
                                 Monitor.LogOnce($"The ImpactSound.Name {ammoModel.ImpactSound} does not exist for the ammo {model.Id}", LogLevel.Warn);

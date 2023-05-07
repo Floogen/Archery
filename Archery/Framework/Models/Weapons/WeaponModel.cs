@@ -1,5 +1,6 @@
 ﻿using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
 
@@ -21,6 +22,8 @@ namespace Archery.Framework.Models.Weapons
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
 
+        internal Texture2D ArmsTexture { get; set; }
+
         internal bool IsValidAmmoType(AmmoType ammoType)
         {
             switch (ammoType)
@@ -34,6 +37,16 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return false;
             }
+        }
+
+        internal Texture2D GetArmsTexture()
+        {
+            if (ArmsTexture is null)
+            {
+                return Archery.assetManager.recoloredArmsTexture;
+            }
+
+            return ArmsTexture;
         }
 
         internal bool UsesInternalAmmo()
