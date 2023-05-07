@@ -206,13 +206,13 @@ namespace Archery.Framework.Objects.Weapons
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
             var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
-            if (weaponModel is null || ammoModel is null)
+            if (weaponModel is null)
             {
                 return;
             }
 
             // TODO: Clean Bow.PerformFire up
-            if (Bow.GetAmmoCount(slingshot) > 0)
+            if (Bow.GetAmmoCount(slingshot) > 0 && ammoModel is not null)
             {
                 SlingshotPatch.UpdateAimPosReversePatch(slingshot);
 
@@ -278,7 +278,7 @@ namespace Archery.Framework.Objects.Weapons
             var bowModel = Bow.GetModel<WeaponModel>(who.CurrentTool);
             var ammoModel = Arrow.GetModel<AmmoModel>(ammoItem);
 
-            if (bowModel is null || ammoModel is null)
+            if (bowModel is null)
             {
                 return false;
             }
@@ -303,7 +303,7 @@ namespace Archery.Framework.Objects.Weapons
             int arrowFrame = GetArrowFrame(who.FacingDirection, currentChargePercentage);
 
             // Get the arrow and bow sprites
-            var ammoSprite = ammoModel.GetSpriteFromDirection(who);
+            var ammoSprite = ammoModel is not null ? ammoModel.GetSpriteFromDirection(who) : null;
             var bowSprite = bowModel.GetSpriteFromDirection(who);
 
             // Get the flip effect
