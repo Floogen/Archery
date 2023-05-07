@@ -16,12 +16,14 @@ namespace Archery.Framework.Objects.Projectiles
 
         private const int VANILLA_STONE_SPRITE_ID = 390;
 
+        private WeaponModel _weaponModel;
         private AmmoModel _ammoModel;
         private Farmer _owner;
 
-        public ArrowProjectile(AmmoModel model, Farmer owner, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
-            _ammoModel = model;
+            _weaponModel = weaponModel;
+            _ammoModel = ammoModel;
             _owner = owner;
         }
 
@@ -171,7 +173,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Damage the monster
-            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, _weaponModel.Knockback, 0, 0f, 1f, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
         }
 
         public override bool isColliding(GameLocation location)

@@ -93,6 +93,7 @@
   },
   "ProjectileSpeed": 10.5,
   "ChargeTimeRequiredMilliseconds": 300,
+  "Knockback": 2.0,
   "InternalAmmoId": "ExampleAuthor.ExampleArcheryPack/Arrow/Basic Arrow",
 
   "Recipe": {
