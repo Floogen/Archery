@@ -8,6 +8,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using xTile.Tiles;
 
 namespace Archery.Framework.Utilities
 {
@@ -165,6 +166,13 @@ namespace Archery.Framework.Utilities
                         }
 
                         targetDummy.placementAction(arena, (int)tile.X * 64, (int)tile.Y * 64, null);
+                    }
+
+                    var targetTile = new Vector2(16, 11);
+                    var knockbackDummy = dgaAPI.SpawnDGAItem("PeacefulEnd.PracticeDummy/KnockbackDummy") as StardewValley.Object;
+                    if (arena.objects.ContainsKey(targetTile) is false && knockbackDummy is not null)
+                    {
+                        knockbackDummy.placementAction(arena, (int)targetTile.X * 64, (int)targetTile.Y * 64, null);
                     }
                 }
             }
