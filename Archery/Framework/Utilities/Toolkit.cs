@@ -8,7 +8,6 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using xTile.Tiles;
 
 namespace Archery.Framework.Utilities
 {
