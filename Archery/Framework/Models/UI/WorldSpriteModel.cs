@@ -11,8 +11,6 @@ namespace Archery.Framework.Models.Display
 {
     public class WorldSpriteModel : ItemSpriteModel
     {
-        public Vector2 Offset { get; set; }
-
         // Only used by WeaponModel
         public Vector2 FrontArmOffset { get; set; }
         public Vector2 BackArmOffset { get; set; }
