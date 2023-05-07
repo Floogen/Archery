@@ -259,7 +259,6 @@ namespace Archery.Framework.Objects.Weapons
                 Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
             }
 
-            // TODO: Need to handle Slingshot.tickUpdate to not play the default sound
             canPlaySound = true;
         }
 
