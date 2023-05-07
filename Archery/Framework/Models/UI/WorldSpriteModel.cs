@@ -1,11 +1,13 @@
-﻿using Archery.Framework.Models.Generic;
+﻿using Archery.Framework.Models.Enums;
+using Archery.Framework.Models.Generic;
+using Archery.Framework.Models.UI;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models.Display
 {
@@ -14,8 +16,14 @@ namespace Archery.Framework.Models.Display
         // Only used by WeaponModel
         public Vector2 FrontArmOffset { get; set; }
         public Vector2 BackArmOffset { get; set; }
+        public List<ArmSpriteModel> Arms { get; set; } = new List<ArmSpriteModel>();
 
         public List<Condition> Conditions { get; set; } = new List<Condition>();
+
+        internal ArmSpriteModel GetArmSprite(ArmType armType)
+        {
+            return Arms.FirstOrDefault(a => a.Type == armType);
+        }
 
         internal bool AreConditionsValid(Farmer who)
         {
