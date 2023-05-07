@@ -13,6 +13,10 @@ namespace Archery.Framework.Models.Display
     {
         public Vector2 Offset { get; set; }
 
+        // Only used by WeaponModel
+        public Vector2 FrontArmOffset { get; set; }
+        public Vector2 BackArmOffset { get; set; }
+
         public List<Condition> Conditions { get; set; } = new List<Condition>();
 
         internal bool AreConditionsValid(Farmer who)

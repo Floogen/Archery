@@ -314,7 +314,7 @@ namespace Archery.Framework.Objects.Weapons
             {
                 case Game1.down:
                     // Draw the back arm
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.BackArmOffset, new Rectangle(movingArmStartingFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the bow
                     specialOffset = new Vector2(4f - frontArmRotation * 2f, 0f);
@@ -328,7 +328,7 @@ namespace Archery.Framework.Objects.Weapons
 
                     // Draw the front arm
                     specialOffset = Vector2.Zero;
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(0, 32, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.FrontArmOffset, new Rectangle(0, 32, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     return true;
                 case Game1.right:
@@ -338,7 +338,7 @@ namespace Archery.Framework.Objects.Weapons
 
                     // Draw the back arm
                     // TODO: Get player's layer depth via IDrawTool
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(48, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, 5.9E-05f);
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.BackArmOffset, new Rectangle(48, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, 5.9E-05f);
 
                     // Draw the bow
                     drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset + bowSprite.Offset + (who.FacingDirection == Game1.left ? new Vector2(-8f, 0f) : new Vector2(8f, 0f)), bowSprite.Source, Color.White, frontArmRotation, drawTool.Origin + originOffset, bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
@@ -350,12 +350,12 @@ namespace Archery.Framework.Objects.Weapons
                     }
 
                     // Draw the front arm
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.FrontArmOffset, new Rectangle(movingArmStartingFrame, 32, 16, 32), drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * drawTool.Scale, flipEffect, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     return true;
                 case Game1.up:
                     // Draw the back arm
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(movingArmStartingFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.BackArmOffset, new Rectangle(movingArmStartingFrame, 0, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the bow
                     specialOffset = new Vector2((frontArmRotation - 6f) * 4f, 0f);
@@ -369,7 +369,7 @@ namespace Archery.Framework.Objects.Weapons
 
                     // Draw the front arm
                     specialOffset = Vector2.Zero;
-                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset, new Rectangle(0, 32, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(Archery.assetManager.recoloredArmsTexture, baseOffset + specialOffset + bowSprite.FrontArmOffset, new Rectangle(0, 32, 16, 32), drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * drawTool.Scale, drawTool.AnimationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     return true;
                 default:
