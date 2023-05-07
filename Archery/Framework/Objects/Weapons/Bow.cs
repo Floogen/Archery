@@ -320,7 +320,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the back arm
                     if (backArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * backArmSprite.Scale, backArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, backArmSprite.Scale * drawTool.Scale, backArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the bow
@@ -337,7 +337,7 @@ namespace Archery.Framework.Objects.Weapons
                     specialOffset = Vector2.Zero;
                     if (frontArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * frontArmSprite.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, frontArmSprite.Scale * drawTool.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     return true;
@@ -349,7 +349,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the back arm
                     if (backArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * backArmSprite.Scale, backArmFlipOverride, 5.9E-05f);
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, backArmSprite.Scale * drawTool.Scale, backArmFlipOverride, 5.9E-05f);
                     }
 
                     // Draw the bow
@@ -364,7 +364,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the front arm
                     if (frontArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, 4f * frontArmSprite.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, frontArmSprite.Scale * drawTool.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     return true;
@@ -372,7 +372,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the back arm
                     if (backArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * backArmSprite.Scale, backArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, backArmSprite.Scale * drawTool.Scale, backArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the bow
@@ -389,7 +389,7 @@ namespace Archery.Framework.Objects.Weapons
                     specialOffset = Vector2.Zero;
                     if (frontArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, 4f * frontArmSprite.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, drawTool.Rotation, drawTool.Origin, frontArmSprite.Scale * drawTool.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     return true;
