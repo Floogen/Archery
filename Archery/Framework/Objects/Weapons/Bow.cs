@@ -305,7 +305,6 @@ namespace Archery.Framework.Objects.Weapons
             var specialOffset = Vector2.Zero;
             var baseOffset = drawTool.Position + drawTool.Origin + drawTool.PositionOffset + who.armOffset;
 
-            int movingArmStartingFrame = GetMovingArmFrame(who.FacingDirection, currentChargePercentage);
             int arrowFrame = GetArrowFrame(who.FacingDirection, currentChargePercentage);
 
             // Get the flip effect
@@ -416,29 +415,6 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return bowFrame;
-        }
-
-        private static int GetMovingArmFrame(int facingDirection, float bowChargePercentage)
-        {
-            int armFrame = 0;
-            int startingOffset = 0;
-            switch (facingDirection)
-            {
-                case Game1.down:
-                    armFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
-                    break;
-                case Game1.right:
-                case Game1.left:
-                    armFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
-                    startingOffset = 64;
-                    break;
-                case Game1.up:
-                    armFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
-                    startingOffset = 64;
-                    break;
-            }
-
-            return (armFrame * 16) + startingOffset;
         }
 
         internal static float GetFrontArmRotation(Farmer who, Slingshot slingshot)
