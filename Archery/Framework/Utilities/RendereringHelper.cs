@@ -14,12 +14,12 @@ namespace Archery.Framework.Utilities
         private static Color _sleeveMediumTone = new Color(135, 135, 135);
         private static Color _sleeveLightTone = new Color(154, 154, 154);
 
-        internal static void RecolorBowArms(Farmer farmer)
+        internal static Texture2D RecolorBowArms(Farmer farmer, Texture2D inputTexture)
         {
             // Get the base texture and create a mask
-            Color[] data = new Color[Archery.assetManager.baseArmsTexture.Width * Archery.assetManager.baseArmsTexture.Height];
-            Archery.assetManager.baseArmsTexture.GetData(data);
-            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, Archery.assetManager.baseArmsTexture.Width, Archery.assetManager.baseArmsTexture.Height);
+            Color[] data = new Color[inputTexture.Width * inputTexture.Height];
+            inputTexture.GetData(data);
+            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, inputTexture.Width, inputTexture.Height);
 
             // Get the skin tones
             int which = farmer.skin.Value;
@@ -58,7 +58,6 @@ namespace Archery.Framework.Utilities
                     }
                 }
             }
-            Archery.monitor.Log(shirtColor.ToString(), LogLevel.Debug);
 
             // Start the recoloring
             for (int i = 0; i < data.Length; i++)
@@ -94,7 +93,7 @@ namespace Archery.Framework.Utilities
 
             // Set the mask texture and push it to recoloredArmsTexture
             maskedTexture.SetData(data);
-            Archery.assetManager.recoloredArmsTexture = maskedTexture;
+            return maskedTexture;
         }
     }
 }

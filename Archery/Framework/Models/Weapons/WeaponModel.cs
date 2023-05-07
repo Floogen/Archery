@@ -23,6 +23,7 @@ namespace Archery.Framework.Models.Weapons
         public Sound FiringSound { get; set; }
 
         internal Texture2D ArmsTexture { get; set; }
+        internal Texture2D RecoloredArmsTexture { get; set; }
 
         internal bool IsValidAmmoType(AmmoType ammoType)
         {
@@ -46,7 +47,7 @@ namespace Archery.Framework.Models.Weapons
                 return Archery.assetManager.recoloredArmsTexture;
             }
 
-            return ArmsTexture;
+            return RecoloredArmsTexture;
         }
 
         internal bool UsesInternalAmmo()
