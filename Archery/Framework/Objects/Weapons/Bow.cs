@@ -305,8 +305,6 @@ namespace Archery.Framework.Objects.Weapons
             var specialOffset = Vector2.Zero;
             var baseOffset = drawTool.Position + drawTool.Origin + drawTool.PositionOffset + who.armOffset;
 
-            int arrowFrame = GetArrowFrame(who.FacingDirection, currentChargePercentage);
-
             // Get the flip effect
             var flipEffect = who.FacingDirection == Game1.left ? SpriteEffects.FlipVertically : SpriteEffects.None;
             var bowFlipOverride = bowSprite.GetSpriteEffects() is SpriteEffects.None ? flipEffect : bowSprite.GetSpriteEffects();
@@ -330,7 +328,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(0f, -16f), ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(0f, -16f) + bowSprite.ArrowOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
@@ -358,7 +356,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, frontArmRotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, frontArmRotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.ArrowOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
@@ -382,7 +380,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(-13f + arrowFrame, -32f), ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.ArrowOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
@@ -396,25 +394,6 @@ namespace Archery.Framework.Objects.Weapons
                 default:
                     return false;
             }
-        }
-
-        // TODO: Have the BowModel determine the frame value based on the charge percentage
-        private static int GetArrowFrame(int facingDirection, float bowChargePercentage)
-        {
-            int bowFrame = 0;
-            switch (facingDirection)
-            {
-                case Game1.down:
-                    break;
-                case Game1.right:
-                case Game1.left:
-                    bowFrame = (bowChargePercentage > 0.8f ? 2 : bowChargePercentage > 0.5f ? 1 : 0);
-                    break;
-                case Game1.up:
-                    break;
-            }
-
-            return bowFrame;
         }
 
         internal static float GetFrontArmRotation(Farmer who, Slingshot slingshot)

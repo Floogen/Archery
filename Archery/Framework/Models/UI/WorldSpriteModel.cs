@@ -4,6 +4,7 @@ using Archery.Framework.Models.UI;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace Archery.Framework.Models.Display
     {
         // Only used by WeaponModel
         public List<ArmSpriteModel> Arms { get; set; } = new List<ArmSpriteModel>();
+
+        // Only used by WeaponModel
+        public Vector2 ArrowOffset { get; set; }
 
         public List<Condition> Conditions { get; set; } = new List<Condition>();
 
