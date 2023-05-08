@@ -286,7 +286,6 @@ namespace Archery.Framework.Objects.Weapons
             // Get slingshot and related data
             Slingshot slingshot = who.CurrentTool as Slingshot;
 
-            float currentChargePercentage = slingshot.GetSlingshotChargeTime();
             float frontArmRotation = GetFrontArmRotation(who, slingshot);
 
             // Get the layer depth
@@ -295,6 +294,11 @@ namespace Archery.Framework.Objects.Weapons
             // Get the arrow and bow sprites
             var ammoSprite = ammoModel is not null ? ammoModel.GetSpriteFromDirection(who) : null;
             var bowSprite = bowModel.GetSpriteFromDirection(who);
+            if (bowSprite is null)
+            {
+                return false;
+            }
+
             var frontArmSprite = bowSprite.GetArmSprite(ArmType.Front);
             var backArmSprite = bowSprite.GetArmSprite(ArmType.Back);
 
