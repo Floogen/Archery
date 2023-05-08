@@ -18,7 +18,7 @@ namespace Archery.Framework.Models.Display
         public List<ArmSpriteModel> Arms { get; set; } = new List<ArmSpriteModel>();
 
         // Only used by WeaponModel
-        public Vector2 ArrowOffset { get; set; }
+        public Vector2 AmmoOffset { get; set; }
 
         public List<Condition> Conditions { get; set; } = new List<Condition>();
 

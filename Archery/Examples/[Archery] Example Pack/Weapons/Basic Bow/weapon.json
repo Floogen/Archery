@@ -302,7 +302,7 @@
     // Start of left and right sprites
     "Sideways": [
       {
-        "ArrowOffset": {
+        "AmmoOffset": {
           "X": 0,
           "Y": 0
         },
@@ -342,7 +342,7 @@
         ]
       },
       {
-        "ArrowOffset": {
+        "AmmoOffset": {
           "X": 1,
           "Y": 0
         },
@@ -387,7 +387,7 @@
         ]
       },
       {
-        "ArrowOffset": {
+        "AmmoOffset": {
           "X": 2,
           "Y": 0
         },
