@@ -302,6 +302,10 @@
     // Start of left and right sprites
     "Sideways": [
       {
+        "ArrowOffset": {
+          "X": 0,
+          "Y": 0
+        },
         "Source": {
           "X": 16,
           "Y": 32,
@@ -338,6 +342,10 @@
         ]
       },
       {
+        "ArrowOffset": {
+          "X": 1,
+          "Y": 0
+        },
         "Source": {
           "X": 32,
           "Y": 32,
@@ -379,6 +387,10 @@
         ]
       },
       {
+        "ArrowOffset": {
+          "X": 2,
+          "Y": 0
+        },
         "Source": {
           "X": 48,
           "Y": 32,
