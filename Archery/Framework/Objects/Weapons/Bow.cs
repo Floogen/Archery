@@ -283,8 +283,6 @@ namespace Archery.Framework.Objects.Weapons
                 return false;
             }
 
-            bool shouldDrawArrow = ammoItem is not null && ammoItem.Stack > 0;
-
             // Get slingshot and related data
             Slingshot slingshot = who.CurrentTool as Slingshot;
 
@@ -299,6 +297,9 @@ namespace Archery.Framework.Objects.Weapons
             var bowSprite = bowModel.GetSpriteFromDirection(who);
             var frontArmSprite = bowSprite.GetArmSprite(ArmType.Front);
             var backArmSprite = bowSprite.GetArmSprite(ArmType.Back);
+
+            // Determine if arrow should be drawn
+            bool shouldDrawArrow = ammoItem is not null && ammoItem.Stack > 0 && bowSprite.HideAmmo is false;
 
             // Establish the offsets
             var originOffset = Vector2.Zero;
