@@ -10,6 +10,7 @@ namespace Archery.Framework.Managers
 
         // Base textures
         internal readonly Texture2D baseArmsTexture;
+        internal readonly Texture2D crossbowArmsTexture;
         internal readonly Texture2D iconBowTexture;
 
         // Maps
@@ -17,6 +18,7 @@ namespace Archery.Framework.Managers
 
         // Recolored textures
         internal Texture2D recoloredArmsTexture;
+        internal Texture2D recoloredCrossbowArmsTexture;
 
         public AssetManager(IModHelper helper)
         {
@@ -26,6 +28,8 @@ namespace Archery.Framework.Managers
             // Load in the assets
             baseArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
             recoloredArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowArms.png"));
+            crossbowArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "CrossbowArms.png"));
+            recoloredCrossbowArmsTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "CrossbowArms.png"));
             iconBowTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "BowIcon.png"));
 
             arenaMapPath = Path.Combine(assetFolderPath, "Maps", "Arena.tmx");

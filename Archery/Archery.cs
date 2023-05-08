@@ -117,6 +117,7 @@ namespace Archery
         private void OnVanillaRecolorMethodTriggered(object sender, EventArgs e)
         {
             assetManager.recoloredArmsTexture = RendereringHelper.RecolorBowArms(Game1.player, assetManager.baseArmsTexture);
+            assetManager.recoloredCrossbowArmsTexture = RendereringHelper.RecolorBowArms(Game1.player, assetManager.crossbowArmsTexture);
             foreach (WeaponModel model in modelManager.GetAllModels().Where(m => m is WeaponModel weaponModel))
             {
                 if (model.ArmsTexture is not null)

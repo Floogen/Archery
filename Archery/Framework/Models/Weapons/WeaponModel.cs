@@ -1,8 +1,9 @@
-﻿using Archery.Framework.Models.Enums;
+﻿using Archery.Framework.Models.Display;
+using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using System;
+using System.Collections.Generic;
 
 namespace Archery.Framework.Models.Weapons
 {
@@ -44,7 +45,14 @@ namespace Archery.Framework.Models.Weapons
         {
             if (ArmsTexture is null)
             {
-                return Archery.assetManager.recoloredArmsTexture;
+                switch (Type)
+                {
+                    case WeaponType.Crossbow:
+                        return Archery.assetManager.recoloredCrossbowArmsTexture;
+                    default:
+                    case WeaponType.Bow:
+                        return Archery.assetManager.recoloredArmsTexture;
+                }
             }
 
             return RecoloredArmsTexture;
@@ -52,7 +60,7 @@ namespace Archery.Framework.Models.Weapons
 
         internal bool UsesInternalAmmo()
         {
-            return String.IsNullOrEmpty(InternalAmmoId) is false && Archery.modelManager.DoesModelExist<AmmoModel>(InternalAmmoId);
+            return string.IsNullOrEmpty(InternalAmmoId) is false && Archery.modelManager.DoesModelExist<AmmoModel>(InternalAmmoId);
         }
 
         internal bool ShouldAlwaysConsumeAmmo()
@@ -62,7 +70,7 @@ namespace Archery.Framework.Models.Weapons
 
         internal override void SetId(IContentPack contentPack)
         {
-            Id = String.Concat(contentPack.Manifest.UniqueID, "/", Type, "/", Name);
+            Id = string.Concat(contentPack.Manifest.UniqueID, "/", Type, "/", Name);
 
             base.SetId(contentPack);
         }
