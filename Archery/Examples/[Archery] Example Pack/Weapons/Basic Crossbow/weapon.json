@@ -26,6 +26,7 @@
 
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 1000,
+  "AmmoCountOnReload": 3,
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
