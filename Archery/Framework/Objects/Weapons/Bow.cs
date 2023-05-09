@@ -46,19 +46,24 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static bool IsLoaded(Tool tool)
         {
-            if (Bow.IsValid(tool) is true && tool.modData.TryGetValue(ModDataKeys.IS_LOADED_FLAG, out string isLoaded))
-            {
-                return bool.Parse(isLoaded);
-            }
-
-            return false;
+            return Bow.GetLoaded(tool) > 0;
         }
 
-        internal static void SetLoaded(Tool tool, bool state)
+        internal static int GetLoaded(Tool tool)
+        {
+            if (Bow.IsValid(tool) is true && tool.modData.TryGetValue(ModDataKeys.IS_LOADED_FLAG, out var rawLoadedAmmoCount) && int.TryParse(rawLoadedAmmoCount, out int parsedLoadedAmmoCount))
+            {
+                return parsedLoadedAmmoCount;
+            }
+
+            return 0;
+        }
+
+        internal static void SetLoaded(Tool tool, int ammoCount)
         {
             if (tool is not null)
             {
-                tool.modData[ModDataKeys.IS_LOADED_FLAG] = state.ToString();
+                tool.modData[ModDataKeys.IS_LOADED_FLAG] = ammoCount.ToString();
             }
         }
 
@@ -136,7 +141,9 @@ namespace Archery.Framework.Objects.Weapons
                 if (weaponModel.Type is WeaponType.Crossbow && Bow.IsLoaded(slingshot) is false && currentChargeTime >= 1f)
                 {
                     Toolkit.SuppressToolButtons();
-                    Bow.SetLoaded(slingshot, true);
+
+                    var currentAmmoCount = Bow.GetAmmoCount(slingshot);
+                    Bow.SetLoaded(slingshot, currentAmmoCount < weaponModel.AmmoCountOnReload ? currentAmmoCount : weaponModel.AmmoCountOnReload);
                     return;
                 }
 
@@ -259,7 +266,7 @@ namespace Archery.Framework.Objects.Weapons
                             return;
                         }
 
-                        Bow.SetLoaded(slingshot, false);
+                        Bow.SetLoaded(slingshot, Bow.GetLoaded(slingshot) - 1);
                     }
 
                     // Get the ammo to be used

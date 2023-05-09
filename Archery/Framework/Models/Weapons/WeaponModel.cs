@@ -21,6 +21,9 @@ namespace Archery.Framework.Models.Weapons
 
         public string InternalAmmoId { get; set; }
 
+        // Only used by WeaponType.Crossbow
+        public int AmmoCountOnReload { get; set; } = 1;
+
         public Sound StartChargingSound { get; set; }
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
