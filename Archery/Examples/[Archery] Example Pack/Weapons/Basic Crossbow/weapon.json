@@ -25,7 +25,7 @@
   "ProjectileSpeed": 10.5,
 
   // The time (in milliseconds) for the bow to fully charge
-  "ChargeTimeRequiredMilliseconds": 300,
+  "ChargeTimeRequiredMilliseconds": 1000,
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
@@ -111,6 +111,12 @@
           "X": 0,
           "Y": 64
         },
+        "Conditions": [
+          {
+            "Name": "IsLoaded",
+            "Value": true
+          }
+        ],
 
         "Arms": [
           {
@@ -118,6 +124,131 @@
             "Source": {
               "X": 0,
               "Y": 0,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 0,
+          "Y": 32,
+          "Width": 16,
+          "Height": 32
+        },
+        "Offset": {
+          "X": 0,
+          "Y": 64
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 48,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 0,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 16,
+          "Y": 32,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 0,
+          "Y": 64
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 1.0
+          },
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 48,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 16,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 32,
+          "Y": 32,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 0,
+          "Y": 64
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 1.0
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 48,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 32,
+              "Y": 32,
               "Width": 16,
               "Height": 32
             }
