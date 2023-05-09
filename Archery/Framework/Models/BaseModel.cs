@@ -25,16 +25,6 @@ namespace Archery.Framework.Models
         internal Texture2D Texture { get; set; }
         internal string TexturePath { get; set; }
 
-        internal bool CanCraftThis(Farmer who, List<Item> items)
-        {
-            if (Recipe is null || Recipe.IsValid() is false)
-            {
-                return false;
-            }
-
-            return Recipe.HasRequiredIngredients(items);
-        }
-
         internal Direction GetSpriteDirectionFromGivenDirection(Farmer who)
         {
             if (who is null || DirectionalSprites is null)

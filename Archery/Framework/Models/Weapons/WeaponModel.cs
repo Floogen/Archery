@@ -3,7 +3,9 @@ using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models.Weapons
 {
@@ -44,6 +46,19 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return false;
             }
+        }
+
+        internal ItemSpriteModel GetIcon(Farmer who)
+        {
+            foreach (var sprite in ConditionalIcons.Where(s => s is not null))
+            {
+                if (sprite.AreConditionsValid(who))
+                {
+                    return sprite;
+                }
+            }
+
+            return Icon;
         }
 
         internal Texture2D GetArmsTexture()
