@@ -333,7 +333,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(0f, -16f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + bowSprite.AmmoOffset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(0f, -16f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
@@ -361,7 +361,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, frontArmRotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + bowSprite.AmmoOffset, ammoSprite.Source, Color.White, frontArmRotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
@@ -385,7 +385,7 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + ammoSprite.Offset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + bowSprite.AmmoOffset, ammoSprite.Source, Color.White, drawTool.Rotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
