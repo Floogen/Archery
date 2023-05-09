@@ -63,7 +63,7 @@ namespace Archery.Framework.Models
 
         internal WorldSpriteModel GetValidOrDefaultSprite(Farmer who, List<WorldSpriteModel> sprites)
         {
-            foreach (var sprite in sprites)
+            foreach (var sprite in sprites.Where(s => s is not null))
             {
                 if (sprite.AreConditionsValid(who))
                 {
