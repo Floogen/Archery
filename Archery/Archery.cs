@@ -4,6 +4,7 @@ using Archery.Framework.Models;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
+using Archery.Framework.Patches.Characters;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
 using Archery.Framework.Utilities.Backport;
@@ -52,6 +53,9 @@ namespace Archery
                 new ObjectPatch(monitor, modHelper).Apply(harmony);
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);
+
+                // Apply Character patches
+                new FarmerPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Menu patches
                 new ShopMenuPatch(monitor, modHelper).Apply(harmony);
