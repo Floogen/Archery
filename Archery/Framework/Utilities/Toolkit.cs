@@ -4,6 +4,7 @@ using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,29 @@ namespace Archery.Framework.Utilities
             {
                 Game1.player.addItemByMenuIfNecessary(Arrow.CreateInstance(ammoModel, 999));
             }
+        }
+
+        internal static void SuppressToolButtons()
+        {
+            foreach (var button in Game1.options.useToolButton)
+            {
+                Archery.modHelper.Input.Suppress(button.ToSButton());
+            }
+
+            Archery.modHelper.Input.Suppress(SButton.ControllerX);
+        }
+
+        internal static bool AreToolButtonSuppressed()
+        {
+            foreach (var button in Game1.options.useToolButton)
+            {
+                if (Archery.modHelper.Input.IsSuppressed(button.ToSButton()))
+                {
+                    return true;
+                }
+            }
+
+            return Archery.modHelper.Input.IsSuppressed(SButton.ControllerX);
         }
 
         internal static void TeleportToArena(string command, string[] args)

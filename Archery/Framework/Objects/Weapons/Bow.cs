@@ -133,6 +133,12 @@ namespace Archery.Framework.Objects.Weapons
             if (who.IsLocalPlayer)
             {
                 var currentChargeTime = slingshot.GetSlingshotChargeTime();
+                if (weaponModel.Type is WeaponType.Crossbow && Bow.IsLoaded(slingshot) is false && currentChargeTime >= 1f)
+                {
+                    Toolkit.SuppressToolButtons();
+                    Bow.SetLoaded(slingshot, true);
+                    return;
+                }
 
                 SlingshotPatch.UpdateAimPosReversePatch(slingshot);
                 int mouseX = slingshot.aimPos.X;
@@ -176,7 +182,7 @@ namespace Archery.Framework.Objects.Weapons
 
                 if (!Game1.options.useLegacySlingshotFiring)
                 {
-                    if (canPlaySound && currentChargeTime >= 1f)
+                    if (canPlaySound && (currentChargeTime >= 1f || Bow.IsLoaded(slingshot)))
                     {
                         Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
                         canPlaySound = false;
@@ -246,13 +252,13 @@ namespace Archery.Framework.Objects.Weapons
                 if (!canPlaySound)
                 {
                     // TODO: If this is a crossbow, set loaded to false once the loaded count reaches 0
-                    if (weaponModel.Type is WeaponType.Crossbow && Bow.IsLoaded(slingshot) is false)
+                    if (weaponModel.Type is WeaponType.Crossbow)
                     {
-                        Bow.SetLoaded(slingshot, slingshot.GetSlingshotChargeTime() >= 1f);
-                        return;
-                    }
-                    else
-                    {
+                        if (Bow.IsLoaded(slingshot) is false && Toolkit.AreToolButtonSuppressed() is false)
+                        {
+                            return;
+                        }
+
                         Bow.SetLoaded(slingshot, false);
                     }
 
