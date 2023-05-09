@@ -50,6 +50,7 @@ namespace Archery
                 new CraftingPagePatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Object patches
+                new ItemPatch(monitor, modHelper).Apply(harmony);
                 new ObjectPatch(monitor, modHelper).Apply(harmony);
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using Object = StardewValley.Object;
 
 namespace Archery.Framework.Patches.Objects
 {
@@ -23,6 +24,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, "get_DisplayName", null), postfix: new HarmonyMethod(GetType(), nameof(GetNamePostfix)));
             harmony.Patch(AccessTools.Method(_object, "getDescription", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
 
+            harmony.Patch(AccessTools.Method(_object, nameof(Object.addToStack), new[] { typeof(Item) }), prefix: new HarmonyMethod(GetType(), nameof(AddToStackPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
         }
 
@@ -42,6 +44,22 @@ namespace Archery.Framework.Patches.Objects
                 __result = Game1.parseText(Arrow.GetDescription(__instance), Game1.smallFont, System.Math.Max(272, (int)Game1.dialogueFont.MeasureString((__instance.DisplayName == null) ? "" : __instance.DisplayName).X));
                 return;
             }
+        }
+
+        private static bool AddToStackPrefix(Object __instance, ref int __result, Item otherStack)
+        {
+            if (Arrow.IsValid(__instance))
+            {
+                if (Arrow.IsValid(otherStack) && Arrow.GetInternalId(__instance) == Arrow.GetInternalId(otherStack))
+                {
+                    return true;
+                }
+
+                __result = otherStack.Stack;
+                return false;
+            }
+
+            return true;
         }
 
         private static bool DrawInMenuPrefix(Object __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, ref Color color, bool drawShadow)
