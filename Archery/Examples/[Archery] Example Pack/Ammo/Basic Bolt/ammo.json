@@ -1,0 +1,87 @@
+{
+  "Type": "Bolt",
+  "Name": "Basic Bolt",
+  "Description": "A basic bolt made of wood with stone tips.",
+
+  "Icon": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    }
+  },
+  "ProjectileSprite": {
+    "Source": {
+      "X": 23,
+      "Y": 7,
+      "Width": 5,
+      "Height": 1
+    }
+  },
+
+  "DirectionalSprites": {
+    "Sideways": [
+      {
+        "Source": {
+          "X": 23,
+          "Y": 7,
+          "Width": 5,
+          "Height": 1
+        }
+      }
+    ],
+    "Down": [
+      {
+        "Source": {
+          "X": 0,
+          "Y": 16,
+          "Width": 16,
+          "Height": 16
+        }
+      }
+    ]
+  },
+
+  "BreakChance": 0.9,
+  "Debris": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    },
+    "Amount": 6
+  },
+  "BaseDamage": 3,
+
+  "Recipe": {
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bolt/Basic Bolt",
+    "Ingredients": [
+      {
+        "Id": 388,
+        "Amount": 5
+      },
+      {
+        "Id": 390,
+        "Amount": 2
+      }
+    ],
+    "OutputAmount": 5,
+
+    "Shop": {
+      "Owner": "Marlon",
+      "Stock": 1,
+      "Price": 500,
+
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bolt/Basic Bolt"
+    }
+  },
+
+  // Sell an infinite number of bolts at Marlon's shop
+  "Shop": {
+    "Owner": "Marlon",
+    "Stock": -1,
+    "Price": 10
+  }
+}
