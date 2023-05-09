@@ -8,7 +8,8 @@ namespace Archery.Framework.Models.Generic
         {
             Unknown,
             CurrentChargingPercentage,
-            IsUsingSpecificArrow
+            IsUsingSpecificArrow,
+            IsLoaded
         }
 
         public Type Name { get; set; }

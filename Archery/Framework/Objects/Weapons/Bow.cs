@@ -44,6 +44,24 @@ namespace Archery.Framework.Objects.Weapons
             return false;
         }
 
+        internal static bool IsLoaded(Tool tool)
+        {
+            if (Bow.IsValid(tool) is true && tool.modData.TryGetValue(ModDataKeys.IS_LOADED_FLAG, out string isLoaded))
+            {
+                return bool.Parse(isLoaded);
+            }
+
+            return false;
+        }
+
+        internal static void SetLoaded(Tool tool, bool state)
+        {
+            if (tool is not null)
+            {
+                tool.modData[ModDataKeys.IS_LOADED_FLAG] = state.ToString();
+            }
+        }
+
         internal static bool CanThisBeAttached(Tool tool, Object item)
         {
             if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo() is false)
@@ -114,6 +132,8 @@ namespace Archery.Framework.Objects.Weapons
 
             if (who.IsLocalPlayer)
             {
+                var currentChargeTime = slingshot.GetSlingshotChargeTime();
+
                 SlingshotPatch.UpdateAimPosReversePatch(slingshot);
                 int mouseX = slingshot.aimPos.X;
                 int mouseY = slingshot.aimPos.Y;
@@ -156,7 +176,7 @@ namespace Archery.Framework.Objects.Weapons
 
                 if (!Game1.options.useLegacySlingshotFiring)
                 {
-                    if (canPlaySound && slingshot.GetSlingshotChargeTime() >= 1f)
+                    if (canPlaySound && currentChargeTime >= 1f)
                     {
                         Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
                         canPlaySound = false;
@@ -219,13 +239,23 @@ namespace Archery.Framework.Objects.Weapons
 
                 int mouseX = slingshot.aimPos.X;
                 int mouseY = slingshot.aimPos.Y;
-                int backArmDistance = slingshot.GetBackArmDistance(who);
 
                 Vector2 shoot_origin = slingshot.GetShootOrigin(who);
                 Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
 
-                if (backArmDistance > 4 && !canPlaySound)
+                if (!canPlaySound)
                 {
+                    // TODO: If this is a crossbow, set loaded to false once the loaded count reaches 0
+                    if (weaponModel.Type is WeaponType.Crossbow && Bow.IsLoaded(slingshot) is false)
+                    {
+                        Bow.SetLoaded(slingshot, slingshot.GetSlingshotChargeTime() >= 1f);
+                        return;
+                    }
+                    else
+                    {
+                        Bow.SetLoaded(slingshot, false);
+                    }
+
                     // Get the ammo to be used
                     if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
                     {

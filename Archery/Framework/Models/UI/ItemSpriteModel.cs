@@ -57,6 +57,10 @@ namespace Archery.Framework.Models.Display
                 {
                     passedCheck = condition.IsValid(ammo.Id);
                 }
+                else if (condition.Name is Condition.Type.IsLoaded)
+                {
+                    passedCheck = condition.IsValid(Bow.IsLoaded(who.CurrentTool));
+                }
 
                 // If the condition is independent and is true, then skip rest of evaluations
                 if (condition.Independent && passedCheck)
