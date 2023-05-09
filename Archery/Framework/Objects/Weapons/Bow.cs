@@ -125,7 +125,7 @@ namespace Archery.Framework.Objects.Weapons
 
             lastUser = who;
             finishEvent.Poll();
-            if (!who.usingSlingshot)
+            if (!who.usingSlingshot || who.CurrentTool != slingshot)
             {
                 return;
             }
