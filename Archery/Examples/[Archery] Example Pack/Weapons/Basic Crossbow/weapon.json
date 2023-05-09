@@ -10,10 +10,25 @@
       "Y": 0,
       "Width": 16,
       "Height": 16
-    },
-
-    "Scale": 4.0
+    }
   },
+  "ConditionalIcons": [
+    {
+      "Source": {
+        "X": 16,
+        "Y": 0,
+        "Width": 16,
+        "Height": 16
+      },
+
+      "Conditions": [
+        {
+          "Name": "IsLoaded",
+          "Value": true
+        }
+      ]
+    }
+  ],
 
   // Determines the min and max base damage (before account for any additive arrow damage)
   "DamageRange": {
