@@ -298,6 +298,7 @@ namespace Archery.Framework.Objects.Weapons
             {
                 return false;
             }
+            var bowSpriteDirection = bowModel.GetSpriteDirectionFromGivenDirection(who);
 
             var frontArmSprite = bowSprite.GetArmSprite(ArmType.Front);
             var backArmSprite = bowSprite.GetArmSprite(ArmType.Back);

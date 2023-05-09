@@ -46,5 +46,31 @@ namespace Archery.Framework.Models.Display
 
             return new List<WorldSpriteModel>();
         }
+
+        public Direction GetActualDirection(Direction direction)
+        {
+            if (direction is Direction.Up && Up.Count > 0)
+            {
+                return Direction.Up;
+            }
+            else if (direction is Direction.Right && Right.Count > 0)
+            {
+                return Direction.Right;
+            }
+            else if (direction is Direction.Down && Down.Count > 0)
+            {
+                return Direction.Down;
+            }
+            else if (direction is Direction.Left && Left.Count > 0)
+            {
+                return Direction.Left;
+            }
+            else if ((direction is Direction.Left || direction is Direction.Right) && Sideways.Count > 0)
+            {
+                return Direction.Sideways;
+            }
+
+            return Direction.Any;
+        }
     }
 }

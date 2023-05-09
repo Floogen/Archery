@@ -35,6 +35,16 @@ namespace Archery.Framework.Models
             return Recipe.HasRequiredIngredients(items);
         }
 
+        internal Direction GetSpriteDirectionFromGivenDirection(Farmer who)
+        {
+            if (who is null || DirectionalSprites is null)
+            {
+                return Direction.Any;
+            }
+
+            return DirectionalSprites.GetActualDirection((Direction)who.FacingDirection);
+        }
+
         internal WorldSpriteModel GetSpriteFromDirection(Farmer who)
         {
             if (who is null || DirectionalSprites is null)
