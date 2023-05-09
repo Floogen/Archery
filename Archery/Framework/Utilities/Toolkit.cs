@@ -19,7 +19,7 @@ namespace Archery.Framework.Utilities
 
         internal static float IncrementAndGetLayerDepth(ref float layerDepth)
         {
-            layerDepth += 0.00001f;
+            layerDepth += 0.0001f;
             return layerDepth;
         }
 
