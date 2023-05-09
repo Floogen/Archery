@@ -303,7 +303,7 @@
     "Sideways": [
       {
         "AmmoOffset": {
-          "X": 0,
+          "X": 2,
           "Y": 0
         },
         "Source": {
@@ -343,7 +343,7 @@
       },
       {
         "AmmoOffset": {
-          "X": 1,
+          "X": 3,
           "Y": 0
         },
         "Source": {
@@ -388,7 +388,7 @@
       },
       {
         "AmmoOffset": {
-          "X": 2,
+          "X": 4,
           "Y": 0
         },
         "Source": {
