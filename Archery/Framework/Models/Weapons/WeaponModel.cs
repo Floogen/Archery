@@ -13,7 +13,7 @@ namespace Archery.Framework.Models.Weapons
     {
         public WeaponType Type { get; set; }
 
-        public List<ItemSpriteModel> ConditionalIcons { get; set; }
+        public List<ItemSpriteModel> ConditionalIcons { get; set; } = new List<ItemSpriteModel>();
 
         public RandomRange DamageRange { get; set; }
         public float ProjectileSpeed { get; set; }
