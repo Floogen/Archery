@@ -90,6 +90,12 @@
           "Width": 16,
           "Height": 16
         },
+        "Conditions": [
+          {
+            "Name": "IsLoaded",
+            "Value": true
+          }
+        ],
 
         "Arms": [
           {
@@ -108,6 +114,135 @@
               "Y": 0,
               "Width": 16,
               "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 64,
+          "Y": 0,
+          "Width": 16,
+          "Height": 16
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 32,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 48,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 64,
+          "Y": 0,
+          "Width": 16,
+          "Height": 16
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.9
+          },
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 32,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 1
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 48,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 1
+            }
+          }
+        ]
+      },
+      {
+        "Source": {
+          "X": 64,
+          "Y": 0,
+          "Width": 16,
+          "Height": 16
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.9
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 32,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 2
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 48,
+              "Y": 0,
+              "Width": 16,
+              "Height": 32
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 2
             }
           }
         ]
@@ -151,7 +286,7 @@
           "X": 0,
           "Y": 32,
           "Width": 16,
-          "Height": 32
+          "Height": 16
         },
         "Offset": {
           "X": 0,
@@ -201,7 +336,7 @@
           {
             "Name": "CurrentChargingPercentage",
             "Operator": "LessThan",
-            "Value": 1.0
+            "Value": 0.9
           },
           {
             "Name": "CurrentChargingPercentage",
@@ -246,7 +381,7 @@
           {
             "Name": "CurrentChargingPercentage",
             "Operator": "GreaterThanOrEqualTo",
-            "Value": 1.0
+            "Value": 0.9
           }
         ],
 
@@ -274,7 +409,7 @@
     ],
 
     // Start of left and right sprites
-    "Sideways": [
+    "Right": [
       {
         "HideAmmo": true,
         "Source": {
@@ -287,6 +422,12 @@
           "X": 4,
           "Y": -2
         },
+        "Conditions": [
+          {
+            "Name": "IsLoaded",
+            "Value": true
+          }
+        ],
 
         "Arms": [
           {
@@ -296,6 +437,283 @@
               "Y": 14,
               "Width": 10,
               "Height": 4
+            }
+          }
+        ]
+      },
+      {
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 2,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 1
+            }
+          }
+        ]
+      },
+      {
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 1,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.9
+          },
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 2
+            }
+          }
+        ]
+      },
+      {
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 2,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.9
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": 0,
+              "Y": 1
+            }
+          }
+        ]
+      }
+    ],
+    "Left": [
+      {
+        "HideAmmo": true,
+        "Source": {
+          "X": 16,
+          "Y": 16,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": 4,
+          "Y": 1
+        },
+        "Conditions": [
+          {
+            "Name": "IsLoaded",
+            "Value": true
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            }
+          }
+        ]
+      },
+      {
+        "FlipHorizontally": true,
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": -18,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "FlipHorizontally": true,
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": -44,
+              "Y": 1
+            }
+          }
+        ]
+      },
+      {
+        "FlipHorizontally": true,
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": -17,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 0.9
+          },
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.5
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "FlipHorizontally": true,
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": -44,
+              "Y": 2
+            }
+          }
+        ]
+      },
+      {
+        "FlipHorizontally": true,
+        "DisableRotation": true,
+        "HideAmmo": true,
+        "Source": {
+          "X": 0,
+          "Y": 48,
+          "Width": 16,
+          "Height": 16
+        },
+        "Offset": {
+          "X": -18,
+          "Y": 2
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 0.9
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Front",
+            "FlipHorizontally": true,
+            "DisableRotation": true,
+            "Source": {
+              "X": 19,
+              "Y": 14,
+              "Width": 10,
+              "Height": 4
+            },
+            "Offset": {
+              "X": -44,
+              "Y": 1
             }
           }
         ]
