@@ -314,6 +314,10 @@ namespace Archery.Framework.Objects.Weapons
             {
                 return false;
             }
+            else if (Toolkit.AreToolButtonSuppressed())
+            {
+                return true;
+            }
 
             // Get the required models
             var ammoItem = Bow.GetAmmoItem(who.CurrentTool);
