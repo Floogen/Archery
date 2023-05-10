@@ -258,7 +258,7 @@ namespace Archery.Framework.Objects.Weapons
 
                 if (!canPlaySound)
                 {
-                    // TODO: If this is a crossbow, set loaded to false once the loaded count reaches 0
+                    // Handle Crossbow ammo loaded
                     if (weaponModel.Type is WeaponType.Crossbow)
                     {
                         if (Bow.IsLoaded(slingshot) is false && Toolkit.AreToolButtonSuppressed() is false)
@@ -396,22 +396,22 @@ namespace Archery.Framework.Objects.Weapons
                     // Draw the back arm
                     if (backArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, frontArmRotation, drawTool.Origin + originOffset, backArmSprite.Scale * drawTool.Scale, backArmFlipOverride, 5.9E-05f);
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + backArmSprite.Offset, backArmSprite.Source, drawTool.OverrideColor, backArmSprite.DisableRotation ? 0f : frontArmRotation, drawTool.Origin + originOffset, backArmSprite.Scale * drawTool.Scale, backArmFlipOverride, 5.9E-05f);
                     }
 
                     // Draw the bow
-                    drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset, bowSprite.Source, Color.White, frontArmRotation, new Vector2(0, bowSprite.Source.Height / 2f) - new Vector2(bowSprite.Offset.X, bowSprite.Offset.Y * (bowSpriteDirection == Direction.Sideways && who.FacingDirection == Game1.left ? -1 : 1)), bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                    drawTool.SpriteBatch.Draw(bowModel.Texture, baseOffset + specialOffset, bowSprite.Source, Color.White, bowSprite.DisableRotation ? 0f : frontArmRotation, new Vector2(0, bowSprite.Source.Height / 2f) - new Vector2(bowSprite.Offset.X, bowSprite.Offset.Y * (bowSpriteDirection == Direction.Sideways && who.FacingDirection == Game1.left ? -1 : 1)), bowSprite.Scale * drawTool.Scale, bowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
 
                     // Draw the arrow
                     if (shouldDrawArrow && ammoSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + bowSprite.AmmoOffset, ammoSprite.Source, Color.White, frontArmRotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(ammoModel.Texture, baseOffset + specialOffset + bowSprite.AmmoOffset, ammoSprite.Source, Color.White, ammoSprite.DisableRotation ? 0f : frontArmRotation, drawTool.Origin + new Vector2(-13f, -32f) + bowSprite.AmmoOffset, ammoSprite.Scale * drawTool.Scale, arrowFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     // Draw the front arm
                     if (frontArmSprite is not null)
                     {
-                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, frontArmRotation, new Vector2(0, frontArmSprite.Source.Height / 2f), frontArmSprite.Scale * drawTool.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
+                        drawTool.SpriteBatch.Draw(bowModel.GetArmsTexture(), baseOffset + specialOffset + frontArmSprite.Offset, frontArmSprite.Source, drawTool.OverrideColor, frontArmSprite.DisableRotation ? 0f : frontArmRotation, new Vector2(0, frontArmSprite.Source.Height / 2f), frontArmSprite.Scale * drawTool.Scale, frontArmFlipOverride, Toolkit.IncrementAndGetLayerDepth(ref layerDepth));
                     }
 
                     return true;

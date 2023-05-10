@@ -19,6 +19,9 @@ namespace Archery.Framework.Models.Display
         public bool FlipHorizontally { get; set; }
         public bool FlipVertically { get; set; }
 
+        // Only used with overworld sprites 
+        public bool DisableRotation { get; set; }
+
         public List<Condition> Conditions { get; set; } = new List<Condition>();
 
 
