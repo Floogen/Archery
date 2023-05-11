@@ -23,6 +23,7 @@ namespace Archery.Framework.Models.Display
         public bool DisableRotation { get; set; }
 
         public List<Condition> Conditions { get; set; } = new List<Condition>();
+        internal int MillisecondsElapsed { get; set; }
 
 
         public SpriteEffects GetSpriteEffects()
@@ -64,6 +65,11 @@ namespace Archery.Framework.Models.Display
                 else if (condition.Name is Condition.Type.IsLoaded)
                 {
                     passedCheck = condition.IsValid(Bow.IsLoaded(who.CurrentTool));
+                }
+                else if (condition.Name is Condition.Type.FrameDuration)
+                {
+                    condition.Operator = Enums.Comparison.LessThanOrEqualTo;
+                    passedCheck = condition.IsValid(MillisecondsElapsed);
                 }
 
                 // If the condition is independent and is true, then skip rest of evaluations
