@@ -851,7 +851,6 @@ namespace Archery.Framework.Utilities.Backport
             return false;
         }
 
-        // TODO: When updated to SDV v1.6, patch this for the textureName to check the building's name instead
         public static bool query_CAN_BUILD_FOR_CABINS(string[] condition_split)
         {
             int numberBuildingsConstructed = Game1.getFarm().buildings.Count(b => b.indoors is not null && b.indoors.Value is Cabin);
