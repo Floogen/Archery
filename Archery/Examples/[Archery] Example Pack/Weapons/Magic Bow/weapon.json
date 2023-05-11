@@ -385,8 +385,101 @@
         "Conditions": [
           {
             "Name": "CurrentChargingPercentage",
+            "Operator": "LessThan",
+            "Value": 1.0
+          },
+          {
+            "Name": "CurrentChargingPercentage",
             "Operator": "GreaterThanOrEqualTo",
             "Value": 0.8
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 48,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 96,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "AmmoOffset": {
+          "X": 4,
+          "Y": 0
+        },
+        "Source": {
+          "X": 48,
+          "Y": 0,
+          "Width": 16,
+          "Height": 32
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 1.0
+          },
+          {
+            "Name": "FrameDuration",
+            "Value": 150
+          }
+        ],
+
+        "Arms": [
+          {
+            "Type": "Back",
+            "Source": {
+              "X": 48,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          },
+          {
+            "Type": "Front",
+            "Source": {
+              "X": 96,
+              "Y": 32,
+              "Width": 16,
+              "Height": 32
+            }
+          }
+        ]
+      },
+      {
+        "AmmoOffset": {
+          "X": 4,
+          "Y": 0
+        },
+        "Source": {
+          "X": 64,
+          "Y": 0,
+          "Width": 16,
+          "Height": 32
+        },
+        "Conditions": [
+          {
+            "Name": "CurrentChargingPercentage",
+            "Operator": "GreaterThanOrEqualTo",
+            "Value": 1.0
+          },
+          {
+            "Name": "FrameDuration",
+            "Value": 300
           }
         ],
 
