@@ -45,8 +45,9 @@ namespace Archery.Framework.Models.Display
 
         internal bool AreConditionsValid(Farmer who)
         {
-            bool isValid = true;
+            Archery.conditionManager.Track(this);
 
+            bool isValid = true;
             foreach (Condition condition in Conditions)
             {
                 var passedCheck = false;

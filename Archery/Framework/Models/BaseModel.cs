@@ -60,6 +60,7 @@ namespace Archery.Framework.Models
                     return sprite;
                 }
             }
+            Archery.conditionManager.Reset(sprites);
 
             return sprites.FirstOrDefault();
         }

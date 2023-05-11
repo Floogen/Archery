@@ -57,6 +57,7 @@ namespace Archery.Framework.Models.Weapons
                     return sprite;
                 }
             }
+            Archery.conditionManager.Reset(ConditionalIcons);
 
             return Icon;
         }

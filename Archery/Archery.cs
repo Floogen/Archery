@@ -27,6 +27,7 @@ namespace Archery
         // Managers
         internal static ApiManager apiManager;
         internal static AssetManager assetManager;
+        internal static ConditionManager conditionManager;
         internal static ModelManager modelManager;
 
         public override void Entry(IModHelper helper)
@@ -38,6 +39,7 @@ namespace Archery
             // Load managers
             apiManager = new ApiManager(monitor);
             assetManager = new AssetManager(modHelper);
+            conditionManager = new ConditionManager(modHelper);
             modelManager = new ModelManager(monitor);
 
             // Load our Harmony patches
@@ -76,6 +78,15 @@ namespace Archery
             // Hook into the game events
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += OnAssetRequested;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+        }
+
+        private void OnUpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
+        {
+            if (Context.IsWorldReady)
+            {
+                conditionManager.Update();
+            }
         }
 
         private void OnAssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
