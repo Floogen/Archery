@@ -196,7 +196,9 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Damage the monster
-            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, _weaponModel.Knockback, 0, 0f, 1f, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            var criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
+            var criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);
+            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, _weaponModel.Knockback, 0, criticalChance, criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
         }
 
         public override bool isColliding(GameLocation location)

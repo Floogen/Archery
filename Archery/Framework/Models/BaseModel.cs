@@ -14,6 +14,10 @@ namespace Archery.Framework.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        // Used additively by both weapons and ammo
+        public float CriticalChance { get; set; }
+        public float CriticalDamageMultiplier { get; set; }
+
         public ItemSpriteModel Icon { get; set; }
         public DirectionalSpriteModel DirectionalSprites { get; set; }
 
