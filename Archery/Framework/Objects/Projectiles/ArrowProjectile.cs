@@ -40,6 +40,11 @@ namespace Archery.Framework.Objects.Projectiles
             _startingAlpha = 1f;
 
             base.maxTravelDistance.Value = _ammoModel.MaxTravelDistance;
+
+            if (ammoModel.Light is not null)
+            {
+                base.light.Value = true;
+            }
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -54,23 +59,26 @@ namespace Archery.Framework.Objects.Projectiles
                 }
             }
 
-            // TODO: Handle light as a property (lightId is private, may want local value)
-            /*
-            if ((bool)base.light)
+            if (base.light.Value)
             {
+                var lightModel = _ammoModel.Light;
                 if (!base.hasLit)
                 {
                     base.hasLit = true;
-                    base.lightID = Game1.random.Next(int.MinValue, int.MaxValue);
-                    Game1.currentLightSources.Add(new LightSource(4, base.position + new Vector2(32f, 32f), 1f, new Color(0, 65, 128), base.lightID, LightSource.LightContext.None, 0L));
+                    _lightId = Game1.random.Next(int.MinValue, int.MaxValue);
+                    Game1.currentLightSources.Add(new LightSource(lightModel.GetTextureSource(), base.position + lightModel.Offset, lightModel.GetRadius(), lightModel.GetColor(), _lightId, LightSource.LightContext.None, 0L));
                 }
                 else
                 {
-                    _ = (Vector2)base.position;
-                    Utility.repositionLightSource(base.lightID, base.position + new Vector2(32f, 32f));
+                    if (lightModel.RecalculateIfElapsed(time) && Utility.getLightSource(_lightId) is LightSource lightSource)
+                    {
+                        lightSource.radius.Value = lightModel.GetRadius();
+                        lightSource.color.Value *= _startingAlpha;
+                    }
+
+                    Utility.repositionLightSource(_lightId, base.position + lightModel.Offset);
                 }
             }
-            */
 
             base.rotation += base.rotationVelocity.Value;
             base.travelTime += time.ElapsedGameTime.Milliseconds;
@@ -96,10 +104,10 @@ namespace Archery.Framework.Objects.Projectiles
 
                 if (base.travelDistance >= base.maxTravelDistance.Value)
                 {
+                    // Remove light source
                     if (base.hasLit)
                     {
-                        // TODO: Handle removing light source
-                        //Utility.removeLightSource(base.lightID);
+                        Utility.removeLightSource(_lightId);
                     }
 
                     return true;
@@ -132,8 +140,8 @@ namespace Archery.Framework.Objects.Projectiles
         {
             if (base.hasLit)
             {
-                // TODO: Handle removing light source
-                //Utility.removeLightSource(base.lightID);
+                // Handle removing light source
+                Utility.removeLightSource(_lightId);
             }
 
             foreach (Vector2 tile in Utility.getListOfTileLocationsForBordersOfNonTileRectangle(this.getBoundingBox()))
@@ -221,7 +229,7 @@ namespace Archery.Framework.Objects.Projectiles
             return new Rectangle((int)pos.X - damageSizeWidth / 2, (int)pos.Y - damageSizeHeight / 2, damageSizeWidth, damageSizeHeight);
         }
 
-        // Re-implementing this class, as it is private
+        // Re-implementing this class, as it is private in vanilla / not overridable
         private void updateTail(GameTime time)
         {
             _tailTimer -= time.ElapsedGameTime.Milliseconds;

@@ -2,6 +2,7 @@
 using Archery.Framework.Models.Display;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
+using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using System;
 
@@ -19,6 +20,7 @@ namespace Archery.Framework.Models.Weapons
         public int MaxTravelDistance { get; set; } = -1;
 
         public Sound ImpactSound { get; set; }
+        public Light Light { get; set; }
 
         internal bool CanBreak()
         {
