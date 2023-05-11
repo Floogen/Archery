@@ -25,6 +25,9 @@ namespace Archery.Framework.Objects.Projectiles
         private int _tailTimer;
         private Queue<Vector2> _tail;
 
+        private float _startingAlpha;
+        private int _lightId;
+
         public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, int bouncesTillDestruct, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
@@ -33,6 +36,10 @@ namespace Archery.Framework.Objects.Projectiles
 
             _tailTimer = 0;
             _tail = new Queue<Vector2>();
+
+            _startingAlpha = 1f;
+
+            base.maxTravelDistance.Value = _ammoModel.MaxTravelDistance;
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -83,8 +90,8 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 if (base.travelDistance > base.maxTravelDistance.Value - 128)
                 {
-                    // TODO: Implement fading arrows
-                    //base.startingAlpha = ((float)(int)base.maxTravelDistance - base.travelDistance) / 128f;
+                    // Fade arrows if starting to go past travel distance
+                    _startingAlpha = (base.maxTravelDistance.Value - base.travelDistance) / 128f;
                 }
 
                 if (base.travelDistance >= base.maxTravelDistance.Value)
@@ -246,7 +253,7 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 for (int i = _tail.Count - 1; i >= 0; i--)
                 {
-                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Tail.SpacingStep)), _ammoModel.Tail.Source, base.color.Value * alpha, base.rotation, _ammoModel.Tail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
+                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Tail.SpacingStep)), _ammoModel.Tail.Source, base.color.Value * alpha * _startingAlpha, base.rotation, _ammoModel.Tail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
 
                     if (_ammoModel.Tail.AlphaStep is not null)
                     {
@@ -261,7 +268,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Draw the arrow
-            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * 1f, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * _startingAlpha, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
             //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());

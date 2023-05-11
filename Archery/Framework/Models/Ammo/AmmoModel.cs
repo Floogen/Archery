@@ -16,6 +16,7 @@ namespace Archery.Framework.Models.Weapons
 
         public int BaseDamage { get; set; }
         public float BreakChance { get; set; } = 1.0f;
+        public int MaxTravelDistance { get; set; } = -1;
 
         public Sound ImpactSound { get; set; }
 
