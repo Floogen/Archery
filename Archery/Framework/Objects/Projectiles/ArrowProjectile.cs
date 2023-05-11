@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Projectiles;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Objects.Projectiles
 {
@@ -20,11 +22,17 @@ namespace Archery.Framework.Objects.Projectiles
         private AmmoModel _ammoModel;
         private Farmer _owner;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        private int _tailTimer;
+        private Queue<Vector2> _tail;
+
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, int bouncesTillDestruct, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
             _owner = owner;
+
+            _tailTimer = 0;
+            _tail = new Queue<Vector2>();
         }
 
         public override bool update(GameTime time, GameLocation location)
@@ -67,8 +75,8 @@ namespace Archery.Framework.Objects.Projectiles
             Vector2 old_position = base.position.Value;
             base.updatePosition(time);
 
-            // TODO: Reimplement arrow trail / tail logic
-            //base.updateTail(time);
+            // Update the arrow tail
+            updateTail(time);
 
             base.travelDistance += (old_position - base.position.Value).Length();
             if (base.maxTravelDistance.Value >= 0)
@@ -206,32 +214,57 @@ namespace Archery.Framework.Objects.Projectiles
             return new Rectangle((int)pos.X - damageSizeWidth / 2, (int)pos.Y - damageSizeHeight / 2, damageSizeWidth, damageSizeHeight);
         }
 
+        // Re-implementing this class, as it is private
+        private void updateTail(GameTime time)
+        {
+            _tailTimer -= time.ElapsedGameTime.Milliseconds;
+            if (_tailTimer <= 0)
+            {
+                _tailTimer = _ammoModel.Tail is not null ? _ammoModel.Tail.SpawnIntervalInMilliseconds : 50;
+                _tail.Enqueue(this.position);
+                if (_tail.Count > base.tailLength.Value)
+                {
+                    _tail.Dequeue();
+                }
+            }
+        }
+
+
         public override void draw(SpriteBatch b)
         {
-            float current_scale = 4f * base.localScale;
-            float alpha = 1f;
-
-            // Draw the arrow
             var ammoSprite = _ammoModel.ProjectileSprite;
             if (ammoSprite is null)
             {
                 return;
             }
 
-            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * alpha, base.rotation, ammoSprite.Source.Size.ToVector2(), current_scale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+            // Draw the arrow trail / tail
+            float current_scale = 4f * base.localScale;
+            float alpha = 1f;
+
+            if (_ammoModel.Tail is not null)
+            {
+                for (int i = _tail.Count - 1; i >= 0; i--)
+                {
+                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Tail.SpacingStep)), _ammoModel.Tail.Source, base.color.Value * alpha, base.rotation, _ammoModel.Tail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
+
+                    if (_ammoModel.Tail.AlphaStep is not null)
+                    {
+                        alpha -= _ammoModel.Tail.AlphaStep.Value;
+                    }
+
+                    if (_ammoModel.Tail.ScaleStep is not null)
+                    {
+                        current_scale -= (i * _ammoModel.Tail.ScaleStep.Value);
+                    }
+                }
+            }
+
+            // Draw the arrow
+            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * 1f, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // TODO: Make this a config / button option
             //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
-
-            // TODO: Draw the arrow trail / tail
-            /*
-            for (int i = this.tail.Count - 1; i >= 0; i--)
-            {
-                b.Draw(this.spriteFromObjectSheet ? Game1.objectSpriteSheet : Projectile.projectileSheet, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == this.tail.Count - 1) ? ((Vector2)this.position) : this.tail.ElementAt(i + 1), this.tail.ElementAt(i), (float)this.tailCounter / 50f) + new Vector2(0f, 0f - (float)this.height) + new Vector2(32f, 32f)), Game1.getSourceRectForStandardTileSheet(this.spriteFromObjectSheet ? Game1.objectSpriteSheet : Projectile.projectileSheet, this.currentTileSheetIndex, 16, 16), this.color.Value * alpha, this.rotation, new Vector2(8f, 8f), current_scale, SpriteEffects.None, (this.position.Y - (float)(this.tail.Count - i) + 96f) / 10000f);
-                alpha -= 1f / (float)this.tail.Count;
-                current_scale = 0.8f * (float)(4 - 4 / (i + 4));
-            }
-            */
         }
     }
 }
