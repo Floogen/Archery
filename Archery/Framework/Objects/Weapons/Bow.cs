@@ -153,51 +153,37 @@ namespace Archery.Framework.Objects.Weapons
 
                 Game1.debugOutput = "playerPos: " + who.getStandingPosition().ToString() + ", mousePos: " + mouseX + ", " + mouseY;
                 slingshot.mouseDragAmount++;
-                if (!Game1.options.useLegacySlingshotFiring)
+
+                Vector2 shoot_origin = slingshot.GetShootOrigin(who);
+                Vector2 aim_offset = slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)) - shoot_origin;
+                if (Math.Abs(aim_offset.X) > Math.Abs(aim_offset.Y))
                 {
-                    Vector2 shoot_origin = slingshot.GetShootOrigin(who);
-                    Vector2 aim_offset = slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)) - shoot_origin;
-                    if (Math.Abs(aim_offset.X) > Math.Abs(aim_offset.Y))
+                    if (aim_offset.X < 0f)
                     {
-                        if (aim_offset.X < 0f)
-                        {
-                            who.faceDirection(3);
-                        }
-
-                        if (aim_offset.X > 0f)
-                        {
-                            who.faceDirection(1);
-                        }
+                        who.faceDirection(3);
                     }
-                    else
-                    {
-                        if (aim_offset.Y < 0f)
-                        {
-                            who.faceDirection(0);
-                        }
 
-                        if (aim_offset.Y > 0f)
-                        {
-                            who.faceDirection(2);
-                        }
+                    if (aim_offset.X > 0f)
+                    {
+                        who.faceDirection(1);
                     }
                 }
                 else
                 {
-                    who.faceGeneralDirection(new Vector2(mouseX, mouseY), 0, opposite: true);
-                }
-
-                if (!Game1.options.useLegacySlingshotFiring)
-                {
-                    if (canPlaySound && (currentChargeTime >= 1f || Bow.IsLoaded(slingshot)))
+                    if (aim_offset.Y < 0f)
                     {
-                        Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
-                        canPlaySound = false;
+                        who.faceDirection(0);
+                    }
+
+                    if (aim_offset.Y > 0f)
+                    {
+                        who.faceDirection(2);
                     }
                 }
-                else if (canPlaySound && (Math.Abs(mouseX - slingshot.lastClickX) > 8 || Math.Abs(mouseY - slingshot.lastClickY) > 8) && slingshot.mouseDragAmount > 4)
+
+                if (canPlaySound && (currentChargeTime >= 1f || Bow.IsLoaded(slingshot)))
                 {
-                    who.currentLocation.playSound("slingshot");
+                    Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
                     canPlaySound = false;
                 }
 
@@ -205,11 +191,6 @@ namespace Archery.Framework.Objects.Weapons
                 {
                     slingshot.lastClickX = mouseX;
                     slingshot.lastClickY = mouseY;
-                }
-
-                if (Game1.options.useLegacySlingshotFiring)
-                {
-                    Game1.mouseCursor = -1;
                 }
 
                 if (slingshot.CanAutoFire())
@@ -245,7 +226,6 @@ namespace Archery.Framework.Objects.Weapons
                 return;
             }
 
-            // TODO: Clean Bow.PerformFire up
             if (Bow.GetAmmoCount(slingshot) > 0 && ammoModel is not null)
             {
                 SlingshotPatch.UpdateAimPosReversePatch(slingshot);
@@ -279,11 +259,8 @@ namespace Archery.Framework.Objects.Weapons
                         }
                     }
 
-                    if (!Game1.options.useLegacySlingshotFiring)
-                    {
-                        v.X *= -1f;
-                        v.Y *= -1f;
-                    }
+                    v.X *= -1f;
+                    v.Y *= -1f;
 
                     int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
                     var arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
@@ -457,13 +434,11 @@ namespace Archery.Framework.Objects.Weapons
 
             Vector2 shoot_origin = slingshot.GetShootOrigin(who);
             float frontArmRotation = (float)Math.Atan2((float)mouseY - shoot_origin.Y, (float)mouseX - shoot_origin.X) + (float)Math.PI;
-            if (Game1.options.useLegacySlingshotFiring is false)
+
+            frontArmRotation -= (float)Math.PI;
+            if (frontArmRotation < 0f)
             {
-                frontArmRotation -= (float)Math.PI;
-                if (frontArmRotation < 0f)
-                {
-                    frontArmRotation += (float)Math.PI * 2f;
-                }
+                frontArmRotation += (float)Math.PI * 2f;
             }
 
             return frontArmRotation;
