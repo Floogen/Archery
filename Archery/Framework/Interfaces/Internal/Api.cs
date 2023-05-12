@@ -3,6 +3,7 @@ using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Projectiles;
@@ -39,6 +40,11 @@ namespace Archery.Framework.Interfaces.Internal
             _registeredSpecialAttackNames = new Dictionary<string, Func<string>>();
             _registeredSpecialAttackDescriptions = new Dictionary<string, Func<string>>();
             _registeredSpecialAttackCooldowns = new Dictionary<string, Func<int>>();
+        }
+
+        private KeyValuePair<bool, string> GenerateResponsePair(bool wasSuccessful, string responseText)
+        {
+            return new KeyValuePair<bool, string>(wasSuccessful, responseText);
         }
 
         #region Events
@@ -97,6 +103,7 @@ namespace Archery.Framework.Interfaces.Internal
         }
         #endregion
 
+        #region Special attacks internals
         internal bool HandleSpecialAttack(WeaponType weaponType, string specialAttackId, ISpecialAttack specialAttack)
         {
             if (_registeredSpecialAttackMethods.ContainsKey(specialAttackId) is false)
@@ -150,15 +157,11 @@ namespace Archery.Framework.Interfaces.Internal
             return _registeredSpecialAttackCooldowns[specialAttackId]();
         }
 
-        private KeyValuePair<bool, string> GenerateResponsePair(bool wasSuccessful, string responseText)
-        {
-            return new KeyValuePair<bool, string>(wasSuccessful, responseText);
-        }
-
         private string GetSpecialAttackId(IManifest callerManifest, string name)
         {
             return $"{callerManifest.UniqueID}/{name}";
         }
+        #endregion
 
         public KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position)
         {
@@ -173,6 +176,32 @@ namespace Archery.Framework.Interfaces.Internal
             }
 
             return GenerateResponsePair(true, $"Played sound {sound.Name} at {position}");
+        }
+
+        public KeyValuePair<bool, Vector2> GetProjectileVelocity(IManifest callerManifest, BasicProjectile projectile)
+        {
+            if (projectile is null)
+            {
+                return new KeyValuePair<bool, Vector2>(false, Vector2.Zero);
+            }
+
+            var xVelocity = _helper.Reflection.GetField<NetFloat>(projectile, "xVelocity").GetValue();
+            var yVelocity = _helper.Reflection.GetField<NetFloat>(projectile, "yVelocity").GetValue();
+
+            return new KeyValuePair<bool, Vector2>(true, new Vector2(xVelocity.Value, yVelocity.Value));
+        }
+
+        public KeyValuePair<bool, string> SetProjectileVelocity(IManifest callerManifest, BasicProjectile projectile, Vector2 velocity)
+        {
+            if (projectile is null)
+            {
+                return GenerateResponsePair(false, "Given projectile is null!");
+            }
+
+            _helper.Reflection.GetField<NetFloat>(projectile, "xVelocity").GetValue().Value = velocity.X;
+            _helper.Reflection.GetField<NetFloat>(projectile, "yVelocity").GetValue().Value = velocity.Y;
+
+            return GenerateResponsePair(true, $"Set the velocity of the projectile to {velocity}");
         }
 
         public KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage)
