@@ -1,7 +1,4 @@
 ﻿using Archery.Framework.Models.Generic;
-using Archery.Framework.Models.Weapons;
-using Archery.Framework.Objects.Weapons;
-using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -41,6 +38,17 @@ namespace Archery.Framework.Interfaces.Internal
         public RandomRange PitchRandomness { get; set; }
         public float Volume { get; set; }
         public float MaxDistance { get; set; }
+    }
+    #endregion
+
+    #region enums
+    public enum WeaponType
+    {
+        Any,
+        [Obsolete("Not currently used")]
+        Slingshot,
+        Bow,
+        Crossbow
     }
     #endregion
 }

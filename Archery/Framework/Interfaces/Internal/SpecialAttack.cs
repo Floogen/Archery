@@ -2,7 +2,6 @@
 using StardewValley;
 using StardewValley.Tools;
 using System.Collections.Generic;
-using static Archery.Framework.Interfaces.Internal.IApi;
 
 namespace Archery.Framework.Interfaces.Internal
 {

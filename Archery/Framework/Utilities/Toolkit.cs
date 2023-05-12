@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Models.Generic;
+﻿using Archery.Framework.Interfaces.Internal;
+using Archery.Framework.Models.Generic;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
@@ -85,7 +86,7 @@ namespace Archery.Framework.Utilities
             }
             else
             {
-                weaponModel = Archery.modelManager.GetRandomWeaponModel(Models.Enums.WeaponType.Bow);
+                weaponModel = Archery.modelManager.GetRandomWeaponModel(WeaponType.Bow);
             }
 
             if (weaponModel is not null)

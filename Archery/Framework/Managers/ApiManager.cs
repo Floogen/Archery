@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Interfaces;
+using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Utilities;
@@ -7,7 +8,6 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Linq;
-using Archery.Framework.Interfaces.Internal;
 
 namespace Archery.Framework.Managers
 {
@@ -106,7 +106,7 @@ namespace Archery.Framework.Managers
 
         public void RegisterNativeSpecialAttacks()
         {
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, SnapshotSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, SnapshotSpecialAttack);
         }
 
         private bool SnapshotSpecialAttack(ISpecialAttack specialAttack)
