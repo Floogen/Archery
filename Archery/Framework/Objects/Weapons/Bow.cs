@@ -72,7 +72,7 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static bool CanUseSpecialAttack(Tool tool)
         {
-            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.SpecialAttack is not null && Bow.IsUsingSpecialAttack(tool) is false && ActiveCooldown <= 0)
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.SpecialAttack is not null && Bow.IsUsingSpecialAttack(tool) is false && ActiveCooldown <= 0 && Game1.activeClickableMenu is null)
             {
                 return true;
             }
