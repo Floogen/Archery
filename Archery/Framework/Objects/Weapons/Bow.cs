@@ -385,7 +385,7 @@ namespace Archery.Framework.Objects.Weapons
             who.UsingTool = true;
             who.CanMove = false;
 
-            if (Archery.internalApi.HandleSpecialAttack($"{Archery.manifest.UniqueID}/Snapshot", weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
+            if (Archery.internalApi.HandleSpecialAttack(weaponModel.Type, $"{Archery.manifest.UniqueID}/Snapshot", weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
             {
                 // Reset the required farmer flags
                 who.UsingTool = false;

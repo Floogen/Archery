@@ -16,6 +16,7 @@ namespace Archery.Framework.Interfaces.Internal
     {
         private IMonitor _monitor;
         private Dictionary<string, Func<ISpecialAttack, bool>> _registeredSpecialAttackMethods;
+        private Dictionary<string, WeaponType> _registeredSpecialAttackFilter;
         private Dictionary<string, Func<string>> _registeredSpecialAttackNames;
         private Dictionary<string, Func<string>> _registeredSpecialAttackDescriptions;
         private Dictionary<string, Func<int>> _registeredSpecialAttackCooldowns;
@@ -24,14 +25,21 @@ namespace Archery.Framework.Interfaces.Internal
         {
             _monitor = monitor;
             _registeredSpecialAttackMethods = new Dictionary<string, Func<ISpecialAttack, bool>>();
+            _registeredSpecialAttackFilter = new Dictionary<string, WeaponType>();
             _registeredSpecialAttackNames = new Dictionary<string, Func<string>>();
             _registeredSpecialAttackDescriptions = new Dictionary<string, Func<string>>();
             _registeredSpecialAttackCooldowns = new Dictionary<string, Func<int>>();
         }
 
-        internal bool HandleSpecialAttack(string specialAttackId, ISpecialAttack specialAttack)
+        internal bool HandleSpecialAttack(WeaponType weaponType, string specialAttackId, ISpecialAttack specialAttack)
         {
             if (_registeredSpecialAttackMethods.ContainsKey(specialAttackId) is false)
+            {
+                return false;
+            }
+
+            var registeredWeaponTypeFilter = _registeredSpecialAttackFilter[specialAttackId];
+            if (registeredWeaponTypeFilter != weaponType && registeredWeaponTypeFilter != WeaponType.Any)
             {
                 return false;
             }
@@ -152,16 +160,17 @@ namespace Archery.Framework.Interfaces.Internal
             return PerformFire(callerManifest, ammoId: null, slingshot, location, who, suppressFiringSound);
         }
 
-        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
+        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredSpecialAttackNames[id] = getDisplayName;
             _registeredSpecialAttackDescriptions[id] = getDescription;
             _registeredSpecialAttackCooldowns[id] = getCooldownMilliseconds;
+            _registeredSpecialAttackFilter[id] = whichWeaponTypeCanUse;
             _registeredSpecialAttackMethods[id] = specialAttackHandler;
 
-            _monitor.Log($"The mod {callerManifest.Name} registered a special attack: {name}", LogLevel.Info);
-            return GenerateResponsePair(true, $"Registered the special attack method for {name}.");
+            _monitor.Log($"The mod {callerManifest.Name} registered a special attack {name} with the type {whichWeaponTypeCanUse}", LogLevel.Info);
+            return GenerateResponsePair(true, $"Registered the special attack method for {name} with the type {whichWeaponTypeCanUse}.");
         }
 
         public KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name)
@@ -175,6 +184,7 @@ namespace Archery.Framework.Interfaces.Internal
             _registeredSpecialAttackNames.Remove(id);
             _registeredSpecialAttackDescriptions.Remove(id);
             _registeredSpecialAttackCooldowns.Remove(id);
+            _registeredSpecialAttackFilter.Remove(id);
             _registeredSpecialAttackMethods.Remove(id);
 
             return GenerateResponsePair(true, $"Unregistered the special attack method {id}.");
