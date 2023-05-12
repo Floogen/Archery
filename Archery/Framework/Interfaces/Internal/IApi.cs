@@ -14,6 +14,7 @@ namespace Archery.Framework.Interfaces.Internal
 {
     public interface IApi
     {
+        KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
         KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage);
         KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
         KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);

@@ -86,6 +86,21 @@ namespace Archery.Framework.Interfaces.Internal
             return $"{callerManifest.UniqueID}/{name}";
         }
 
+        public KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position)
+        {
+            if (sound is null)
+            {
+                return GenerateResponsePair(false, "Given ISound is not a valid!");
+            }
+
+            if (Toolkit.PlaySound((Sound)sound, callerManifest.UniqueID, position) is false)
+            {
+                return GenerateResponsePair(false, "Failed to play ISound, see log for details!");
+            }
+
+            return GenerateResponsePair(true, $"Played sound {sound.Name} at {position}");
+        }
+
         public KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage)
         {
             if (Bow.IsValid(slingshot) is false)

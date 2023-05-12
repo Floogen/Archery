@@ -25,11 +25,11 @@ namespace Archery.Framework.Utilities
             return layerDepth;
         }
 
-        internal static void PlaySound(Sound sound, string sourceId, Vector2 sourcePosition)
+        internal static bool PlaySound(Sound sound, string sourceId, Vector2 sourcePosition)
         {
             if (sound is null || sound.IsValid() is false || Game1.soundBank is null)
             {
-                return;
+                return false;
             }
 
             int actualPitch = 1200;
@@ -62,12 +62,16 @@ namespace Archery.Framework.Utilities
                 catch (Exception ex)
                 {
                     Archery.monitor.LogOnce($"Failed to play ({sound.Name}) given for {sourceId}: {ex}", StardewModdingAPI.LogLevel.Warn);
+                    return false;
                 }
             }
             catch (Exception ex2)
             {
                 Archery.monitor.LogOnce($"Failed to play ({sound.Name}) given for {sourceId}: {ex2}", StardewModdingAPI.LogLevel.Warn);
+                return false;
             }
+
+            return true;
         }
 
         internal static void GiveBow(string command, string[] args)
