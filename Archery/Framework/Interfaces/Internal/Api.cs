@@ -1,7 +1,9 @@
-﻿using Archery.Framework.Objects.Weapons;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Weapons;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,11 @@ namespace Archery.Framework.Interfaces.Internal
 {
     public interface IApi
     {
+        KeyValuePair<bool, string> PlaySound(IManifest callerManifest, string soundName, Farmer who);
         KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage);
-        KeyValuePair<bool, string> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who);
+        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
+        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
+        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
         KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
         KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name);
 
@@ -113,20 +118,43 @@ namespace Archery.Framework.Interfaces.Internal
             return GenerateResponsePair(true, $"Set Archery.WeaponModel's charge percentage to {percentage}");
         }
 
-        public KeyValuePair<bool, string> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who)
+        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             if (Bow.IsValid(slingshot) is false)
             {
-                return GenerateResponsePair(false, "Given slingshot object is not a valid Archery.WeaponModel!");
+                _monitor.Log("Given slingshot object is not a valid Archery.WeaponModel!", LogLevel.Trace);
+                return new KeyValuePair<bool, BasicProjectile>(false, null);
             }
 
-            if (Bow.PerformFire(slingshot, location, who) is false)
+            var arrow = Bow.PerformFire(projectile, slingshot, location, who, suppressFiringSound);
+            if (arrow is null)
             {
-                return GenerateResponsePair(false, "Bow.PerformFire returned false.");
+                _monitor.Log("Bow.PerformFire returned null!", LogLevel.Trace);
+                return new KeyValuePair<bool, BasicProjectile>(false, null);
             }
+
             SetChargePercentage(callerManifest, slingshot, 0f);
 
-            return GenerateResponsePair(true, "Bow.PerformFire returned true.");
+            return new KeyValuePair<bool, BasicProjectile>(true, arrow);
+        }
+
+        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        {
+            if (Bow.IsValid(slingshot) is false)
+            {
+                _monitor.Log("Given slingshot object is not a valid Archery.WeaponModel!", LogLevel.Trace);
+                return new KeyValuePair<bool, BasicProjectile>(false, null);
+            }
+
+            var ammoModel = Archery.modelManager.GetSpecificModel<AmmoModel>(ammoId);
+
+            var arrow = ammoModel is null ? Bow.PerformFire(slingshot, location, who) : Bow.PerformFire(ammoModel, slingshot, location, who);
+            return PerformFire(callerManifest, arrow, slingshot, location, who, suppressFiringSound);
+        }
+
+        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        {
+            return PerformFire(callerManifest, ammoId: null, slingshot, location, who, suppressFiringSound);
         }
 
         public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)

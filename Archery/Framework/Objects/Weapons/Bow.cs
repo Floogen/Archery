@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
+using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
 using static Archery.Framework.Interfaces.IFashionSenseApi;
@@ -284,15 +285,60 @@ namespace Archery.Framework.Objects.Weapons
             who.FarmerSprite.setCurrentFrame(42 + offset);
         }
 
-        internal static bool PerformFire(Slingshot slingshot, GameLocation location, Farmer who)
+        internal static BasicProjectile PerformFire(BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
-            var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
-            if (weaponModel is null)
+            if (weaponModel is null || projectile is null)
             {
-                return false;
+                return null;
             }
 
+            // Handle Crossbow ammo loaded
+            if (weaponModel.Type is WeaponType.Crossbow)
+            {
+                if (Bow.IsLoaded(slingshot) is false || Toolkit.AreToolButtonSuppressed() is true)
+                {
+                    return null;
+                }
+
+                Bow.SetLoaded(slingshot, Bow.GetLoaded(slingshot) - 1);
+            }
+            else if (slingshot.GetSlingshotChargeTime() < 1f)
+            {
+                return null;
+            }
+
+            // Get the ammo to be used
+            if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
+            {
+                slingshot.attachments[0].Stack--;
+                if (slingshot.attachments[0].Stack <= 0)
+                {
+                    slingshot.attachments[0] = null;
+                }
+            }
+
+            // Add the projectile to the current location
+            location.projectiles.Add(projectile);
+
+            // Play firing sound
+            if (suppressFiringSound is false)
+            {
+                Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, slingshot.GetShootOrigin(who));
+            }
+
+            return projectile;
+        }
+
+        internal static BasicProjectile PerformFire(AmmoModel ammoModel, Slingshot slingshot, GameLocation location, Farmer who)
+        {
+            var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
+            if (weaponModel is null || ammoModel is null)
+            {
+                return null;
+            }
+
+            ArrowProjectile arrow = null;
             if (Bow.GetAmmoCount(slingshot) > 0 && ammoModel is not null)
             {
                 SlingshotPatch.UpdateAimPosReversePatch(slingshot);
@@ -303,45 +349,17 @@ namespace Archery.Framework.Objects.Weapons
                 Vector2 shoot_origin = slingshot.GetShootOrigin(who);
                 Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
 
-                // Handle Crossbow ammo loaded
-                if (weaponModel.Type is WeaponType.Crossbow)
-                {
-                    if (Bow.IsLoaded(slingshot) is false || Toolkit.AreToolButtonSuppressed() is true)
-                    {
-                        return false;
-                    }
-
-                    Bow.SetLoaded(slingshot, Bow.GetLoaded(slingshot) - 1);
-                }
-                else if (slingshot.GetSlingshotChargeTime() < 1f)
-                {
-                    return false;
-                }
-
-                // Get the ammo to be used
-                if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
-                {
-                    slingshot.attachments[0].Stack--;
-                    if (slingshot.attachments[0].Stack <= 0)
-                    {
-                        slingshot.attachments[0] = null;
-                    }
-                }
-
                 v.X *= -1f;
                 v.Y *= -1f;
 
                 int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                var arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
                 {
                     IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                 };
                 arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
 
-                location.projectiles.Add(arrow);
-
-                // Play firing sound
-                Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
+                return PerformFire(arrow, slingshot, location, who);
             }
             else
             {
@@ -350,7 +368,14 @@ namespace Archery.Framework.Objects.Weapons
 
             Archery.modHelper.Reflection.GetField<bool>(slingshot, "canPlaySound").SetValue(true);
 
-            return true;
+            return arrow;
+        }
+
+        internal static BasicProjectile PerformFire(Slingshot slingshot, GameLocation location, Farmer who)
+        {
+            var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
+
+            return PerformFire(ammoModel, slingshot, location, who);
         }
 
         internal static void PerformSpecial(WeaponModel weaponModel, Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
