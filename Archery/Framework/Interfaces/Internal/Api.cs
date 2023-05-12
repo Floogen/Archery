@@ -1,9 +1,9 @@
 ﻿using Archery.Framework.Models.Generic;
 using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Projectiles;
@@ -178,30 +178,36 @@ namespace Archery.Framework.Interfaces.Internal
             return GenerateResponsePair(true, $"Played sound {sound.Name} at {position}");
         }
 
-        public KeyValuePair<bool, Vector2> GetProjectileVelocity(IManifest callerManifest, BasicProjectile projectile)
+        public KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile)
         {
             if (projectile is null)
             {
-                return new KeyValuePair<bool, Vector2>(false, Vector2.Zero);
+                return new KeyValuePair<bool, IProjectileData>(false, null);
             }
 
-            var xVelocity = _helper.Reflection.GetField<NetFloat>(projectile, "xVelocity").GetValue();
-            var yVelocity = _helper.Reflection.GetField<NetFloat>(projectile, "yVelocity").GetValue();
+            if (projectile is not ArrowProjectile arrowProjectile)
+            {
+                return new KeyValuePair<bool, IProjectileData>(false, null);
+            }
 
-            return new KeyValuePair<bool, Vector2>(true, new Vector2(xVelocity.Value, yVelocity.Value));
+            return new KeyValuePair<bool, IProjectileData>(true, arrowProjectile.GetData());
         }
 
-        public KeyValuePair<bool, string> SetProjectileVelocity(IManifest callerManifest, BasicProjectile projectile, Vector2 velocity)
+        public KeyValuePair<bool, string> SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data)
         {
             if (projectile is null)
             {
                 return GenerateResponsePair(false, "Given projectile is null!");
             }
 
-            _helper.Reflection.GetField<NetFloat>(projectile, "xVelocity").GetValue().Value = velocity.X;
-            _helper.Reflection.GetField<NetFloat>(projectile, "yVelocity").GetValue().Value = velocity.Y;
+            if (projectile is not ArrowProjectile arrowProjectile)
+            {
+                return GenerateResponsePair(false, "Given projectile is not a ArrowProjectile!");
+            }
 
-            return GenerateResponsePair(true, $"Set the velocity of the projectile to {velocity}");
+            arrowProjectile.Override(data);
+
+            return GenerateResponsePair(true, $"Overrode the projectile with the given IProjectile");
         }
 
         public KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage)
