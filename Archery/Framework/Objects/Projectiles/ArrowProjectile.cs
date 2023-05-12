@@ -28,7 +28,7 @@ namespace Archery.Framework.Objects.Projectiles
         private float _startingAlpha;
         private int _lightId;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, int bouncesTillDestruct, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, bouncesTillDestruct, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
@@ -38,6 +38,8 @@ namespace Archery.Framework.Objects.Projectiles
             _tail = new Queue<Vector2>();
 
             _startingAlpha = 1f;
+
+            base.bouncesLeft.Value = _ammoModel.BounceCountRange is null ? 0 : _ammoModel.BounceCountRange.Get(Game1.random);
 
             base.maxTravelDistance.Value = _ammoModel.MaxTravelDistance;
 

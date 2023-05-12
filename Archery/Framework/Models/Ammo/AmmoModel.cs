@@ -21,6 +21,7 @@ namespace Archery.Framework.Models.Weapons
 
         public Sound ImpactSound { get; set; }
         public Light Light { get; set; }
+        public RandomRange BounceCountRange { get; set; }
 
         internal bool CanBreak()
         {
