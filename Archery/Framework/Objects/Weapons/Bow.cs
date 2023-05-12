@@ -217,28 +217,28 @@ namespace Archery.Framework.Objects.Weapons
                 Game1.debugOutput = "playerPos: " + who.getStandingPosition().ToString() + ", mousePos: " + mouseX + ", " + mouseY;
                 slingshot.mouseDragAmount++;
 
-                Vector2 shoot_origin = slingshot.GetShootOrigin(who);
-                Vector2 aim_offset = slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)) - shoot_origin;
-                if (Math.Abs(aim_offset.X) > Math.Abs(aim_offset.Y))
+                Vector2 shootOrigin = slingshot.GetShootOrigin(who);
+                Vector2 aimOffset = slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)) - shootOrigin;
+                if (Math.Abs(aimOffset.X) > Math.Abs(aimOffset.Y))
                 {
-                    if (aim_offset.X < 0f)
+                    if (aimOffset.X < 0f)
                     {
                         who.faceDirection(3);
                     }
 
-                    if (aim_offset.X > 0f)
+                    if (aimOffset.X > 0f)
                     {
                         who.faceDirection(1);
                     }
                 }
                 else
                 {
-                    if (aim_offset.Y < 0f)
+                    if (aimOffset.Y < 0f)
                     {
                         who.faceDirection(0);
                     }
 
-                    if (aim_offset.Y > 0f)
+                    if (aimOffset.Y > 0f)
                     {
                         who.faceDirection(2);
                     }
@@ -247,11 +247,11 @@ namespace Archery.Framework.Objects.Weapons
                 // Trigger charging / charged events
                 if (currentChargeTime >= 1f)
                 {
-                    Archery.internalApi.TriggerOnWeaponCharged(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shoot_origin });
+                    Archery.internalApi.TriggerOnWeaponCharged(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shootOrigin });
                 }
                 else
                 {
-                    Archery.internalApi.TriggerOnWeaponCharging(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shoot_origin });
+                    Archery.internalApi.TriggerOnWeaponCharging(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shootOrigin });
                 }
 
                 // Handle playing sounds
@@ -362,14 +362,14 @@ namespace Archery.Framework.Objects.Weapons
                 int mouseX = slingshot.aimPos.X;
                 int mouseY = slingshot.aimPos.Y;
 
-                Vector2 shoot_origin = slingshot.GetShootOrigin(who);
+                Vector2 shootOrigin = slingshot.GetShootOrigin(who);
                 Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
 
                 v.X *= -1f;
                 v.Y *= -1f;
 
                 int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0f, 0f - v.X, 0f - v.Y, shootOrigin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
                 {
                     IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                 };
@@ -559,8 +559,8 @@ namespace Archery.Framework.Objects.Weapons
             int mouseX = point.X;
             int mouseY = point.Y;
 
-            Vector2 shoot_origin = slingshot.GetShootOrigin(who);
-            float frontArmRotation = (float)Math.Atan2((float)mouseY - shoot_origin.Y, (float)mouseX - shoot_origin.X) + (float)Math.PI;
+            Vector2 shootOrigin = slingshot.GetShootOrigin(who);
+            float frontArmRotation = (float)Math.Atan2((float)mouseY - shootOrigin.Y, (float)mouseX - shootOrigin.X) + (float)Math.PI;
 
             frontArmRotation -= (float)Math.PI;
             if (frontArmRotation < 0f)
