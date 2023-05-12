@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Interfaces;
+using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Managers;
 using Archery.Framework.Models;
 using Archery.Framework.Models.Enums;
@@ -23,6 +24,7 @@ namespace Archery
         // Shared static helpers
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
+        internal static IManifest manifest;
 
         // Managers
         internal static ApiManager apiManager;
@@ -30,17 +32,24 @@ namespace Archery
         internal static ConditionManager conditionManager;
         internal static ModelManager modelManager;
 
+        // Utilities
+        internal static Api internalApi;
+
         public override void Entry(IModHelper helper)
         {
-            // Set up the monitor, helper and multiplayer
+            // Set up the monitor, helper and manifest
             monitor = Monitor;
             modHelper = helper;
+            manifest = ModManifest;
 
             // Load managers
             apiManager = new ApiManager(monitor);
             assetManager = new AssetManager(modHelper);
             conditionManager = new ConditionManager(modHelper);
             modelManager = new ModelManager(monitor);
+
+            // Load internal API
+            internalApi = new Api(monitor);
 
             // Load our Harmony patches
             try
@@ -79,6 +88,11 @@ namespace Archery
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+        }
+
+        public override object GetApi()
+        {
+            return internalApi;
         }
 
         private void OnUpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
