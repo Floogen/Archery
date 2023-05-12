@@ -228,7 +228,7 @@ namespace Archery.Framework.Objects.Projectiles
                 }
             }
 
-            // Note: behaviorOnCollisionWithOther handles collisions with walls / barriers, will want to override
+            // Note: behaviorOnCollisionWithOther handles collisions with walls / barriers
             this.behaviorOnCollisionWithOther(location);
 
             // Play ammo impact sound
