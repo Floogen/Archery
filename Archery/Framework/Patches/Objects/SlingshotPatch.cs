@@ -117,7 +117,10 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.IsValid(__instance))
             {
-                Bow.PerformFire(__instance, location, who);
+                if (Bow.IsUsingSpecialAttack(__instance) is false)
+                {
+                    Bow.PerformFire(__instance, location, who);
+                }
 
                 return false;
             }

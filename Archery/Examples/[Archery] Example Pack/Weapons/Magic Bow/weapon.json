@@ -28,7 +28,8 @@
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Snipe"
+    "Id": "PeacefulEnd.Archery/Snipe",
+    "TriggerAfterButtonRelease": true
   },
 
   // Set how far back monsters are pushed upon impact with this weapon's projectile

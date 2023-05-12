@@ -156,6 +156,24 @@ namespace Archery.Framework.Utilities
             return false;
         }
 
+        internal static bool WereSpecialAttackButtonsPressed()
+        {
+            if (Game1.oldMouseState.RightButton == ButtonState.Pressed)
+            {
+                return true;
+            }
+            if (Game1.oldPadState.Buttons.A == ButtonState.Pressed)
+            {
+                return true;
+            }
+            if (Game1.isOneOfTheseKeysDown(Game1.oldKBState, Game1.options.actionButton))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         internal static void TeleportToArena(string command, string[] args)
         {
             // Create the arena if needed

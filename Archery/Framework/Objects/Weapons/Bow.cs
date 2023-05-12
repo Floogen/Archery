@@ -98,12 +98,17 @@ namespace Archery.Framework.Objects.Weapons
             {
                 if (state)
                 {
-                    Bow.CooldownAdditiveScale = 2f;
-                    Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id);
+                    RefreshSpecialAttackCooldown(weaponModel.SpecialAttack);
                 }
 
                 tool.modData[ModDataKeys.IS_USING_SPECIAL_ATTACK_FLAG] = state.ToString();
             }
+        }
+
+        internal static void RefreshSpecialAttackCooldown(SpecialAttackModel specialAttack)
+        {
+            Bow.CooldownAdditiveScale = 2f;
+            Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id);
         }
 
         internal static bool CanThisBeAttached(Tool tool, Object item)
@@ -404,12 +409,20 @@ namespace Archery.Framework.Objects.Weapons
         internal static void PerformSpecial(WeaponModel weaponModel, Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
         {
             // Set the required farmer flags
+            who.usingSlingshot = true;
             who.UsingTool = true;
             who.CanMove = false;
+
+            if (weaponModel.SpecialAttack.TriggerAfterButtonRelease && Toolkit.AreSpecialAttackButtonsPressed() is true)
+            {
+                RefreshSpecialAttackCooldown(weaponModel.SpecialAttack);
+                return;
+            }
 
             if (Archery.internalApi.HandleSpecialAttack(weaponModel.Type, weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
             {
                 // Reset the required farmer flags
+                who.usingSlingshot = false;
                 who.UsingTool = false;
                 who.CanMove = true;
 
