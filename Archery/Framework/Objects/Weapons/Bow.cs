@@ -316,7 +316,7 @@ namespace Archery.Framework.Objects.Weapons
                 // Handle Crossbow ammo loaded
                 if (weaponModel.Type is WeaponType.Crossbow)
                 {
-                    if (Bow.IsLoaded(slingshot) is false && Toolkit.AreToolButtonSuppressed() is false)
+                    if (Bow.IsLoaded(slingshot) is false || Toolkit.AreToolButtonSuppressed() is true)
                     {
                         return false;
                     }
