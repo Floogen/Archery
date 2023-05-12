@@ -362,7 +362,7 @@ namespace Archery.Framework.Objects.Weapons
         internal static BasicProjectile PerformFire(AmmoModel ammoModel, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
-            if (weaponModel is null || ammoModel is null)
+            if (weaponModel is null)
             {
                 return null;
             }
