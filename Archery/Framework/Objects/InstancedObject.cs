@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models;
+using Archery.Framework.Models.Weapons;
 using Archery.Framework.Utilities;
 using StardewValley;
 using System;
@@ -84,16 +85,22 @@ namespace Archery.Framework.Objects
 
         internal static string GetDescription(Item item)
         {
+            string description = "DEFAULT DESCRIPTION";
             if (IsValid(item) is true)
             {
                 var model = GetModel<BaseModel>(item);
                 if (model is not null)
                 {
-                    return model.Description;
+                    description = model.Description;
+
+                    if (model is WeaponModel weaponModel && weaponModel.SpecialAttack is not null)
+                    {
+                        description = $"{description}\n\n{Archery.internalApi.GetSpecialAttackName(weaponModel.SpecialAttack.Id)}\n{Archery.internalApi.GetSpecialAttackDescription(weaponModel.SpecialAttack.Id)}";
+                    }
                 }
             }
 
-            return "DEFAULT DESCRIPTION";
+            return Game1.parseText(description, Game1.smallFont, System.Math.Max(272, (int)Game1.dialogueFont.MeasureString((description == null) ? "" : description).X));
         }
     }
 }
