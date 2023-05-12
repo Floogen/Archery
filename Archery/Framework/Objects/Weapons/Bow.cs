@@ -177,16 +177,6 @@ namespace Archery.Framework.Objects.Weapons
                 return;
             }
 
-            // Update the special attack cooldown, if applicable
-            if (ActiveCooldown >= 0)
-            {
-                ActiveCooldown -= time.ElapsedGameTime.Milliseconds;
-            }
-            if (CooldownAdditiveScale >= 0)
-            {
-                CooldownAdditiveScale -= 0.1f;
-            }
-
             // Skip if the weapon isn't the current tool
             if (who.CurrentTool != slingshot)
             {
