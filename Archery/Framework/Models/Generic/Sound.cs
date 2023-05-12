@@ -1,9 +1,10 @@
-﻿using StardewValley;
+﻿using Archery.Framework.Interfaces.Internal;
+using StardewValley;
 using System;
 
 namespace Archery.Framework.Models.Generic
 {
-    public class Sound
+    public class Sound : ISound
     {
         public string Name { get; set; }
         public int Pitch { get; set; } = -1;

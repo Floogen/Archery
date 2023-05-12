@@ -11,7 +11,7 @@ namespace Archery.Framework.Models.Weapons
         public string Id { get; set; }
         public List<object> Arguments { get; set; }
 
-        internal IApi.ISpecialAttack Generate(Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
+        internal ISpecialAttack Generate(Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
         {
             return new SpecialAttack()
             {

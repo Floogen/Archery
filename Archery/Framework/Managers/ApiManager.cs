@@ -7,7 +7,7 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Linq;
-using static Archery.Framework.Interfaces.Internal.IApi;
+using Archery.Framework.Interfaces.Internal;
 
 namespace Archery.Framework.Managers
 {
