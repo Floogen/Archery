@@ -140,6 +140,9 @@ namespace Archery
                 // Do nothing
             }
 
+            // Register the native special attacks from our framework
+            apiManager.RegisterNativeSpecialAttacks();
+
             // Load any owned content packs
             LoadContentPacks();
         }

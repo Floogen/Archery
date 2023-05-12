@@ -9,5 +9,8 @@
         // Item related
         internal const string AMMO_FLAG = "PeacefulEnd.Archery.Ammo";
         internal const string RECIPE_FLAG = "PeacefulEnd.Archery.Recipe";
+
+        // Special attack related
+        internal const string SPECIAL_ATTACK_SNAPSHOT_COUNT = "PeacefulEnd.Archery.SpecialAttack.Snapshot.Count";
     }
 }

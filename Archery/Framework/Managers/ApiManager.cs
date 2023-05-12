@@ -1,11 +1,13 @@
 ﻿using Archery.Framework.Interfaces;
 using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Weapons;
+using Archery.Framework.Utilities;
 using Leclair.Stardew.BetterCrafting;
 using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Linq;
+using static Archery.Framework.Interfaces.Internal.IApi;
 
 namespace Archery.Framework.Managers
 {
@@ -100,6 +102,43 @@ namespace Archery.Framework.Managers
 
             // Add to the Archery category
             betterCraftingApi.AddRecipesToDefaultCategory(false, "PeacefulEnd.Archery", validModelIds);
+        }
+
+        public void RegisterNativeSpecialAttacks()
+        {
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, SnapshotSpecialAttack);
+        }
+
+        private bool SnapshotSpecialAttack(ISpecialAttack specialAttack)
+        {
+            var slingshot = specialAttack.Slingshot;
+
+            int shotsFired = 0;
+            if (slingshot.modData.TryGetValue(ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT, out string rawShotsFired) is false || int.TryParse(rawShotsFired, out shotsFired) is false)
+            {
+                slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = shotsFired.ToString();
+            }
+
+            var currentChargeTime = slingshot.GetSlingshotChargeTime();
+            if (currentChargeTime < 0.3f)
+            {
+                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.3f);
+            }
+            else if (currentChargeTime >= 1f)
+            {
+                Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
+                shotsFired++;
+            }
+            slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = shotsFired.ToString();
+
+            if (shotsFired >= 2)
+            {
+                slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = 0.ToString();
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

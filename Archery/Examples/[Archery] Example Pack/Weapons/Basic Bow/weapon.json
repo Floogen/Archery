@@ -27,6 +27,10 @@
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 300,
 
+  "SpecialAttack": {
+    "Id": "PeacefulEnd.Archery/Snapshot"
+  },
+
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
     // This unlock condition uses GameStateQuery to only show the recipe if the player has learned it
