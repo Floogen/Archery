@@ -26,6 +26,7 @@ namespace Archery.Framework.Interfaces.Internal
         public event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
         public event EventHandler<CrossbowLoadedEventArgs> OnCrossbowLoaded;
         public event EventHandler<AmmoChangedEventArgs> OnAmmoChanged;
+        public event EventHandler<AmmoHitMonsterEventArgs> OnAmmoHitMonster;
 
 
         internal Api(IMonitor monitor)
@@ -81,6 +82,15 @@ namespace Archery.Framework.Interfaces.Internal
             if (handler is not null)
             {
                 handler(this, ammoChangedEventArgs);
+            }
+        }
+
+        internal void TriggerOnAmmoHitMonster(AmmoHitMonsterEventArgs ammoHitMonsterEventArgs)
+        {
+            var handler = OnAmmoHitMonster;
+            if (handler is not null)
+            {
+                handler(this, ammoHitMonsterEventArgs);
             }
         }
         #endregion

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Projectiles;
 using StardewValley.Tools;
 using System;
@@ -24,6 +25,7 @@ namespace Archery.Framework.Interfaces.Internal
         event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
         event EventHandler<CrossbowLoadedEventArgs> OnCrossbowLoaded;
         event EventHandler<AmmoChangedEventArgs> OnAmmoChanged;
+        event EventHandler<AmmoHitMonsterEventArgs> OnAmmoHitMonster;
     }
 
     #region Interface objects
@@ -89,9 +91,9 @@ namespace Archery.Framework.Interfaces.Internal
         public string AmmoId { get; init; }
     }
 
-    public class AmmoEventArgs : BaseEventArgs
+    public class AmmoHitMonsterEventArgs : WeaponFiredEventArgs
     {
-        public string AmmoId { get; init; }
+        public Monster Monster { get; init; }
     }
     #endregion
 }
