@@ -213,10 +213,19 @@ namespace Archery.Framework.Interfaces.Internal
                 return new KeyValuePair<bool, BasicProjectile>(false, null);
             }
 
-            var ammoModel = Archery.modelManager.GetSpecificModel<AmmoModel>(ammoId);
+            var arrow = Bow.PerformFire(Archery.modelManager.GetSpecificModel<AmmoModel>(ammoId), slingshot, location, who, suppressFiringSound);
+            if (arrow is null)
+            {
+                arrow = Bow.PerformFire(slingshot, location, who, suppressFiringSound);
 
-            var arrow = ammoModel is null ? Bow.PerformFire(slingshot, location, who) : Bow.PerformFire(ammoModel, slingshot, location, who);
-            return PerformFire(callerManifest, arrow, slingshot, location, who, suppressFiringSound);
+                if (arrow is null)
+                {
+                    _monitor.Log("Bow.PerformFire returned null!", LogLevel.Trace);
+                    return new KeyValuePair<bool, BasicProjectile>(false, null);
+                }
+            }
+
+            return new KeyValuePair<bool, BasicProjectile>(true, arrow);
         }
 
         public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)

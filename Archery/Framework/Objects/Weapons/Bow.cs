@@ -351,7 +351,7 @@ namespace Archery.Framework.Objects.Weapons
             return projectile;
         }
 
-        internal static BasicProjectile PerformFire(AmmoModel ammoModel, Slingshot slingshot, GameLocation location, Farmer who)
+        internal static BasicProjectile PerformFire(AmmoModel ammoModel, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
             if (weaponModel is null || ammoModel is null)
@@ -380,7 +380,7 @@ namespace Archery.Framework.Objects.Weapons
                 };
                 arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
 
-                return PerformFire(arrow, ammoModel.Id, slingshot, location, who);
+                return PerformFire(arrow, ammoModel.Id, slingshot, location, who, suppressFiringSound);
             }
             else
             {
@@ -389,14 +389,14 @@ namespace Archery.Framework.Objects.Weapons
 
             Archery.modHelper.Reflection.GetField<bool>(slingshot, "canPlaySound").SetValue(true);
 
-            return arrow;
+            return null;
         }
 
-        internal static BasicProjectile PerformFire(Slingshot slingshot, GameLocation location, Farmer who)
+        internal static BasicProjectile PerformFire(Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
 
-            return PerformFire(ammoModel, slingshot, location, who);
+            return PerformFire(ammoModel, slingshot, location, who, suppressFiringSound);
         }
 
         internal static void PerformSpecial(WeaponModel weaponModel, Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
