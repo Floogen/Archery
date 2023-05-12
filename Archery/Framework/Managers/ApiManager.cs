@@ -120,9 +120,9 @@ namespace Archery.Framework.Managers
             }
 
             var currentChargeTime = slingshot.GetSlingshotChargeTime();
-            if (currentChargeTime < 0.3f)
+            if (currentChargeTime < 0.5f)
             {
-                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.3f);
+                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.5f);
             }
             else if (currentChargeTime >= 1f)
             {
