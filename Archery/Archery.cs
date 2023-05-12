@@ -25,6 +25,7 @@ namespace Archery
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
         internal static IManifest manifest;
+        internal static Multiplayer multiplayer;
 
         // Managers
         internal static ApiManager apiManager;
@@ -41,6 +42,7 @@ namespace Archery
             monitor = Monitor;
             modHelper = helper;
             manifest = ModManifest;
+            multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 
             // Load managers
             apiManager = new ApiManager(monitor);
