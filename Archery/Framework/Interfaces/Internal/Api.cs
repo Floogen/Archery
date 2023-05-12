@@ -15,6 +15,7 @@ namespace Archery.Framework.Interfaces.Internal
     public class Api : IApi
     {
         private IMonitor _monitor;
+        internal static IModHelper _helper;
         private Dictionary<string, Func<ISpecialAttack, bool>> _registeredSpecialAttackMethods;
         private Dictionary<string, WeaponType> _registeredSpecialAttackFilter;
         private Dictionary<string, Func<string>> _registeredSpecialAttackNames;
@@ -29,9 +30,10 @@ namespace Archery.Framework.Interfaces.Internal
         public event EventHandler<AmmoHitMonsterEventArgs> OnAmmoHitMonster;
 
 
-        internal Api(IMonitor monitor)
+        internal Api(IMonitor monitor, IModHelper helper)
         {
             _monitor = monitor;
+            _helper = helper;
             _registeredSpecialAttackMethods = new Dictionary<string, Func<ISpecialAttack, bool>>();
             _registeredSpecialAttackFilter = new Dictionary<string, WeaponType>();
             _registeredSpecialAttackNames = new Dictionary<string, Func<string>>();

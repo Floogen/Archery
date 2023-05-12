@@ -49,7 +49,7 @@ namespace Archery
             modelManager = new ModelManager(monitor);
 
             // Load internal API
-            internalApi = new Api(monitor);
+            internalApi = new Api(monitor, modHelper);
 
             // Load our Harmony patches
             try
