@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="35" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="35" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="2">
 	<tileset firstgid="1" name="mine" tilewidth="16" tileheight="16" tilecount="288" columns="16">
 		<image source="Mines/mine" width="256" height="288"/>
 		<tile id="0">
@@ -290,7 +290,7 @@
 			0,0,101,104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,73,112,0,0,
 			0,0,117,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,89,128,0,0,
 			0,69,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,105,144,0,0,
-			0,85,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,121,160,0,0,
+			0,85,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,238,0,0,0,0,0,0,0,0,0,121,160,0,0,
 			0,101,104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,176,0,0,
 			0,117,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,192,0,0,
 			0,133,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,208,0,0,
@@ -351,6 +351,12 @@
 		</data>
 	</layer>
 	<objectgroup id="4" name="Back"/>
-	<objectgroup id="5" name="Buildings"/>
+	<objectgroup id="5" name="Buildings">
+		<object id="1" name="TileData" x="336" y="256" width="16" height="16">
+			<properties>
+				<property name="Action" value="ArcheryShop"/>
+			</properties>
+		</object>
+	</objectgroup>
 	<objectgroup id="6" name="Front"/>
 </map>

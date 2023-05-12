@@ -242,10 +242,6 @@ namespace Archery.Framework.Utilities
                 }
             }
 
-            // Give the player bow and arrows
-            GiveBow(null, new string[0]);
-            GiveArrow(null, new string[0]);
-
             // Warp the farmer to the arena
             Game1.warpFarmer(ARENA_MAP_NAME, 16, 19, false);
         }

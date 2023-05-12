@@ -6,6 +6,7 @@ using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Characters;
+using Archery.Framework.Patches.Locations;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Utilities;
 using Archery.Framework.Utilities.Backport;
@@ -57,6 +58,9 @@ namespace Archery
             try
             {
                 var harmony = new Harmony(ModManifest.UniqueID);
+
+                // Apply Location patches
+                new GameLocationPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Crafting patches
                 new CraftingRecipePatch(monitor, modHelper).Apply(harmony);
