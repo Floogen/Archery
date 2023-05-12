@@ -21,6 +21,11 @@ namespace Archery.Framework.Interfaces.Internal
         private Dictionary<string, Func<string>> _registeredSpecialAttackDescriptions;
         private Dictionary<string, Func<int>> _registeredSpecialAttackCooldowns;
 
+        public event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
+        public event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
+        public event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
+
+
         internal Api(IMonitor monitor)
         {
             _monitor = monitor;
@@ -30,6 +35,35 @@ namespace Archery.Framework.Interfaces.Internal
             _registeredSpecialAttackDescriptions = new Dictionary<string, Func<string>>();
             _registeredSpecialAttackCooldowns = new Dictionary<string, Func<int>>();
         }
+
+        #region Events
+        internal void TriggerOnWeaponFired(WeaponFiredEventArgs weaponFiredEventArgs)
+        {
+            var handler = OnWeaponFired;
+            if (handler is not null)
+            {
+                handler(this, weaponFiredEventArgs);
+            }
+        }
+
+        internal void TriggerOnWeaponCharging(WeaponChargeEventArgs weaponChargeEventArgs)
+        {
+            var handler = OnWeaponCharging;
+            if (handler is not null)
+            {
+                handler(this, weaponChargeEventArgs);
+            }
+        }
+
+        internal void TriggerOnWeaponCharged(WeaponChargeEventArgs weaponChargeEventArgs)
+        {
+            var handler = OnWeaponCharged;
+            if (handler is not null)
+            {
+                handler(this, weaponChargeEventArgs);
+            }
+        }
+        #endregion
 
         internal bool HandleSpecialAttack(WeaponType weaponType, string specialAttackId, ISpecialAttack specialAttack)
         {
@@ -129,7 +163,7 @@ namespace Archery.Framework.Interfaces.Internal
                 return new KeyValuePair<bool, BasicProjectile>(false, null);
             }
 
-            var arrow = Bow.PerformFire(projectile, slingshot, location, who, suppressFiringSound);
+            var arrow = Bow.PerformFire(projectile, null, slingshot, location, who, suppressFiringSound);
             if (arrow is null)
             {
                 _monitor.Log("Bow.PerformFire returned null!", LogLevel.Trace);

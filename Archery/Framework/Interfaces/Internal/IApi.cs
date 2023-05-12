@@ -18,9 +18,13 @@ namespace Archery.Framework.Interfaces.Internal
         KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
         KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
         KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name);
+
+        event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
+        event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
+        event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
     }
 
-    #region interface objects
+    #region Interface objects
     public interface ISpecialAttack
     {
         public Slingshot Slingshot { get; init; }
@@ -41,7 +45,7 @@ namespace Archery.Framework.Interfaces.Internal
     }
     #endregion
 
-    #region enums
+    #region Enums
     public enum WeaponType
     {
         Any,
@@ -49,6 +53,29 @@ namespace Archery.Framework.Interfaces.Internal
         Slingshot,
         Bow,
         Crossbow
+    }
+    #endregion
+
+    #region Events
+    public class BaseEventArgs : EventArgs
+    {
+        public Vector2 Origin { get; init; }
+    }
+    public class WeaponFiredEventArgs : BaseEventArgs
+    {
+        public string WeaponId { get; init; }
+        public string AmmoId { get; init; }
+        public BasicProjectile Projectile { get; init; }
+    }
+    public class WeaponChargeEventArgs : BaseEventArgs
+    {
+        public string WeaponId { get; init; }
+        public float ChargePercentage { get; init; }
+    }
+
+    public class AmmoEventArgs : BaseEventArgs
+    {
+        public string AmmoId { get; init; }
     }
     #endregion
 }

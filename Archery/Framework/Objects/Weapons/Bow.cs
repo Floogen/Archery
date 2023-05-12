@@ -244,6 +244,17 @@ namespace Archery.Framework.Objects.Weapons
                     }
                 }
 
+                // Trigger charging / charged events
+                if (currentChargeTime >= 1f)
+                {
+                    Archery.internalApi.TriggerOnWeaponCharged(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shoot_origin });
+                }
+                else
+                {
+                    Archery.internalApi.TriggerOnWeaponCharging(new WeaponChargeEventArgs() { WeaponId = weaponModel.Id, ChargePercentage = currentChargeTime, Origin = shoot_origin });
+                }
+
+                // Handle playing sounds
                 if (canPlaySound && (currentChargeTime >= 1f || Bow.IsLoaded(slingshot)))
                 {
                     Toolkit.PlaySound(weaponModel.FinishChargingSound, weaponModel.Id, who.getStandingPosition());
@@ -286,7 +297,8 @@ namespace Archery.Framework.Objects.Weapons
             who.FarmerSprite.setCurrentFrame(42 + offset);
         }
 
-        internal static BasicProjectile PerformFire(BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        // Note: ammoId can be null if called from Api.PerformFire(BasicProjectile...)
+        internal static BasicProjectile PerformFire(BasicProjectile projectile, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
             if (weaponModel is null || projectile is null)
@@ -328,6 +340,9 @@ namespace Archery.Framework.Objects.Weapons
                 Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, slingshot.GetShootOrigin(who));
             }
 
+            // Trigger event
+            Archery.internalApi.TriggerOnWeaponFired(new WeaponFiredEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoId, Projectile = projectile, Origin = slingshot.GetShootOrigin(who) });
+
             return projectile;
         }
 
@@ -360,7 +375,7 @@ namespace Archery.Framework.Objects.Weapons
                 };
                 arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
 
-                return PerformFire(arrow, slingshot, location, who);
+                return PerformFire(arrow, ammoModel.Id, slingshot, location, who);
             }
             else
             {
