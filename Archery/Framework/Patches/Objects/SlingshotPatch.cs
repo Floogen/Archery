@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Tools;
 using System;
 using Object = StardewValley.Object;
@@ -47,8 +48,25 @@ namespace Archery.Framework.Patches.Objects
                     scaleSize *= 0.75f;
                 }
 
+                float coolDownLevel = 0f;
+                float addedScale = 0f;
+                bool drawingAsDebris = drawShadow && drawStackNumber == StackDrawType.Hide;
+                if (weaponModel.SpecialAttack is not null)
+                {
+                    if (Bow.ActiveCooldown > 0)
+                    {
+                        coolDownLevel = Bow.ActiveCooldown / (float)(Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id));
+                    }
+                    addedScale = Bow.CooldownAdditiveScale;
+
+                    if (!drawShadow || drawingAsDebris)
+                    {
+                        addedScale = 0f;
+                    }
+                }
+
                 var weaponIcon = weaponModel.GetIcon(Game1.player);
-                spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponIcon.Scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + new Vector2(34f, 32f) * scaleSize, weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponIcon.Scale + addedScale, SpriteEffects.None, layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
@@ -60,6 +78,14 @@ namespace Archery.Framework.Patches.Objects
                 {
                     spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(16f, 16f), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 451, 16, 16), color, 0f, Vector2.Zero, 3f, SpriteEffects.None, layerDepth + 0.0001f);
                 }
+                else
+                {
+                    if (coolDownLevel > 0f && drawShadow && !drawingAsDebris && (Game1.activeClickableMenu == null || !(Game1.activeClickableMenu is ShopMenu) || scaleSize != 1f))
+                    {
+                        spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)location.X, (int)location.Y + (64 - (int)(coolDownLevel * 64f)), 64, (int)(coolDownLevel * 64f)), Color.Red * 0.66f);
+                    }
+                }
+
                 return false;
             }
 
@@ -82,7 +108,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.IsValid(__instance))
             {
-                Bow.PerformFire(__instance, ref ___canPlaySound, location, who);
+                Bow.PerformFire(__instance, location, who);
 
                 return false;
             }
@@ -112,7 +138,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Bow.IsValid(__instance))
             {
-                __result = Bow.GetSlingshotChargeTimePostfix(__instance);
+                __result = Bow.GetSlingshotChargeTime(__instance);
             }
         }
 

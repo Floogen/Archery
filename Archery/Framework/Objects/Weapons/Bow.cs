@@ -17,6 +17,9 @@ namespace Archery.Framework.Objects.Weapons
 {
     internal class Bow : InstancedObject
     {
+        internal static int ActiveCooldown = 0;
+        internal static float CooldownAdditiveScale = 0;
+
         public static Slingshot CreateInstance(WeaponModel weaponModel)
         {
             var bow = new Slingshot();
@@ -67,6 +70,40 @@ namespace Archery.Framework.Objects.Weapons
             }
         }
 
+        internal static bool CanUseSpecialAttack(Tool tool)
+        {
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.SpecialAttack is not null && Bow.IsUsingSpecialAttack(tool) is false && ActiveCooldown <= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool IsUsingSpecialAttack(Tool tool)
+        {
+            if (Bow.IsValid(tool) && tool.modData.TryGetValue(ModDataKeys.IS_USING_SPECIAL_ATTACK_FLAG, out string rawIsUsingSpecial) && bool.TryParse(rawIsUsingSpecial, out bool parsedIsUsingSpecial))
+            {
+                return parsedIsUsingSpecial;
+            }
+
+            return false;
+        }
+
+        internal static void SetUsingSpecialAttack(Tool tool, bool state)
+        {
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            {
+                if (state)
+                {
+                    Bow.CooldownAdditiveScale = 2f;
+                    Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id);
+                }
+
+                tool.modData[ModDataKeys.IS_USING_SPECIAL_ATTACK_FLAG] = state.ToString();
+            }
+        }
+
         internal static bool CanThisBeAttached(Tool tool, Object item)
         {
             if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo() is false)
@@ -80,7 +117,7 @@ namespace Archery.Framework.Objects.Weapons
             return false;
         }
 
-        internal static float GetSlingshotChargeTimePostfix(Tool tool)
+        internal static float GetSlingshotChargeTime(Tool tool)
         {
             if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
@@ -91,6 +128,18 @@ namespace Archery.Framework.Objects.Weapons
             }
 
             return 0f;
+        }
+
+        internal static void SetSlingshotChargeTime(Tool tool, float percentage)
+        {
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            {
+                var currentMilliseconds = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
+                var requiredChargingTime = weaponModel.ChargeTimeRequiredMilliseconds;
+
+                percentage = Utility.Clamp(percentage, 0f, 1f);
+                slingshot.pullStartTime = Math.Abs(currentMilliseconds - (percentage * requiredChargingTime)) / 1000;
+            }
         }
 
         internal static Object GetAmmoItem(Tool tool)
@@ -128,9 +177,31 @@ namespace Archery.Framework.Objects.Weapons
                 return;
             }
 
+            // Update the special attack cooldown, if applicable
+            if (ActiveCooldown >= 0)
+            {
+                ActiveCooldown -= time.ElapsedGameTime.Milliseconds;
+            }
+            if (CooldownAdditiveScale >= 0)
+            {
+                CooldownAdditiveScale -= 0.1f;
+            }
+
+            // Skip if the weapon isn't the current tool
+            if (who.CurrentTool != slingshot)
+            {
+                return;
+            }
+
             lastUser = who;
             finishEvent.Poll();
-            if (!who.usingSlingshot || who.CurrentTool != slingshot)
+
+            if (who.usingSlingshot is false && who.CurrentTool == slingshot && Toolkit.AreSpecialAttackButtonsPressed() && Bow.CanUseSpecialAttack(slingshot) is true)
+            {
+                SetUsingSpecialAttack(slingshot, true);
+                slingshot.pullStartTime = Game1.currentGameTime.TotalGameTime.TotalSeconds;
+            }
+            else if (who.usingSlingshot is false && Bow.IsUsingSpecialAttack(slingshot) is false)
             {
                 return;
             }
@@ -193,6 +264,12 @@ namespace Archery.Framework.Objects.Weapons
                     slingshot.lastClickY = mouseY;
                 }
 
+                if (Bow.IsUsingSpecialAttack(slingshot))
+                {
+                    Bow.PerformSpecial(weaponModel, slingshot, time, who.currentLocation, who);
+                    return;
+                }
+
                 if (slingshot.CanAutoFire())
                 {
                     bool first_fire = false;
@@ -217,13 +294,13 @@ namespace Archery.Framework.Objects.Weapons
             who.FarmerSprite.setCurrentFrame(42 + offset);
         }
 
-        internal static void PerformFire(Slingshot slingshot, ref bool canPlaySound, GameLocation location, Farmer who)
+        internal static bool PerformFire(Slingshot slingshot, GameLocation location, Farmer who)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(slingshot);
             var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
             if (weaponModel is null)
             {
-                return;
+                return false;
             }
 
             if (Bow.GetAmmoCount(slingshot) > 0 && ammoModel is not null)
@@ -236,51 +313,70 @@ namespace Archery.Framework.Objects.Weapons
                 Vector2 shoot_origin = slingshot.GetShootOrigin(who);
                 Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
 
-                if (!canPlaySound)
+                // Handle Crossbow ammo loaded
+                if (weaponModel.Type is WeaponType.Crossbow)
                 {
-                    // Handle Crossbow ammo loaded
-                    if (weaponModel.Type is WeaponType.Crossbow)
+                    if (Bow.IsLoaded(slingshot) is false && Toolkit.AreToolButtonSuppressed() is false)
                     {
-                        if (Bow.IsLoaded(slingshot) is false && Toolkit.AreToolButtonSuppressed() is false)
-                        {
-                            return;
-                        }
-
-                        Bow.SetLoaded(slingshot, Bow.GetLoaded(slingshot) - 1);
+                        return false;
                     }
 
-                    // Get the ammo to be used
-                    if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
-                    {
-                        slingshot.attachments[0].Stack--;
-                        if (slingshot.attachments[0].Stack <= 0)
-                        {
-                            slingshot.attachments[0] = null;
-                        }
-                    }
-
-                    v.X *= -1f;
-                    v.Y *= -1f;
-
-                    int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                    var arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
-                    {
-                        IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
-                    };
-                    arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
-
-                    location.projectiles.Add(arrow);
-
-                    // Play firing sound
-                    Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
+                    Bow.SetLoaded(slingshot, Bow.GetLoaded(slingshot) - 1);
                 }
+                else if (slingshot.GetSlingshotChargeTime() < 1f)
+                {
+                    return false;
+                }
+
+                // Get the ammo to be used
+                if (weaponModel.UsesInternalAmmo() is false && (weaponModel.ShouldAlwaysConsumeAmmo() || Game1.random.NextDouble() < weaponModel.ConsumeAmmoChance))
+                {
+                    slingshot.attachments[0].Stack--;
+                    if (slingshot.attachments[0].Stack <= 0)
+                    {
+                        slingshot.attachments[0] = null;
+                    }
+                }
+
+                v.X *= -1f;
+                v.Y *= -1f;
+
+                int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
+                var arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0, 0f, 0f - v.X, 0f - v.Y, shoot_origin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                {
+                    IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
+                };
+                arrow.startingRotation.Value = Bow.GetFrontArmRotation(who, slingshot);
+
+                location.projectiles.Add(arrow);
+
+                // Play firing sound
+                Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, shoot_origin);
             }
             else
             {
                 Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
             }
 
-            canPlaySound = true;
+            Archery.modHelper.Reflection.GetField<bool>(slingshot, "canPlaySound").SetValue(true);
+
+            return true;
+        }
+
+        internal static void PerformSpecial(WeaponModel weaponModel, Slingshot slingshot, GameTime time, GameLocation currentLocation, Farmer who)
+        {
+            // Set the required farmer flags
+            who.UsingTool = true;
+            who.CanMove = false;
+
+            if (Archery.internalApi.HandleSpecialAttack($"{Archery.manifest.UniqueID}/Snapshot", weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
+            {
+                // Reset the required farmer flags
+                who.UsingTool = false;
+                who.CanMove = true;
+
+                Bow.SetUsingSpecialAttack(slingshot, false);
+            }
         }
 
         internal static bool Draw(IDrawTool drawTool)

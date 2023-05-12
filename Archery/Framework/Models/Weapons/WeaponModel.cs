@@ -30,6 +30,8 @@ namespace Archery.Framework.Models.Weapons
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
 
+        public SpecialAttackModel SpecialAttack { get; set; }
+
         internal Texture2D ArmsTexture { get; set; }
         internal Texture2D RecoloredArmsTexture { get; set; }
 

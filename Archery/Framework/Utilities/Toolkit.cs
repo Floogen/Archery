@@ -4,6 +4,7 @@ using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using System;
@@ -130,6 +131,24 @@ namespace Archery.Framework.Utilities
             }
 
             return Archery.modHelper.Input.IsSuppressed(SButton.ControllerX);
+        }
+
+        internal static bool AreSpecialAttackButtonsPressed()
+        {
+            if (Game1.input.GetMouseState().RightButton == ButtonState.Pressed)
+            {
+                return true;
+            }
+            if (Game1.input.GetGamePadState().Buttons.A == ButtonState.Pressed)
+            {
+                return true;
+            }
+            if (Game1.isOneOfTheseKeysDown(Game1.input.GetKeyboardState(), Game1.options.actionButton))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         internal static void TeleportToArena(string command, string[] args)
