@@ -14,6 +14,7 @@ namespace Archery.Framework.Models.Weapons
         public DebrisModel Debris { get; set; }
         public ItemSpriteModel ProjectileSprite { get; set; }
         public ArrowTailModel Tail { get; set; }
+        public ExplosionModel Explosion { get; set; }
 
         public int BaseDamage { get; set; }
         public float BreakChance { get; set; } = 1.0f;

@@ -34,7 +34,11 @@ namespace Archery.Framework.Objects.Projectiles
         private float _criticalChance;
         private float _criticalDamageMultiplier;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        private bool _isExplosive;
+        private int _explosionRadius;
+        private int _explosionDamage;
+
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, false, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
@@ -49,6 +53,10 @@ namespace Archery.Framework.Objects.Projectiles
             _collectiveDamage = (int)((weaponModel.DamageRange.Get(Game1.random) + _baseDamage) * (1f + _owner.attackIncreaseModifier));
             _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
             _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);
+
+            _isExplosive = ammoModel.Explosion is not null;
+            _explosionRadius = ammoModel.Explosion is not null ? ammoModel.Explosion.Radius : 0;
+            _explosionDamage = ammoModel.Explosion is not null ? ammoModel.Explosion.Damage : 0;
 
             base.bouncesLeft.Value = _ammoModel.BounceCountRange is null ? 0 : _ammoModel.BounceCountRange.Get(Game1.random);
 
@@ -68,7 +76,10 @@ namespace Archery.Framework.Objects.Projectiles
                 BaseDamage = _baseDamage,
                 CriticalChance = _criticalChance,
                 CriticalDamageMultiplier = _criticalDamageMultiplier,
-                Velocity = new Vector2(base.xVelocity.Value, base.yVelocity.Value)
+                Velocity = new Vector2(base.xVelocity.Value, base.yVelocity.Value),
+                DoesExplodeOnImpact = _isExplosive,
+                ExplosionRadius = _explosionRadius,
+                ExplosionDamage = _explosionDamage
             };
         }
 
@@ -218,12 +229,24 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Note: behaviorOnCollisionWithOther handles collisions with walls / barriers, will want to override
-            base.behaviorOnCollisionWithOther(location);
+            this.behaviorOnCollisionWithOther(location);
 
             // Play ammo impact sound
             Toolkit.PlaySound(_ammoModel.ImpactSound, _ammoModel.Id, base.position.Value);
 
             return true;
+        }
+
+        public override void behaviorOnCollisionWithOther(GameLocation location)
+        {
+            if (_isExplosive)
+            {
+                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
+
+                location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
+            }
+
+            base.behaviorOnCollisionWithOther(location);
         }
 
         public override void behaviorOnCollisionWithMonster(NPC n, GameLocation location)
@@ -251,6 +274,13 @@ namespace Archery.Framework.Objects.Projectiles
 
             // Damage the monster
             location.damageMonster(n.GetBoundingBox(), _collectiveDamage, _collectiveDamage + 1, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+
+            if (_isExplosive)
+            {
+                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
+
+                location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
+            }
 
             // Trigger event
             Archery.internalApi.TriggerOnAmmoHitMonster(new Interfaces.Internal.AmmoHitMonsterEventArgs() { WeaponId = _weaponModel.Id, AmmoId = _ammoModel.Id, Monster = n as Monster, Projectile = this, Origin = this.position.Value });

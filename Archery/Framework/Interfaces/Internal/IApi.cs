@@ -48,6 +48,10 @@ namespace Archery.Framework.Interfaces.Internal
         public int? BaseDamage { get; set; }
         public float? CriticalChance { get; set; }
         public float? CriticalDamageMultiplier { get; set; }
+
+        public bool? DoesExplodeOnImpact { get; set; }
+        public int? ExplosionRadius { get; set; }
+        public int? ExplosionDamage { get; set; }
     }
 
     public interface ISound
