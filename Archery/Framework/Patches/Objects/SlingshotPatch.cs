@@ -77,6 +77,12 @@ namespace Archery.Framework.Patches.Objects
                     Utility.drawTinyDigits(ammoCount, spriteBatch, location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(ammoCount, 3f * scaleSize)) + 3f * scaleSize, 64f - 18f * scaleSize + 2f), 3f * scaleSize, 1f, Color.White);
                 }
 
+                int loadedAmmoCount = Bow.GetLoaded(__instance);
+                if (loadedAmmoCount > 0)
+                {
+                    Utility.drawTinyDigits(loadedAmmoCount, spriteBatch, location + new Vector2(56f, 4f) * scaleSize, 3f * scaleSize, 1f, Color.White);
+                }
+
                 if (isRecipe)
                 {
                     spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(16f, 16f), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 451, 16, 16), color, 0f, Vector2.Zero, 3f, SpriteEffects.None, layerDepth + 0.0001f);
