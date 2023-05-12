@@ -6,6 +6,7 @@ using Archery.Framework.Utilities;
 using Leclair.Stardew.BetterCrafting;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Projectiles;
 using System;
 using System.Linq;
 
@@ -107,6 +108,7 @@ namespace Archery.Framework.Managers
         public void RegisterNativeSpecialAttacks()
         {
             Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, SnapshotSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Bow, () => "Snipe", () => "Instantly fires an arrow with increased speed. Guaranteed to critical hit.", () => 3000, SnipeSpecialAttack);
         }
 
         private bool SnapshotSpecialAttack(ISpecialAttack specialAttack)
@@ -134,6 +136,45 @@ namespace Archery.Framework.Managers
             if (shotsFired >= 2)
             {
                 slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = 0.ToString();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool SnipeSpecialAttack(ISpecialAttack specialAttack)
+        {
+            var slingshot = specialAttack.Slingshot;
+
+            var currentChargeTime = slingshot.GetSlingshotChargeTime();
+            if (currentChargeTime < 0.7f)
+            {
+                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.7f);
+            }
+            else if (currentChargeTime >= 1f)
+            {
+                var firedResponse = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
+                if (firedResponse.Key is true && firedResponse.Value is BasicProjectile projectile)
+                {
+                    // Get the internal projectile data
+                    var dataResponse = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
+                    if (dataResponse.Key is false)
+                    {
+                        return false;
+                    }
+
+                    var projectileData = dataResponse.Value;
+
+                    // Double the velocity
+                    projectileData.Velocity *= 2;
+
+                    // Guarantee critical hit
+                    projectileData.CriticalChance = 1f;
+
+                    // Set the internal projectile data
+                    Archery.internalApi.SetProjectileData(Archery.manifest, projectile, projectileData);
+                }
 
                 return false;
             }

@@ -26,6 +26,11 @@
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 300,
 
+  // The special attack to use upon right-clicking
+  "SpecialAttack": {
+    "Id": "PeacefulEnd.Archery/Snipe"
+  },
+
   // Set how far back monsters are pushed upon impact with this weapon's projectile
   "Knockback": 2.0,
 
