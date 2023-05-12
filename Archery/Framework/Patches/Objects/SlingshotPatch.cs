@@ -1,5 +1,7 @@
-﻿using Archery.Framework.Models.Weapons;
+﻿using Archery.Framework.Interfaces.Internal;
+using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
 using HarmonyLib;
@@ -31,6 +33,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.tickUpdate), new[] { typeof(GameTime), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(TickUpdatePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(BeginUsingPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.attach), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(AttachPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
@@ -131,6 +134,15 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance))
             {
                 __result = Bow.CanThisBeAttached(__instance, o);
+            }
+        }
+
+        private static void AttachPostfix(Slingshot __instance, Object o)
+        {
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && Arrow.GetModel<AmmoModel>(o) is AmmoModel ammoModel)
+            {
+                // Trigger event
+                Archery.internalApi.TriggerOnAmmoChanged(new AmmoChangedEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoModel.Id, Origin = Game1.player.getStandingPosition() });
             }
         }
 

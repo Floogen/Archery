@@ -22,6 +22,8 @@ namespace Archery.Framework.Interfaces.Internal
         event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
         event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
         event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
+        event EventHandler<CrossbowLoadedEventArgs> OnCrossbowLoaded;
+        event EventHandler<AmmoChangedEventArgs> OnAmmoChanged;
     }
 
     #region Interface objects
@@ -61,16 +63,30 @@ namespace Archery.Framework.Interfaces.Internal
     {
         public Vector2 Origin { get; init; }
     }
+
     public class WeaponFiredEventArgs : BaseEventArgs
     {
         public string WeaponId { get; init; }
         public string AmmoId { get; init; }
         public BasicProjectile Projectile { get; init; }
     }
+
     public class WeaponChargeEventArgs : BaseEventArgs
     {
         public string WeaponId { get; init; }
         public float ChargePercentage { get; init; }
+    }
+
+    public class CrossbowLoadedEventArgs : BaseEventArgs
+    {
+        public string WeaponId { get; init; }
+        public string AmmoId { get; init; }
+    }
+
+    public class AmmoChangedEventArgs : BaseEventArgs
+    {
+        public string WeaponId { get; init; }
+        public string AmmoId { get; init; }
     }
 
     public class AmmoEventArgs : BaseEventArgs

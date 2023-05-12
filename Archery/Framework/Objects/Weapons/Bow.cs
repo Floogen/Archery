@@ -207,6 +207,11 @@ namespace Archery.Framework.Objects.Weapons
 
                     var currentAmmoCount = Bow.GetAmmoCount(slingshot);
                     Bow.SetLoaded(slingshot, currentAmmoCount < weaponModel.AmmoCountOnReload ? currentAmmoCount : weaponModel.AmmoCountOnReload);
+
+                    // Trigger event
+                    var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));
+                    Archery.internalApi.TriggerOnCrossbowLoaded(new CrossbowLoadedEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoModel is null ? string.Empty : ammoModel.Id, Origin = who.getStandingPosition() });
+
                     return;
                 }
 
