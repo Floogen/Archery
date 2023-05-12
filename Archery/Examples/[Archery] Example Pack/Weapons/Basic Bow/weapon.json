@@ -27,6 +27,7 @@
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 300,
 
+  // The special attack to use upon right-clicking
   "SpecialAttack": {
     "Id": "PeacefulEnd.Archery/Snapshot"
   },
