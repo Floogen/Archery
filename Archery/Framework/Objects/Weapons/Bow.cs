@@ -345,6 +345,9 @@ namespace Archery.Framework.Objects.Weapons
                 Toolkit.PlaySound(weaponModel.FiringSound, weaponModel.Id, slingshot.GetShootOrigin(who));
             }
 
+            // Set charge percentage to 0
+            Bow.SetSlingshotChargeTime(slingshot, 0f);
+
             // Trigger event
             Archery.internalApi.TriggerOnWeaponFired(new WeaponFiredEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoId, Projectile = projectile, Origin = slingshot.GetShootOrigin(who) });
 

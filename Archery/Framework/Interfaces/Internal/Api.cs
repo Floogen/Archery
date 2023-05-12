@@ -200,8 +200,6 @@ namespace Archery.Framework.Interfaces.Internal
                 return new KeyValuePair<bool, BasicProjectile>(false, null);
             }
 
-            SetChargePercentage(callerManifest, slingshot, 0f);
-
             return new KeyValuePair<bool, BasicProjectile>(true, arrow);
         }
 
