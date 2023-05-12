@@ -41,6 +41,15 @@ namespace Archery.Framework.Interfaces.Internal
         public List<object> Arguments { get; init; }
     }
 
+    public interface IProjectileData
+    {
+        public string AmmoId { get; set; }
+        public Vector2? Velocity { get; set; }
+        public int? BaseDamage { get; set; }
+        public float? CriticalChance { get; set; }
+        public float? CriticalDamageMultiplier { get; set; }
+    }
+
     public interface ISound
     {
         public string Name { get; set; }

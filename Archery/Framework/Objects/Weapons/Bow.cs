@@ -376,8 +376,7 @@ namespace Archery.Framework.Objects.Weapons
                 v.X *= -1f;
                 v.Y *= -1f;
 
-                int weaponBaseDamageAndAmmoAdditive = weaponModel.DamageRange.Get(Game1.random) + ammoModel.BaseDamage;
-                arrow = new ArrowProjectile(weaponModel, ammoModel, who, (int)(weaponBaseDamageAndAmmoAdditive * (1f + who.attackIncreaseModifier)), 0f, 0f - v.X, 0f - v.Y, shootOrigin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                arrow = new ArrowProjectile(weaponModel, ammoModel, who, 0f, 0f - v.X, 0f - v.Y, shootOrigin, String.Empty, String.Empty, explode: false, damagesMonsters: true, location, spriteFromObjectSheet: true)
                 {
                     IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                 };

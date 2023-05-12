@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Models.Weapons;
+﻿using Archery.Framework.Interfaces.Internal;
+using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Utilities;
 using Microsoft.Xna.Framework;
@@ -28,7 +29,12 @@ namespace Archery.Framework.Objects.Projectiles
         private float _startingAlpha;
         private int _lightId;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, int damageToFarmer, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        private int _baseDamage;
+        private int _collectiveDamage;
+        private float _criticalChance;
+        private float _criticalDamageMultiplier;
+
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
@@ -39,6 +45,11 @@ namespace Archery.Framework.Objects.Projectiles
 
             _startingAlpha = 1f;
 
+            _baseDamage = ammoModel.BaseDamage;
+            _collectiveDamage = (int)((weaponModel.DamageRange.Get(Game1.random) + _baseDamage) * (1f + _owner.attackIncreaseModifier));
+            _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
+            _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);
+
             base.bouncesLeft.Value = _ammoModel.BounceCountRange is null ? 0 : _ammoModel.BounceCountRange.Get(Game1.random);
 
             base.maxTravelDistance.Value = _ammoModel.MaxTravelDistance;
@@ -46,6 +57,47 @@ namespace Archery.Framework.Objects.Projectiles
             if (ammoModel.Light is not null)
             {
                 base.light.Value = true;
+            }
+        }
+
+        internal ProjectileData GetData()
+        {
+            return new ProjectileData()
+            {
+                AmmoId = _ammoModel.Id,
+                BaseDamage = _baseDamage,
+                CriticalChance = _criticalChance,
+                CriticalDamageMultiplier = _criticalDamageMultiplier,
+                Velocity = new Vector2(base.xVelocity.Value, base.yVelocity.Value)
+            };
+        }
+
+        internal void Override(IProjectileData projectileData)
+        {
+            if (Archery.modelManager.GetSpecificModel<AmmoModel>(projectileData.AmmoId) is AmmoModel ammoModel)
+            {
+                _ammoModel = ammoModel;
+            }
+
+            if (projectileData.BaseDamage is not null)
+            {
+                _baseDamage = projectileData.BaseDamage.Value;
+                _collectiveDamage = (int)((_weaponModel.DamageRange.Get(Game1.random) + _baseDamage) * (1f + _owner.attackIncreaseModifier));
+            }
+
+            if (projectileData.CriticalChance is not null)
+            {
+                _criticalChance = projectileData.CriticalChance.Value;
+            }
+            if (projectileData.CriticalDamageMultiplier is not null)
+            {
+                _criticalDamageMultiplier = projectileData.CriticalDamageMultiplier.Value;
+            }
+
+            if (projectileData.Velocity is not null)
+            {
+                base.xVelocity.Value = projectileData.Velocity.Value.X;
+                base.yVelocity.Value = projectileData.Velocity.Value.Y;
             }
         }
 
@@ -198,9 +250,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Damage the monster
-            var criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
-            var criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);
-            location.damageMonster(n.GetBoundingBox(), this.damageToFarmer.Value, this.damageToFarmer.Value + 1, isBomb: false, _weaponModel.Knockback, 0, criticalChance, criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            location.damageMonster(n.GetBoundingBox(), _collectiveDamage, _collectiveDamage + 1, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
 
             // Trigger event
             Archery.internalApi.TriggerOnAmmoHitMonster(new Interfaces.Internal.AmmoHitMonsterEventArgs() { WeaponId = _weaponModel.Id, AmmoId = _ammoModel.Id, Monster = n as Monster, Projectile = this, Origin = this.position.Value });
