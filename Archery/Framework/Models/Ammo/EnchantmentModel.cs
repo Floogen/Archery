@@ -1,6 +1,7 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Archery.Framework.Models.Ammo
             return random.NextDouble() <= TriggerChance;
         }
 
-        internal IEnchantment Generate(BasicProjectile projectile, GameTime time, GameLocation currentLocation, Farmer who)
+        internal IEnchantment Generate(BasicProjectile projectile, GameTime time, GameLocation currentLocation, Farmer who, Monster? monster)
         {
             return new Enchantment()
             {
@@ -27,6 +28,7 @@ namespace Archery.Framework.Models.Ammo
                 Time = time,
                 Location = currentLocation,
                 Farmer = who,
+                Monster = monster,
                 Arguments = this.Arguments
             };
         }

@@ -48,6 +48,7 @@ namespace Archery.Framework.Interfaces.Internal
         public GameTime Time { get; init; }
         public GameLocation Location { get; init; }
         public Farmer Farmer { get; init; }
+        public Monster? Monster { get; init; }
 
         public List<object> Arguments { get; init; }
     }
