@@ -14,9 +14,6 @@ namespace Archery.Framework.Objects.Projectiles
 {
     internal class ArrowProjectile : BasicProjectile
     {
-        // TODO: Make these content pack values
-        private static Rectangle _arrowCollisionBox = new Rectangle(0, 0, 4, 4);
-
         private const int VANILLA_STONE_SPRITE_ID = 390;
 
         private WeaponModel _weaponModel;
@@ -309,11 +306,24 @@ namespace Archery.Framework.Objects.Projectiles
         {
             Vector2 pos = base.position.Value;
 
-            float current_scale = base.localScale * 4f;
-            int damageSizeWidth = (int)(_arrowCollisionBox.Width * current_scale);
-            int damageSizeHeight = (int)(_arrowCollisionBox.Height * current_scale);
+            Rectangle collisionBox;
+            if (_ammoModel.CollisionBox is not null)
+            {
+                collisionBox = _ammoModel.CollisionBox.Value;
+            }
+            else
+            {
+                collisionBox = new Rectangle(0, 0, _ammoModel.ProjectileSprite.Source.Width, _ammoModel.ProjectileSprite.Source.Height);
+            }
 
-            return new Rectangle((int)pos.X - damageSizeWidth / 2, (int)pos.Y - damageSizeHeight / 2, damageSizeWidth, damageSizeHeight);
+            float currentScale = base.localScale * 4f;
+            var rotationVector = Vector2.Transform(new Vector2(collisionBox.X, collisionBox.Y), Matrix.CreateRotationZ(base.rotation));
+            collisionBox.X = (int)(currentScale * rotationVector.X);
+            collisionBox.Y = (int)(currentScale * rotationVector.Y);
+            collisionBox.Width = (int)currentScale * collisionBox.Width;
+            collisionBox.Height = (int)currentScale * collisionBox.Height;
+
+            return new Rectangle((int)pos.X - (collisionBox.Width / 2) + collisionBox.X, (int)pos.Y - (collisionBox.Height / 2) + collisionBox.Y, collisionBox.Width, collisionBox.Height);
         }
 
         // Re-implementing this class, as it is private in vanilla / not overridable

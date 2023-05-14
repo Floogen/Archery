@@ -1,7 +1,8 @@
-﻿using Archery.Framework.Models.Ammo;
+﻿using Archery.Framework.Interfaces.Internal;
+using Archery.Framework.Models.Ammo;
 using Archery.Framework.Models.Display;
-using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
+using Microsoft.Xna.Framework;
 using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using System;
@@ -11,6 +12,8 @@ namespace Archery.Framework.Models.Weapons
     public class AmmoModel : BaseModel
     {
         public AmmoType Type { get; set; }
+        public Rectangle? CollisionBox { get; set; }
+
         public DebrisModel Debris { get; set; }
         public ItemSpriteModel ProjectileSprite { get; set; }
         public ArrowTailModel Tail { get; set; }
