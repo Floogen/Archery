@@ -79,6 +79,7 @@ namespace Archery.Framework.Objects.Projectiles
                 BaseDamage = _baseDamage,
                 CriticalChance = _criticalChance,
                 CriticalDamageMultiplier = _criticalDamageMultiplier,
+                Position = base.position.Value,
                 Velocity = new Vector2(base.xVelocity.Value, base.yVelocity.Value),
                 DoesExplodeOnImpact = _isExplosive,
                 ExplosionRadius = _explosionRadius,
@@ -106,6 +107,11 @@ namespace Archery.Framework.Objects.Projectiles
             if (projectileData.CriticalDamageMultiplier is not null)
             {
                 _criticalDamageMultiplier = projectileData.CriticalDamageMultiplier.Value;
+            }
+
+            if (projectileData.Position is not null)
+            {
+                base.position.Value = projectileData.Position.Value;
             }
 
             if (projectileData.Velocity is not null)
