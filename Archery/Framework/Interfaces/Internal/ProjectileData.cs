@@ -7,6 +7,7 @@ namespace Archery.Framework.Interfaces.Internal
         public string AmmoId { get; set; }
         public Vector2? Position { get; set; }
         public Vector2? Velocity { get; set; }
+        public float? InitialSpeed { get; init; }
         public float? Rotation { get; set; }
         public int? BaseDamage { get; set; }
         public float? CriticalChance { get; set; }

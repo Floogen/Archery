@@ -82,6 +82,7 @@ namespace Archery.Framework.Objects.Projectiles
                 CriticalDamageMultiplier = _criticalDamageMultiplier,
                 Position = base.position.Value,
                 Velocity = new Vector2(base.xVelocity.Value, base.yVelocity.Value),
+                InitialSpeed = _weaponModel.ProjectileSpeed,
                 Rotation = base.rotation,
                 DoesExplodeOnImpact = _isExplosive,
                 ExplosionRadius = _explosionRadius,
