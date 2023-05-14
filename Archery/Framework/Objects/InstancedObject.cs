@@ -99,7 +99,7 @@ namespace Archery.Framework.Objects
                     }
                     else if (model is AmmoModel ammoModel && ammoModel.Enchantment is not null)
                     {
-                        description = $"{description}\n\n{Archery.internalApi.GetEnchantmentkName(ammoModel.Enchantment.Id)}\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
+                        description = $"{description}\n\n{Archery.internalApi.GetEnchantmentkName(ammoModel.Enchantment.Id)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
                     }
                 }
             }
