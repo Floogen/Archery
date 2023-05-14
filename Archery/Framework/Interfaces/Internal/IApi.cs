@@ -21,6 +21,8 @@ namespace Archery.Framework.Interfaces.Internal
         KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
         KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
         KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name);
+        KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<IEnchantment, bool> enchantmentHandler);
+        KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name);
 
         event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
         event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
@@ -34,6 +36,15 @@ namespace Archery.Framework.Interfaces.Internal
     public interface ISpecialAttack
     {
         public Slingshot Slingshot { get; init; }
+        public GameTime Time { get; init; }
+        public GameLocation Location { get; init; }
+        public Farmer Farmer { get; init; }
+
+        public List<object> Arguments { get; init; }
+    }
+    public interface IEnchantment
+    {
+        public BasicProjectile Projectile { get; init; }
         public GameTime Time { get; init; }
         public GameLocation Location { get; init; }
         public Farmer Farmer { get; init; }
@@ -72,6 +83,15 @@ namespace Archery.Framework.Interfaces.Internal
         Slingshot,
         Bow,
         Crossbow
+    }
+
+    public enum AmmoType
+    {
+        Any,
+        [Obsolete("Not currently used")]
+        Pellet,
+        Arrow,
+        Bolt
     }
     #endregion
 

@@ -1,7 +1,6 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Models;
 using Archery.Framework.Models.Crafting;
-using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using StardewModdingAPI;
 using StardewValley;

@@ -19,6 +19,8 @@ namespace Archery.Framework.Interfaces.Internal
         internal static IModHelper _helper;
         private Dictionary<string, Func<ISpecialAttack, bool>> _registeredSpecialAttackMethods;
         private Dictionary<string, SpecialAttack> _registeredSpecialAttackData;
+        private Dictionary<string, Func<IEnchantment, bool>> _registeredEnchantmentMethods;
+        private Dictionary<string, Enchantment> _registeredEnchantmentData;
 
         public event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
         public event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
@@ -34,6 +36,8 @@ namespace Archery.Framework.Interfaces.Internal
             _helper = helper;
             _registeredSpecialAttackMethods = new Dictionary<string, Func<ISpecialAttack, bool>>();
             _registeredSpecialAttackData = new Dictionary<string, SpecialAttack>();
+            _registeredEnchantmentMethods = new Dictionary<string, Func<IEnchantment, bool>>();
+            _registeredEnchantmentData = new Dictionary<string, Enchantment>();
         }
 
         private KeyValuePair<bool, string> GenerateResponsePair(bool wasSuccessful, string responseText)
@@ -152,6 +156,56 @@ namespace Archery.Framework.Interfaces.Internal
         }
 
         private string GetSpecialAttackId(IManifest callerManifest, string name)
+        {
+            return $"{callerManifest.UniqueID}/{name}";
+        }
+        #endregion
+
+        #region Enchantment internals
+        internal bool HandleEnchantment(AmmoType ammoType, string enchantmentId, IEnchantment enchantment)
+        {
+            if (_registeredEnchantmentMethods.ContainsKey(enchantmentId) is false)
+            {
+                return false;
+            }
+
+            var registeredAmmoTypeFilter = _registeredEnchantmentData[enchantmentId].AmmoType;
+            if (registeredAmmoTypeFilter != ammoType && registeredAmmoTypeFilter != AmmoType.Any)
+            {
+                return false;
+            }
+
+            var specialAttackMethod = _registeredEnchantmentMethods[enchantmentId];
+            if (specialAttackMethod(enchantment) is true)
+            {
+                _monitor.LogOnce($"Using special attack {enchantmentId}", LogLevel.Trace);
+                return true;
+            }
+
+            return false;
+        }
+
+        internal string GetEnchantmentkName(string enchantmentId)
+        {
+            if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
+            {
+                return null;
+            }
+
+            return _registeredEnchantmentData[enchantmentId].GetName();
+        }
+
+        internal string GetEnchantmentDescription(string enchantmentId)
+        {
+            if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
+            {
+                return null;
+            }
+
+            return _registeredEnchantmentData[enchantmentId].GetDescription();
+        }
+
+        private string GetEnchantmentId(IManifest callerManifest, string name)
         {
             return $"{callerManifest.UniqueID}/{name}";
         }
@@ -290,6 +344,35 @@ namespace Archery.Framework.Interfaces.Internal
             _registeredSpecialAttackData.Remove(id);
 
             return GenerateResponsePair(true, $"Unregistered the special attack method {id}.");
+        }
+
+        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
+        {
+            string id = GetSpecialAttackId(callerManifest, name);
+            _registeredEnchantmentMethods[id] = enchantmentHandler;
+            _registeredEnchantmentData[id] = new Enchantment()
+            {
+                AmmoType = whichAmmoTypeCanUse,
+                GetName = getDisplayName,
+                GetDescription = getDescription
+            };
+
+            _monitor.Log($"The mod {callerManifest.Name} registered an enchantment {name} with the type {whichAmmoTypeCanUse}", LogLevel.Info);
+            return GenerateResponsePair(true, $"Registered the enchantment method for {name} with the type {whichAmmoTypeCanUse}.");
+        }
+
+        public KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name)
+        {
+            string id = GetSpecialAttackId(callerManifest, name);
+            if (_registeredEnchantmentMethods.ContainsKey(id) is false)
+            {
+                return GenerateResponsePair(false, $"There were no registered enchantment methods under {id}.");
+            }
+
+            _registeredEnchantmentMethods.Remove(id);
+            _registeredEnchantmentData.Remove(id);
+
+            return GenerateResponsePair(true, $"Unregistered the enchantment method {id}.");
         }
     }
 }

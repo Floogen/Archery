@@ -1,10 +1,9 @@
 ﻿namespace Archery.Framework.Models.Enums
 {
-    public enum AmmoType
+    public enum TriggerType
     {
         Unknown,
-        Pellet,
-        Arrow,
-        Bolt
+        OnFire,
+        OnImpact
     }
 }

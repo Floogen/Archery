@@ -106,7 +106,7 @@ namespace Archery.Framework.Utilities
             }
             else
             {
-                ammoModel = Archery.modelManager.GetRandomAmmoModel(Models.Enums.AmmoType.Arrow);
+                ammoModel = Archery.modelManager.GetRandomAmmoModel(AmmoType.Arrow);
             }
 
             if (ammoModel is not null)
