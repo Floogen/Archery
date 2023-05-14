@@ -365,8 +365,11 @@ namespace Archery.Framework.Objects.Projectiles
             // Draw the arrow
             b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * _startingAlpha, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
-            // TODO: Make this a config / button option
-            //Framework.Utilities.Toolkit.DrawHitBox(b, getBoundingBox());
+            // Draw collision box, if enabled
+            if (Archery.shouldShowAmmoCollisionBox)
+            {
+                Toolkit.DrawHitBox(b, getBoundingBox());
+            }
         }
     }
 }

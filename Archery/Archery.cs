@@ -36,6 +36,7 @@ namespace Archery
 
         // Utilities
         internal static Api internalApi;
+        internal static bool shouldShowAmmoCollisionBox;
 
         public override void Entry(IModHelper helper)
         {
@@ -94,11 +95,20 @@ namespace Archery
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed; ;
         }
 
         public override object GetApi()
         {
             return internalApi;
+        }
+
+        private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
+        {
+            if (e.Button == SButton.F2)
+            {
+                shouldShowAmmoCollisionBox = !shouldShowAmmoCollisionBox;
+            }
         }
 
         private void OnUpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
