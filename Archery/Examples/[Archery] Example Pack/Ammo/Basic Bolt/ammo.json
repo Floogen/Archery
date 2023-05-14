@@ -11,12 +11,19 @@
       "Height": 16
     }
   },
+
   "ProjectileSprite": {
     "Source": {
       "X": 23,
       "Y": 7,
       "Width": 5,
       "Height": 1
+    },
+    "CollisionBox": {
+      "X": 0,
+      "Y": 0,
+      "Width": 4,
+      "Height": 4
     }
   },
 
