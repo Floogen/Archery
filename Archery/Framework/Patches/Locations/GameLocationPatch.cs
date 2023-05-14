@@ -83,7 +83,7 @@ namespace Archery.Framework.Patches.Locations
                     default:
                         continue;
                 }
-                item.Stack = int.MaxValue;
+                item.Stack = 999;
 
                 shopMenu.forSale.Add(item);
                 shopMenu.itemPriceAndStock.Add(item, new int[2]
