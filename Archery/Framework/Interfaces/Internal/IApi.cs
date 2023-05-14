@@ -21,7 +21,7 @@ namespace Archery.Framework.Interfaces.Internal
         KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
         KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
         KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name);
-        KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<string> getDisplayName, Func<string> getDescription, Func<float> getTriggerChance, Func<IEnchantment, bool> enchantmentHandler);
+        KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<string> getDisplayName, Func<string> getDescription, Func<IEnchantment, bool> enchantmentHandler);
         KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name);
 
         event EventHandler<WeaponFiredEventArgs> OnWeaponFired;

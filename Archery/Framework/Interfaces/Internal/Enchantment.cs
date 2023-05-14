@@ -18,7 +18,6 @@ namespace Archery.Framework.Interfaces.Internal
 
         internal AmmoType AmmoType { get; set; }
         internal TriggerType TriggerType { get; set; }
-        internal Func<float> GetTriggerChance { get; set; }
         internal Func<string> GetName { get; set; }
         internal Func<string> GetDescription { get; set; }
     }
