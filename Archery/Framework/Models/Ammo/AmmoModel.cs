@@ -27,6 +27,8 @@ namespace Archery.Framework.Models.Weapons
         public Light Light { get; set; }
         public RandomRange BounceCountRange { get; set; }
 
+        public EnchantmentModel Enchantment { get; set; }
+
         internal bool CanBreak()
         {
             return BreakChance > 0;

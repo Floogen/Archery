@@ -205,6 +205,26 @@ namespace Archery.Framework.Interfaces.Internal
             return _registeredEnchantmentData[enchantmentId].GetDescription();
         }
 
+        internal TriggerType GetEnchantmentTriggerType(string enchantmentId)
+        {
+            if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
+            {
+                return TriggerType.Unknown;
+            }
+
+            return _registeredEnchantmentData[enchantmentId].TriggerType;
+        }
+
+        internal float GetEnchantmentTriggerChance(string enchantmentId)
+        {
+            if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
+            {
+                return 0f;
+            }
+
+            return _registeredEnchantmentData[enchantmentId].GetTriggerChance();
+        }
+
         private string GetEnchantmentId(IManifest callerManifest, string name)
         {
             return $"{callerManifest.UniqueID}/{name}";
@@ -346,15 +366,17 @@ namespace Archery.Framework.Interfaces.Internal
             return GenerateResponsePair(true, $"Unregistered the special attack method {id}.");
         }
 
-        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
+        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<string> getDisplayName, Func<string> getDescription, Func<float> getTriggerChance, Func<IEnchantment, bool> enchantmentHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredEnchantmentMethods[id] = enchantmentHandler;
             _registeredEnchantmentData[id] = new Enchantment()
             {
                 AmmoType = whichAmmoTypeCanUse,
+                TriggerType = triggerType,
                 GetName = getDisplayName,
-                GetDescription = getDescription
+                GetDescription = getDescription,
+                GetTriggerChance = getTriggerChance
             };
 
             _monitor.Log($"The mod {callerManifest.Name} registered an enchantment {name} with the type {whichAmmoTypeCanUse}", LogLevel.Info);

@@ -97,6 +97,10 @@ namespace Archery.Framework.Objects
                     {
                         description = $"{description}\n\n{Archery.internalApi.GetSpecialAttackName(weaponModel.SpecialAttack.Id)}\n{Archery.internalApi.GetSpecialAttackDescription(weaponModel.SpecialAttack.Id)}";
                     }
+                    else if (model is AmmoModel ammoModel && ammoModel.Enchantment is not null)
+                    {
+                        description = $"{description}\n\n{Archery.internalApi.GetEnchantmentkName(ammoModel.Enchantment.Id)}\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
+                    }
                 }
             }
 

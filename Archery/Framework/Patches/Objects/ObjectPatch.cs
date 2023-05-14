@@ -41,7 +41,7 @@ namespace Archery.Framework.Patches.Objects
         {
             if (Arrow.IsValid(__instance))
             {
-                __result = Game1.parseText(Arrow.GetDescription(__instance), Game1.smallFont, System.Math.Max(272, (int)Game1.dialogueFont.MeasureString((__instance.DisplayName == null) ? "" : __instance.DisplayName).X));
+                __result = Arrow.GetDescription(__instance);
                 return;
             }
         }

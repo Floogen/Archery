@@ -1,8 +1,8 @@
 ﻿using Archery.Framework.Interfaces.Internal;
-using Archery.Framework.Models.Enums;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Projectiles;
+using System;
 using System.Collections.Generic;
 
 namespace Archery.Framework.Models.Ammo
@@ -13,6 +13,11 @@ namespace Archery.Framework.Models.Ammo
         public TriggerType TriggerType { get; set; }
         public float TriggerChance { get; set; }
         public List<object> Arguments { get; set; }
+
+        internal bool ShouldTrigger(Random random)
+        {
+            return random.NextDouble() <= TriggerChance;
+        }
 
         internal IEnchantment Generate(BasicProjectile projectile, GameTime time, GameLocation currentLocation, Farmer who)
         {

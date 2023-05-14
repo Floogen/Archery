@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Models.Enums;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Projectiles;
 using System;
@@ -17,6 +16,7 @@ namespace Archery.Framework.Interfaces.Internal
 
         internal AmmoType AmmoType { get; set; }
         internal TriggerType TriggerType { get; set; }
+        internal Func<float> GetTriggerChance { get; set; }
         internal Func<string> GetName { get; set; }
         internal Func<string> GetDescription { get; set; }
     }

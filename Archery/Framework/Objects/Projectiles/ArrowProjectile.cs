@@ -63,6 +63,12 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 base.light.Value = true;
             }
+
+            // Check for any enchantment OnFire behavior
+            if (ammoModel.Enchantment is not null && ammoModel.Enchantment.TriggerType is TriggerType.OnFire && ammoModel.Enchantment.ShouldTrigger(Game1.random))
+            {
+                Archery.internalApi.HandleEnchantment(ammoModel.Type, ammoModel.Enchantment.Id, ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner));
+            }
         }
 
         internal ProjectileData GetData()
@@ -277,6 +283,12 @@ namespace Archery.Framework.Objects.Projectiles
                 Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
 
                 location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
+            }
+
+            // Check for any enchantment OnImpact behavior
+            if (_ammoModel.Enchantment is not null && _ammoModel.Enchantment.TriggerType is TriggerType.OnImpact && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
+            {
+                Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner));
             }
 
             // Trigger event
