@@ -51,7 +51,7 @@ namespace Archery.Framework.Patches.Objects
             Item itemForSale = item as Item;
             if (InstancedObject.IsValid(itemForSale) && Bow.GetModel<BaseModel>(itemForSale) is BaseModel model)
             {
-                if (model.Shop.HasInfiniteStock() is false)
+                if (model.Shop is not null && model.Shop.HasInfiniteStock() is false)
                 {
                     model.Shop.RemainingStock = itemForSale.Stack;
                 }
