@@ -389,7 +389,7 @@ namespace Archery.Framework.Objects.Weapons
 
                 return PerformFire(arrow, ammoModel.Id, slingshot, location, who, suppressFiringSound);
             }
-            else
+            else if (Bow.GetAmmoCount(slingshot) <= 0)
             {
                 Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
             }
