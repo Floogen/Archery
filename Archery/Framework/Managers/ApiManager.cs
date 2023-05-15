@@ -2,11 +2,11 @@
 using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Weapons;
-using Archery.Framework.Utilities;
+using Archery.Framework.Utilities.Enchantments;
+using Archery.Framework.Utilities.SpecialAttacks;
 using Leclair.Stardew.BetterCrafting;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Projectiles;
 using System;
 using System.Linq;
 
@@ -107,79 +107,11 @@ namespace Archery.Framework.Managers
 
         public void RegisterNativeSpecialAttacks()
         {
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, SnapshotSpecialAttack);
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Bow, () => "Snipe", () => "Instantly fires an arrow with increased speed. Guaranteed to critical hit.", () => 3000, SnipeSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, Snapshot.HandleSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Bow, () => "Snipe", () => "Instantly fires an arrow with increased speed. Guaranteed to critical hit.", () => 3000, Snipe.HandleSpecialAttack);
         }
 
-        private bool SnapshotSpecialAttack(ISpecialAttack specialAttack)
         {
-            var slingshot = specialAttack.Slingshot;
-
-            int shotsFired = 0;
-            if (slingshot.modData.TryGetValue(ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT, out string rawShotsFired) is false || int.TryParse(rawShotsFired, out shotsFired) is false)
-            {
-                slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = shotsFired.ToString();
-            }
-
-            var currentChargeTime = slingshot.GetSlingshotChargeTime();
-            if (currentChargeTime < 0.5f)
-            {
-                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.5f);
-            }
-            else if (currentChargeTime >= 1f)
-            {
-                Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
-                shotsFired++;
-            }
-            slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = shotsFired.ToString();
-
-            if (shotsFired >= 2)
-            {
-                slingshot.modData[ModDataKeys.SPECIAL_ATTACK_SNAPSHOT_COUNT] = 0.ToString();
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool SnipeSpecialAttack(ISpecialAttack specialAttack)
-        {
-            var slingshot = specialAttack.Slingshot;
-
-            var currentChargeTime = slingshot.GetSlingshotChargeTime();
-            if (currentChargeTime < 0.7f)
-            {
-                Archery.internalApi.SetChargePercentage(Archery.manifest, slingshot, 0.7f);
-            }
-            else if (currentChargeTime >= 1f)
-            {
-                var firedResponse = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
-                if (firedResponse.Key is true && firedResponse.Value is BasicProjectile projectile)
-                {
-                    // Get the internal projectile data
-                    var dataResponse = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
-                    if (dataResponse.Key is false)
-                    {
-                        return false;
-                    }
-
-                    var projectileData = dataResponse.Value;
-
-                    // Double the velocity
-                    projectileData.Velocity *= 2;
-
-                    // Guarantee critical hit
-                    projectileData.CriticalChance = 1f;
-
-                    // Set the internal projectile data
-                    Archery.internalApi.SetProjectileData(Archery.manifest, projectile, projectileData);
-                }
-
-                return false;
-            }
-
-            return true;
         }
     }
 }
