@@ -8,6 +8,7 @@ using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Characters;
 using Archery.Framework.Patches.Locations;
 using Archery.Framework.Patches.Objects;
+using Archery.Framework.Patches.Renderer;
 using Archery.Framework.Utilities;
 using Archery.Framework.Utilities.Backport;
 using HarmonyLib;
@@ -75,6 +76,7 @@ namespace Archery
 
                 // Apply Character patches
                 new FarmerPatch(monitor, modHelper).Apply(harmony);
+                new DrawPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Menu patches
                 new ShopMenuPatch(monitor, modHelper).Apply(harmony);
@@ -167,6 +169,11 @@ namespace Archery
         }
 
         private void OnVanillaRecolorMethodTriggered(object sender, EventArgs e)
+        {
+            RecolorSleeves();
+        }
+
+        internal static void RecolorSleeves()
         {
             assetManager.recoloredArmsTexture = RendereringHelper.RecolorBowArms(Game1.player, assetManager.baseArmsTexture);
             assetManager.recoloredCrossbowArmsTexture = RendereringHelper.RecolorBowArms(Game1.player, assetManager.crossbowArmsTexture);

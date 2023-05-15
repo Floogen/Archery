@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Objects;
 
 namespace Archery.Framework.Utilities
 {
@@ -41,7 +42,7 @@ namespace Archery.Framework.Utilities
             bool isSleevesShirt = farmer.GetShirtExtraData().Contains("Sleeveless");
 
             Color shirtColor = farmer.GetShirtColor();
-            if (isSleevesShirt is false)
+            if (isSleevesShirt is false && Archery.apiManager.IsFashionSenseLoaded())
             {
                 var responseToColor = Archery.apiManager.GetFashionSenseApi().GetAppearanceColor(Interfaces.IFashionSenseApi.Type.Sleeves, farmer);
                 if (responseToColor.Key is true)
@@ -56,6 +57,14 @@ namespace Archery.Framework.Utilities
                         shirtColor = responseToColor.Value;
                     }
                 }
+            }
+            else if (Archery.apiManager.IsFashionSenseLoaded() is false)
+            {
+                Color[] shirtData = new Color[FarmerRenderer.shirtsTexture.Bounds.Width * FarmerRenderer.shirtsTexture.Bounds.Height];
+                FarmerRenderer.shirtsTexture.GetData(shirtData);
+                int index = ClampShirt(farmer.GetShirtIndex()) * 8 / 128 * 32 * FarmerRenderer.shirtsTexture.Bounds.Width + ClampShirt(farmer.GetShirtIndex()) * 8 % 128 + FarmerRenderer.shirtsTexture.Width * 4;
+
+                shirtColor = Utility.MakeCompletelyOpaque(Utility.MultiplyColor(shirtData[index - FarmerRenderer.shirtsTexture.Width * 2], farmer.GetShirtColor()));
             }
 
             // Start the recoloring
@@ -94,5 +103,15 @@ namespace Archery.Framework.Utilities
             maskedTexture.SetData(data);
             return maskedTexture;
         }
+
+        private static int ClampShirt(int shirt_value)
+        {
+            if (shirt_value > Clothing.GetMaxShirtValue() || shirt_value < 0)
+            {
+                return 0;
+            }
+            return shirt_value;
+        }
+
     }
 }

@@ -24,6 +24,11 @@ namespace Archery.Framework.Managers
             _monitor = monitor;
         }
 
+        internal bool IsFashionSenseLoaded()
+        {
+            return _fashionSenseApi is not null;
+        }
+
         internal bool HookIntoFashionSense(IModHelper helper)
         {
             _fashionSenseApi = helper.ModRegistry.GetApi<IFashionSenseApi>("PeacefulEnd.FashionSense");
