@@ -29,6 +29,7 @@ namespace Archery.Framework.Patches.Objects
         internal override void Apply(Harmony harmony)
         {
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawAttachments), new[] { typeof(SpriteBatch), typeof(int), typeof(int) }), prefix: new HarmonyMethod(GetType(), nameof(DrawAttachmentsPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.tickUpdate), new[] { typeof(GameTime), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(TickUpdatePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(BeginUsingPostfix)));
@@ -95,6 +96,16 @@ namespace Archery.Framework.Patches.Objects
                     }
                 }
 
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool DrawAttachmentsPrefix(Slingshot __instance, SpriteBatch b, int x, int y)
+        {
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
+            {
                 return false;
             }
 
