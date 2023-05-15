@@ -74,7 +74,7 @@ namespace Archery.Framework.Patches.Objects
                     scaleSize *= 0.75f;
                 }
 
-                spriteBatch.Draw(arrowModel.Texture, location + new Vector2(32f, 32f) * scaleSize, arrowModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Icon.Scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(arrowModel.Texture, location + (new Vector2(32f, 32f) + arrowModel.Icon.Offset) * scaleSize, arrowModel.Icon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, arrowModel.Icon.Scale, SpriteEffects.None, layerDepth);
 
                 if (drawStackNumber != 0 && __instance.Stack > 0 && __instance.Stack != int.MaxValue && isRecipe is false)
                 {
