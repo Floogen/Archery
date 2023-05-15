@@ -95,7 +95,7 @@ namespace Archery
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed; ;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         public override object GetApi()
@@ -103,7 +103,7 @@ namespace Archery
             return internalApi;
         }
 
-        private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
+        private void OnButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             if (e.Button == SButton.F2)
             {
