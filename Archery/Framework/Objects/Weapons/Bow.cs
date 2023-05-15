@@ -115,9 +115,23 @@ namespace Archery.Framework.Objects.Weapons
         {
             if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo() is false)
             {
-                if (item is null || (Arrow.GetModel<AmmoModel>(item) is AmmoModel ammoModel && weaponModel.IsValidAmmoType(ammoModel.Type)))
+                if (item is null)
                 {
                     return true;
+                }
+
+                if (Arrow.GetModel<AmmoModel>(item) is AmmoModel ammoModel)
+                {
+                    if (weaponModel.IsFilterDefined())
+                    {
+                        return weaponModel.IsWithinFilter(ammoModel.Id);
+                    }
+                    else if (ammoModel.IsFilterDefined())
+                    {
+                        return ammoModel.IsWithinFilter(weaponModel.Id);
+                    }
+
+                    return weaponModel.IsValidAmmoType(ammoModel.Type);
                 }
             }
 

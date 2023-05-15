@@ -6,6 +6,7 @@ using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Archery.Framework.Models
 {
@@ -23,11 +24,42 @@ namespace Archery.Framework.Models
 
         public RecipeModel Recipe { get; set; }
         public ShopModel Shop { get; set; }
+        public List<string> Filter { get; set; }
 
         internal string Id { get; set; }
         internal IContentPack ContentPack { get; set; }
         internal Texture2D Texture { get; set; }
         internal string TexturePath { get; set; }
+
+
+        internal bool IsFilterDefined()
+        {
+            if (Filter is null || Filter.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        internal bool IsWithinFilter(string id)
+        {
+            if (IsFilterDefined() is false)
+            {
+                return false;
+            }
+
+            foreach (var filterId in Filter)
+            {
+                var regex = new Regex(filterId);
+                if (regex.IsMatch(id))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         internal Direction GetSpriteDirectionFromGivenDirection(Farmer who)
         {

@@ -46,7 +46,7 @@ namespace Archery.Framework.Models.Weapons
                 case AmmoType.Pellet:
                     return Type is WeaponType.Slingshot;
                 default:
-                    return false;
+                    return true;
             }
         }
 
