@@ -49,6 +49,7 @@ namespace Archery.Framework.Interfaces.Internal
         public GameLocation Location { get; init; }
         public Farmer Farmer { get; init; }
         public Monster? Monster { get; init; }
+        public int? DamageDone { get; init; }
 
         public List<object> Arguments { get; init; }
     }
@@ -140,6 +141,7 @@ namespace Archery.Framework.Interfaces.Internal
     public class AmmoHitMonsterEventArgs : WeaponFiredEventArgs
     {
         public Monster Monster { get; init; }
+        public int DamageDone { get; init; }
     }
     #endregion
 }

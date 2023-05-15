@@ -20,7 +20,7 @@ namespace Archery.Framework.Models.Ammo
             return random.NextDouble() <= TriggerChance;
         }
 
-        internal IEnchantment Generate(BasicProjectile projectile, GameTime time, GameLocation currentLocation, Farmer who, Monster? monster)
+        internal IEnchantment Generate(BasicProjectile projectile, GameTime time, GameLocation currentLocation, Farmer who, Monster? monster, int? damageDone)
         {
             return new Enchantment()
             {
@@ -29,6 +29,7 @@ namespace Archery.Framework.Models.Ammo
                 Location = currentLocation,
                 Farmer = who,
                 Monster = monster,
+                DamageDone = damageDone,
                 Arguments = this.Arguments
             };
         }

@@ -216,7 +216,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Check for any enchantment OnFire behavior
-            if (_shouldCheckForOnFire && Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner, null)) is false)
+            if (_shouldCheckForOnFire && Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner, null, null)) is false)
             {
                 _shouldCheckForOnFire = false;
             }
@@ -297,7 +297,9 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Damage the monster
+            int damageDone = monster.Health;
             location.damageMonster(monster.GetBoundingBox(), _collectiveDamage, _collectiveDamage + 1, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            damageDone -= monster.Health;
 
             if (_isExplosive)
             {
@@ -309,11 +311,11 @@ namespace Archery.Framework.Objects.Projectiles
             // Check for any enchantment OnImpact behavior
             if (_ammoModel.Enchantment is not null && _ammoModel.Enchantment.TriggerType is TriggerType.OnImpact && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
             {
-                Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner, monster));
+                Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner, monster, damageDone));
             }
 
             // Trigger event
-            Archery.internalApi.TriggerOnAmmoHitMonster(new AmmoHitMonsterEventArgs() { WeaponId = _weaponModel.Id, AmmoId = _ammoModel.Id, Monster = monster, Projectile = this, Origin = this.position.Value });
+            Archery.internalApi.TriggerOnAmmoHitMonster(new AmmoHitMonsterEventArgs() { WeaponId = _weaponModel.Id, AmmoId = _ammoModel.Id, Monster = monster, Projectile = this, Origin = this.position.Value, DamageDone = damageDone });
         }
 
         public override bool isColliding(GameLocation location)
