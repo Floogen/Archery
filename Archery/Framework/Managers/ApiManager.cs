@@ -111,7 +111,9 @@ namespace Archery.Framework.Managers
             Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Bow, () => "Snipe", () => "Instantly fires an arrow with increased speed. Guaranteed to critical hit.", () => 3000, Snipe.HandleSpecialAttack);
         }
 
+        public void RegisterNativeEnchantments()
         {
+            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Seeker", AmmoType.Any, TriggerType.OnFire, () => "Seeker", () => "Will faintly move towards enemies.", Seeker.HandleEnchantment);
         }
     }
 }

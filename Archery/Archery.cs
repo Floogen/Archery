@@ -159,6 +159,9 @@ namespace Archery
             // Register the native special attacks from our framework
             apiManager.RegisterNativeSpecialAttacks();
 
+            // Register the native enchantments from our framework
+            apiManager.RegisterNativeEnchantments();
+
             // Load any owned content packs
             LoadContentPacks();
         }

@@ -3,12 +3,22 @@
   "Name": "Explosive Arrow",
   "Description": "A basic arrow made of wood with an explosive tip.",
 
-  "BreakChance": 0.9,
+  "BreakChance": 1,
   "BaseDamage": 3,
 
   "Explosion": {
     "Radius": 1,
     "Damage": 20
+  },
+
+  // The enchantment to use upon firing
+  "Enchantment": {
+    "Id": "PeacefulEnd.Archery/Seeker",
+    "TriggerType": "OnFire",
+    "TriggerChance": 1.0,
+    "Arguments": [
+      25
+    ]
   },
 
   "Icon": {
@@ -43,8 +53,8 @@
       "Height": 1
     },
     "Offset": {
-      "X": 10,
-      "Y": 1
+      "X": 8,
+      "Y": 3
     },
     "Amount": 8,
     "SpawnIntervalInMilliseconds": 40,
