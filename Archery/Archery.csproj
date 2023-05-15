@@ -24,6 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Examples\[Archery] Example Pack\Ammo\Exclusive Arrow\ammo.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Examples\[Archery] Example Pack\Ammo\Explosive Arrow\ammo.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -32,6 +35,9 @@
 		</None>
 		<None Update="Examples\[Archery] Example Pack\Ammo\Basic Arrow\ammo.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Examples\[Archery] Example Pack\Weapons\Exclusive Bow\weapon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Examples\[Archery] Example Pack\Weapons\Basic Crossbow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
