@@ -24,7 +24,7 @@ namespace Archery.Framework.Models.Crafting
 
         public string Name => _baseModel.Id;
 
-        public string DisplayName => _baseModel.Name;
+        public string DisplayName => _baseModel.DisplayName;
 
         public string Description => _baseModel.Description;
 

@@ -44,7 +44,7 @@ namespace Archery.Framework.Patches.Objects
                 return;
             }
 
-            ___DisplayName = baseModel.Name;
+            ___DisplayName = baseModel.DisplayName;
             ___description = baseModel.Description;
         }
 

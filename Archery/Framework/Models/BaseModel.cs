@@ -12,6 +12,8 @@ namespace Archery.Framework.Models
 {
     public class BaseModel
     {
+        public string DisplayName { get { return string.IsNullOrEmpty(_displayName) ? Name : _displayName; } set { _displayName = value; } }
+        private string _displayName;
         public string Name { get; set; }
         public string Description { get; set; }
 
