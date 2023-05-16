@@ -55,21 +55,7 @@
     },
     "Amount": 6
   },
-  "Light": {
-    "TextureID": 4,
-    "Radius": {
-      "RandomValue": {
-        "Values": [ 0.3, 0.35, 0.4 ]
-      }
-    },
-    "UpdateIntervalMilliseconds": {
-      "RandomRange": {
-        "Min": 25,
-        "Max": 100
-      }
-    },
-    "Color": [ 255, 255, 255, 255 ]
-  },
+
 
   "Recipe": {
     "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Arrow/Basic Arrow",
