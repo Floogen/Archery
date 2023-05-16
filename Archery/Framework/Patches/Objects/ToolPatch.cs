@@ -1,8 +1,13 @@
-﻿using Archery.Framework.Objects.Weapons;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
+using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.Text;
 
 namespace Archery.Framework.Patches.Objects
 {
@@ -21,10 +26,12 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, "get_description", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed), null), postfix: new HarmonyMethod(GetType(), nameof(CanBeTrashedPostfix)));
 
+            harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawTooltip)), postfix: new HarmonyMethod(GetType(), nameof(DrawTooltipPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.DoFunction), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(DoFunctionPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.endUsing), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(EndUsingPrefix)));
         }
+
         private static void GetNamePostfix(Tool __instance, ref string __result)
         {
             if (Bow.IsValid(__instance))
@@ -49,6 +56,30 @@ namespace Archery.Framework.Patches.Objects
             {
                 __result = true;
                 return;
+            }
+        }
+
+        private static void DrawTooltipPostfix(Tool __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha, StringBuilder overrideText)
+        {
+            if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel)
+            {
+                int xOffset = 70;
+                if (weaponModel.UsesInternalAmmo())
+                {
+                    xOffset = 0;
+                }
+
+                int minDamage = weaponModel.DamageRange.Min;
+                int maxDamage = weaponModel.DamageRange.Max;
+                if (Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(__instance)) is AmmoModel ammoModel)
+                {
+                    minDamage += ammoModel.BaseDamage;
+                    maxDamage += ammoModel.BaseDamage;
+                }
+
+                // Draw damage values
+                Color color = Bow.GetAmmoCount(__instance) > 0 ? new Color(216, 0, 59) : Game1.textColor;
+                Utility.drawTextWithShadow(spriteBatch, Game1.content.LoadString("Strings\\UI:ItemHover_Damage", minDamage, maxDamage), font, new Vector2(x + xOffset + 16, y + 32), color * 0.9f * alpha);
             }
         }
 

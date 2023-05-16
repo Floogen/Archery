@@ -60,7 +60,7 @@ namespace Archery.Framework.Objects
             if (IsValid(item) is true)
             {
                 var id = GetInternalId(item);
-                if (Archery.modelManager.GetSpecificModel<BaseModel>(id) is BaseModel baseModel && baseModel is not null)
+                if (Archery.modelManager.GetSpecificModel<BaseModel>(id) is BaseModel baseModel && baseModel is not null && baseModel is T)
                 {
                     return (T)Archery.modelManager.GetSpecificModel<BaseModel>(id);
                 }
@@ -97,9 +97,17 @@ namespace Archery.Framework.Objects
                     {
                         description = $"{description}\n\n{Archery.internalApi.GetSpecialAttackName(weaponModel.SpecialAttack.Id)}\n{Archery.internalApi.GetSpecialAttackDescription(weaponModel.SpecialAttack.Id)}";
                     }
-                    else if (model is AmmoModel ammoModel && ammoModel.Enchantment is not null)
+                    else if (model is AmmoModel ammoModel)
                     {
-                        description = $"{description}\n\n{Archery.internalApi.GetEnchantmentkName(ammoModel.Enchantment.Id)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
+                        if (ammoModel.Enchantment is not null)
+                        {
+                            description = $"{description}\n\n{Archery.internalApi.GetEnchantmentName(ammoModel.Enchantment.Id)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
+                        }
+
+                        if (ammoModel.BaseDamage > 0)
+                        {
+                            description = $"{description}\n\n+{ammoModel.BaseDamage} Damage";
+                        }
                     }
                 }
             }

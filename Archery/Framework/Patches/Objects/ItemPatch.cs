@@ -19,7 +19,6 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Item.canStackWith), new[] { typeof(ISalable) }), postfix: new HarmonyMethod(GetType(), nameof(CanStackWithPostfix)));
         }
 
-
         private static void CanStackWithPostfix(Item __instance, ref bool __result, ISalable other)
         {
             if (Arrow.IsValid(__instance))
