@@ -21,7 +21,7 @@ namespace Archery.Framework.Models.Weapons
         public List<ItemSpriteModel> ConditionalProjectileSprites { get; set; }
 
         public DebrisModel Debris { get; set; }
-        public ArrowTailModel Tail { get; set; }
+        public ArrowTailModel Trail { get; set; }
         public ExplosionModel Explosion { get; set; }
 
         public int Damage { get; set; }

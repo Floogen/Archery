@@ -37,7 +37,7 @@ namespace Archery.Framework.Objects.Projectiles
 
         private bool _shouldCheckForOnFire;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Tail is not null ? ammoModel.Tail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, false, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Trail is not null ? ammoModel.Trail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, false, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
@@ -368,7 +368,7 @@ namespace Archery.Framework.Objects.Projectiles
             _tailTimer -= time.ElapsedGameTime.Milliseconds;
             if (_tailTimer <= 0)
             {
-                _tailTimer = _ammoModel.Tail is not null ? _ammoModel.Tail.SpawnIntervalInMilliseconds : 50;
+                _tailTimer = _ammoModel.Trail is not null ? _ammoModel.Trail.SpawnIntervalInMilliseconds : 50;
                 _tail.Enqueue(this.position);
                 if (_tail.Count > base.tailLength.Value)
                 {
@@ -390,20 +390,20 @@ namespace Archery.Framework.Objects.Projectiles
             float current_scale = 4f * base.localScale;
             float alpha = 1f;
 
-            if (_ammoModel.Tail is not null)
+            if (_ammoModel.Trail is not null)
             {
                 for (int i = _tail.Count - 1; i >= 0; i--)
                 {
-                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Tail.SpacingStep)), _ammoModel.Tail.Source, base.color.Value * alpha * _startingAlpha, base.rotation, _ammoModel.Tail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
+                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Trail.SpacingStep)), _ammoModel.Trail.Source, base.color.Value * alpha * _startingAlpha, base.rotation, _ammoModel.Trail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
 
-                    if (_ammoModel.Tail.AlphaStep is not null)
+                    if (_ammoModel.Trail.AlphaStep is not null)
                     {
-                        alpha -= _ammoModel.Tail.AlphaStep.Value;
+                        alpha -= _ammoModel.Trail.AlphaStep.Value;
                     }
 
-                    if (_ammoModel.Tail.ScaleStep is not null)
+                    if (_ammoModel.Trail.ScaleStep is not null)
                     {
-                        current_scale -= (i * _ammoModel.Tail.ScaleStep.Value);
+                        current_scale -= (i * _ammoModel.Trail.ScaleStep.Value);
                     }
                 }
             }
