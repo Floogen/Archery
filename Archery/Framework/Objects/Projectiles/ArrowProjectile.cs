@@ -66,7 +66,7 @@ namespace Archery.Framework.Objects.Projectiles
                 base.light.Value = true;
             }
 
-            if (_ammoModel.Enchantment is not null && _ammoModel.Enchantment.TriggerType is TriggerType.OnFire && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
+            if (_ammoModel.Enchantment is not null && Archery.internalApi.GetEnchantmentTriggerType(_ammoModel.Enchantment.Id) is TriggerType.OnFire && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
             {
                 _shouldCheckForOnFire = true;
             }
@@ -309,7 +309,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Check for any enchantment OnImpact behavior
-            if (_ammoModel.Enchantment is not null && _ammoModel.Enchantment.TriggerType is TriggerType.OnImpact && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
+            if (_ammoModel.Enchantment is not null && Archery.internalApi.GetEnchantmentTriggerType(_ammoModel.Enchantment.Id) is TriggerType.OnImpact && _ammoModel.Enchantment.ShouldTrigger(Game1.random))
             {
                 Archery.internalApi.HandleEnchantment(_ammoModel.Type, _ammoModel.Enchantment.Id, _ammoModel.Enchantment.Generate(this, Game1.currentGameTime, Game1.currentLocation, _owner, monster, damageDone));
             }

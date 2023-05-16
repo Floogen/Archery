@@ -11,7 +11,6 @@ namespace Archery.Framework.Models.Ammo
     public class EnchantmentModel
     {
         public string Id { get; set; }
-        public TriggerType TriggerType { get; set; }
         public float TriggerChance { get; set; }
         public List<object> Arguments { get; set; }
 
