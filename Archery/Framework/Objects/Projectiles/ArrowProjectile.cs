@@ -348,7 +348,8 @@ namespace Archery.Framework.Objects.Projectiles
             }
             else
             {
-                collisionBox = new Rectangle(0, 0, _ammoModel.ProjectileSprite.Source.Width, _ammoModel.ProjectileSprite.Source.Height);
+                var projectileSprite = _ammoModel.GetProjectileSprite(_owner);
+                collisionBox = new Rectangle(0, 0, projectileSprite.Source.Width, projectileSprite.Source.Height);
             }
 
             float currentScale = base.localScale * 4f;
@@ -379,7 +380,7 @@ namespace Archery.Framework.Objects.Projectiles
 
         public override void draw(SpriteBatch b)
         {
-            var ammoSprite = _ammoModel.ProjectileSprite;
+            var ammoSprite = _ammoModel.GetProjectileSprite(_owner);
             if (ammoSprite is null)
             {
                 return;

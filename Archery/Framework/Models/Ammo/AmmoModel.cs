@@ -5,7 +5,10 @@ using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework;
 using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
+using StardewValley;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models.Weapons
 {
@@ -14,8 +17,10 @@ namespace Archery.Framework.Models.Weapons
         public AmmoType Type { get; set; }
         public Rectangle? CollisionBox { get; set; }
 
-        public DebrisModel Debris { get; set; }
         public ItemSpriteModel ProjectileSprite { get; set; }
+        public List<ItemSpriteModel> ConditionalProjectileSprites { get; set; }
+
+        public DebrisModel Debris { get; set; }
         public ArrowTailModel Tail { get; set; }
         public ExplosionModel Explosion { get; set; }
 
@@ -28,6 +33,20 @@ namespace Archery.Framework.Models.Weapons
         public RandomRange BounceCountRange { get; set; }
 
         public EnchantmentModel Enchantment { get; set; }
+
+        internal ItemSpriteModel GetProjectileSprite(Farmer who)
+        {
+            foreach (var sprite in ConditionalProjectileSprites.Where(s => s is not null))
+            {
+                if (sprite.AreConditionsValid(who))
+                {
+                    return sprite;
+                }
+            }
+            Archery.conditionManager.Reset(ConditionalProjectileSprites);
+
+            return ProjectileSprite;
+        }
 
         internal bool CanBreak()
         {
