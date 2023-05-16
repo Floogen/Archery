@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Archery - Starter Pack",
+  "Author": "ExampleAuthor",
+  "Version": "1.0.0",
+  "Description": "A content pack for the Archery framework. Contains various weapons, ammo and related recipes.",
+  "UniqueID": "PeacefulEnd.Archery.StarterPack",
+  "UpdateKeys": [],
+  "Dependencies": [],
+  "ContentPackFor": {
+    "UniqueID": "PeacefulEnd.Archery",
+    "MinimumVersion": "1.0.0"
+  }
+}
