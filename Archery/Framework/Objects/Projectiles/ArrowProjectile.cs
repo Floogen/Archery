@@ -48,7 +48,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             _startingAlpha = 1f;
 
-            _baseDamage = ammoModel.BaseDamage;
+            _baseDamage = ammoModel.Damage;
             _collectiveDamage = (int)(weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.attackIncreaseModifier));
             _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
             _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);

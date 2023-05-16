@@ -24,7 +24,7 @@ namespace Archery.Framework.Models.Weapons
         public ArrowTailModel Tail { get; set; }
         public ExplosionModel Explosion { get; set; }
 
-        public int BaseDamage { get; set; }
+        public int Damage { get; set; }
         public float BreakChance { get; set; } = 1.0f;
         public int MaxTravelDistance { get; set; } = -1;
 

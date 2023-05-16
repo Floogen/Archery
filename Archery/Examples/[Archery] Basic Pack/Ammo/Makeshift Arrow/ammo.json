@@ -4,7 +4,7 @@
   "Description": "A simple arrow made of wood.",
 
   "BreakChance": 1,
-  "BaseDamage": 1,
+  "Damage": 1,
 
   "Icon": {
     "Source": {

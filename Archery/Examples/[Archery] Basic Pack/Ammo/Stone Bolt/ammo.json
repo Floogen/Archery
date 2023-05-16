@@ -4,7 +4,7 @@
   "Description": "A wooden bolt with stone tips.",
 
   "BreakChance": 0.9,
-  "BaseDamage": 3,
+  "Damage": 3,
 
   "Icon": {
     "Source": {

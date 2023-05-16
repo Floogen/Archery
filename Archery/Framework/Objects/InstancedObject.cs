@@ -104,7 +104,7 @@ namespace Archery.Framework.Objects
                             description = $"{description}\n\n{Archery.internalApi.GetEnchantmentName(ammoModel.Enchantment.Id)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
                         }
 
-                        description = $"{description}\n\n+{ammoModel.BaseDamage} Damage";
+                        description = $"{description}\n\n+{ammoModel.Damage} Damage";
                     }
                 }
             }

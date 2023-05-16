@@ -4,7 +4,7 @@
   "Description": "A basic arrow made of wood with an explosive tip.",
 
   "BreakChance": 1,
-  "BaseDamage": 3,
+  "Damage": 3,
 
   "Explosion": {
     "Radius": 1,

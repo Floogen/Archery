@@ -60,7 +60,7 @@
     },
     "Amount": 6
   },
-  "BaseDamage": 3,
+  "Damage": 3,
 
   "Recipe": {
     "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bolt/Basic Bolt",

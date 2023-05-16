@@ -4,7 +4,7 @@
   "Description": "An arrow which can only be used with the exclusive bow.",
 
   "BreakChance": 0.9,
-  "BaseDamage": 3,
+  "Damage": 3,
 
   // Limits the ammo to only use weapons with the relative ID ".*Exclusive Bow"
   "Filter": [

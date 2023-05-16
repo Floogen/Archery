@@ -73,7 +73,7 @@ namespace Archery.Framework.Patches.Objects
                 int maxDamage = weaponModel.DamageRange.Max;
                 if (Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(__instance)) is AmmoModel ammoModel)
                 {
-                    maxDamage += ammoModel.BaseDamage;
+                    maxDamage += ammoModel.Damage;
                 }
 
                 // Draw damage values
