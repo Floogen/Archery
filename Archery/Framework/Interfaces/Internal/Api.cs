@@ -185,7 +185,7 @@ namespace Archery.Framework.Interfaces.Internal
             return false;
         }
 
-        internal string GetEnchantmentkName(string enchantmentId)
+        internal string GetEnchantmentName(string enchantmentId)
         {
             if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
             {
