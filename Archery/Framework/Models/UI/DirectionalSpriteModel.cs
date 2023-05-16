@@ -12,6 +12,11 @@ namespace Archery.Framework.Models.Display
         public List<WorldSpriteModel> Sideways { get; set; } = new List<WorldSpriteModel>();
         public List<WorldSpriteModel> Any { get; set; } = new List<WorldSpriteModel>();
 
+        public bool IsEmpty()
+        {
+            return Up.Count == 0 && Right.Count == 0 && Down.Count == 0 && Left.Count == 0 && Sideways.Count == 0 && Any.Count == 0;
+        }
+
         public List<WorldSpriteModel> GetSpritesFromDirection(int direction)
         {
             return GetSpritesFromDirection((Direction)direction);

@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -293,7 +294,7 @@ namespace Archery
                     // Verify that a model with the name doesn't exist in this pack
                     if (modelManager.GetSpecificModel<WeaponModel>(model.Id) != null)
                     {
-                        Monitor.Log($"Unable to add {fileKeyword} from {contentPack.Manifest.Name}: This pack already contains a hairstyle with the name of {model.Name}", LogLevel.Warn);
+                        Monitor.Log($"Unable to add {fileKeyword} from {contentPack.Manifest.Name}: This pack already contains a {fileKeyword} with the name of {model.Name}", LogLevel.Warn);
                         continue;
                     }
 
@@ -318,20 +319,6 @@ namespace Archery
                     switch (model)
                     {
                         case WeaponModel weaponModel:
-                            // Verify that any sound names given are valid
-                            if (weaponModel.StartChargingSound is not null && weaponModel.StartChargingSound.IsValid() is false)
-                            {
-                                Monitor.LogOnce($"The StartChargingSound.Name {weaponModel.StartChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
-                            }
-                            if (weaponModel.FinishChargingSound is not null && weaponModel.FinishChargingSound.IsValid() is false)
-                            {
-                                Monitor.LogOnce($"The FinishChargingSound.Name {weaponModel.FinishChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
-                            }
-                            if (weaponModel.FiringSound is not null && weaponModel.FiringSound.IsValid() is false)
-                            {
-                                Monitor.LogOnce($"The FiringSound.Name {weaponModel.FiringSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
-                            }
-
                             // Load in the optional arm textures, if given
                             if (File.Exists(Path.Combine(textureFolder.FullName, $"arms.png")))
                             {
@@ -339,12 +326,15 @@ namespace Archery
                             }
                             break;
                         case AmmoModel ammoModel:
-                            // Verify that any sound names given are valid
-                            if (ammoModel.ImpactSound is not null && ammoModel.ImpactSound.IsValid() is false)
-                            {
-                                Monitor.LogOnce($"The ImpactSound.Name {ammoModel.ImpactSound} does not exist for the ammo {model.Id}", LogLevel.Warn);
-                            }
                             break;
+                    }
+
+                    // Verify the model has all required properties
+                    List<string> missingRequiredProperties = DoesModelHaveRequiredProperties(model);
+                    if (missingRequiredProperties.Count > 0)
+                    {
+                        Monitor.Log($"Unable to add {fileKeyword} for {model.Name} from {contentPack.Manifest.Name}: Missing the following required properties: {string.Join(", ", missingRequiredProperties)}", LogLevel.Warn);
+                        return;
                     }
 
                     // Track the model
@@ -358,6 +348,50 @@ namespace Archery
             {
                 Monitor.Log($"Error loading {fileKeyword} from content pack {contentPack.Manifest.Name}: {ex}", LogLevel.Error);
             }
+        }
+
+        private List<string> DoesModelHaveRequiredProperties(BaseModel model)
+        {
+            // Check for shared required properties
+            List<string> missingPropertyNames = new List<string>();
+            if (model.Icon is null)
+            {
+                missingPropertyNames.Add("Icon");
+            }
+
+            if (model.DirectionalSprites is null || model.DirectionalSprites.IsEmpty())
+            {
+                missingPropertyNames.Add("DirectionalSprites");
+            }
+
+            // Perform model specific checks
+            switch (model)
+            {
+                case WeaponModel weaponModel:
+                    // Verify that any sound names given are valid
+                    if (weaponModel.StartChargingSound is not null && weaponModel.StartChargingSound.IsValid() is false)
+                    {
+                        Monitor.LogOnce($"The StartChargingSound.Name {weaponModel.StartChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                    }
+                    if (weaponModel.FinishChargingSound is not null && weaponModel.FinishChargingSound.IsValid() is false)
+                    {
+                        Monitor.LogOnce($"The FinishChargingSound.Name {weaponModel.FinishChargingSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                    }
+                    if (weaponModel.FiringSound is not null && weaponModel.FiringSound.IsValid() is false)
+                    {
+                        Monitor.LogOnce($"The FiringSound.Name {weaponModel.FiringSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
+                    }
+                    break;
+                case AmmoModel ammoModel:
+                    // Verify that any sound names given are valid
+                    if (ammoModel.ImpactSound is not null && ammoModel.ImpactSound.IsValid() is false)
+                    {
+                        Monitor.LogOnce($"The ImpactSound.Name {ammoModel.ImpactSound} does not exist for the ammo {model.Id}", LogLevel.Warn);
+                    }
+                    break;
+            }
+
+            return missingPropertyNames;
         }
     }
 }
