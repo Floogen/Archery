@@ -16,7 +16,7 @@ namespace Archery.Framework.Models.Weapons
         public List<ItemSpriteModel> ConditionalIcons { get; set; } = new List<ItemSpriteModel>();
 
         public RandomRange DamageRange { get; set; }
-        public float ProjectileSpeed { get; set; }
+        public float ProjectileSpeed { get; set; } = 1f;
         public float Knockback { get; set; } = 1f;
         public float ChargeTimeRequiredMilliseconds { get; set; } = 1000f;
         public float ConsumeAmmoChance { get; set; } = 1f;
