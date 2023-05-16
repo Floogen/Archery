@@ -76,7 +76,7 @@ namespace Archery.Framework.Objects
                 var model = GetModel<BaseModel>(item);
                 if (model is not null)
                 {
-                    return model.DisplayName;
+                    return model.GetTranslation(model.DisplayName);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace Archery.Framework.Objects
                 var model = GetModel<BaseModel>(item);
                 if (model is not null)
                 {
-                    description = model.Description;
+                    description = model.GetTranslation(model.Description);
 
                     if (model is WeaponModel weaponModel && weaponModel.SpecialAttack is not null)
                     {

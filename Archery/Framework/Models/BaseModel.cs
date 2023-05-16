@@ -32,6 +32,7 @@ namespace Archery.Framework.Models
         internal IContentPack ContentPack { get; set; }
         internal Texture2D Texture { get; set; }
         internal string TexturePath { get; set; }
+        internal ITranslationHelper Translations { get; set; }
 
 
         internal bool IsFilterDefined()
@@ -109,6 +110,16 @@ namespace Archery.Framework.Models
             {
                 Recipe.ParentId = Id;
             }
+        }
+
+        internal string GetTranslation(string text)
+        {
+            if (Translations is not null && Translations.GetTranslations().Any(t => t.Key == text))
+            {
+                return Translations.Get(text);
+            }
+
+            return text;
         }
     }
 }

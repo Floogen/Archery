@@ -308,6 +308,12 @@ namespace Archery
                     model.TexturePath = contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"{fileKeyword}.png")).Name;
                     model.Texture = contentPack.ModContent.Load<Texture2D>(model.TexturePath);
 
+                    // Load in any provided translations
+                    if (contentPack.Translation is not null)
+                    {
+                        model.Translations = contentPack.Translation;
+                    }
+
                     // Handle model specific properties
                     switch (model)
                     {
