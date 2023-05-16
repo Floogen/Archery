@@ -381,12 +381,30 @@ namespace Archery
                     {
                         Monitor.LogOnce($"The FiringSound.Name {weaponModel.FiringSound} does not exist for the weapon {model.Id}", LogLevel.Warn);
                     }
+
+                    if (weaponModel.Type is WeaponType.Any)
+                    {
+                        missingPropertyNames.Add("WeaponType");
+                    }
+                    if (weaponModel.DamageRange is null)
+                    {
+                        missingPropertyNames.Add("DamageRange");
+                    }
                     break;
                 case AmmoModel ammoModel:
                     // Verify that any sound names given are valid
                     if (ammoModel.ImpactSound is not null && ammoModel.ImpactSound.IsValid() is false)
                     {
                         Monitor.LogOnce($"The ImpactSound.Name {ammoModel.ImpactSound} does not exist for the ammo {model.Id}", LogLevel.Warn);
+                    }
+
+                    if (ammoModel.Type is AmmoType.Any)
+                    {
+                        missingPropertyNames.Add("AmmoType");
+                    }
+                    if (ammoModel.ProjectileSprite is null)
+                    {
+                        missingPropertyNames.Add("ProjectileSprite");
                     }
                     break;
             }
