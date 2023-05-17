@@ -45,6 +45,9 @@
 		<None Update="Examples\[Archery] Example Pack\Weapons\Basic Crossbow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Examples\[Archery] Example Pack\Weapons\Magic Bow\arms.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Examples\[Archery] Example Pack\Weapons\Magic Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
