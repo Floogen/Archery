@@ -18,7 +18,7 @@ namespace Archery.Framework.Models.Weapons
         public Rectangle? CollisionBox { get; set; }
 
         public ItemSpriteModel ProjectileSprite { get; set; }
-        public List<ItemSpriteModel> ConditionalProjectileSprites { get; set; }
+        public List<ItemSpriteModel> ConditionalProjectileSprites { get; set; } = new List<ItemSpriteModel>();
 
         public DebrisModel Debris { get; set; }
         public ArrowTailModel Trail { get; set; }
