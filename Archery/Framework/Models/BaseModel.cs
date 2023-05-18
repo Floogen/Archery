@@ -4,6 +4,7 @@ using Archery.Framework.Models.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -54,10 +55,18 @@ namespace Archery.Framework.Models
 
             foreach (var filterId in Filter)
             {
-                var regex = new Regex(filterId);
-                if (regex.IsMatch(id))
+                try
                 {
-                    return true;
+                    var regex = new Regex(filterId);
+                    if (regex.IsMatch(id))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Archery.monitor.LogOnce($"The item {Id} contains an invalid regex in Filter ({filterId}). See the log for details.", LogLevel.Warn);
+                    Archery.monitor.LogOnce($"[{Id}] Failed to parse filtered ID {filterId}:\n {ex}", LogLevel.Trace);
                 }
             }
 
