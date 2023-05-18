@@ -43,6 +43,12 @@
   "ChargeTimeRequiredMilliseconds": 1000,
   "AmmoCountOnReload": 3,
 
+  // The special attack to use upon right-clicking
+  "SpecialAttack": {
+    "Id": "PeacefulEnd.Archery/Snipe",
+    "TriggerAfterButtonRelease": true
+  },
+
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
     // This unlock condition uses GameStateQuery to only show the recipe if the player has learned it
