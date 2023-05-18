@@ -17,6 +17,7 @@ namespace Archery.Framework.Managers
         private IMonitor _monitor;
         private IFashionSenseApi _fashionSenseApi;
         private IDynamicGameAssetsApi dynamicGameAssetsApi;
+        private IJsonAssetsApi jsonAssetsApi;
         private IBetterCraftingApi betterCraftingApi;
 
         public ApiManager(IMonitor monitor)
@@ -84,6 +85,25 @@ namespace Archery.Framework.Managers
         public IBetterCraftingApi GetBetterCraftingApi()
         {
             return betterCraftingApi;
+        }
+
+        internal bool HookIntoJsonAssets(IModHelper helper)
+        {
+            jsonAssetsApi = helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+
+            if (jsonAssetsApi is null)
+            {
+                _monitor.Log("Failed to hook into spacechase0.JsonAssets.", LogLevel.Error);
+                return false;
+            }
+
+            _monitor.Log("Successfully hooked into spacechase0.JsonAssets.", LogLevel.Debug);
+            return true;
+        }
+
+        public IJsonAssetsApi GetJsonAssetsApi()
+        {
+            return jsonAssetsApi;
         }
 
         public void SyncRecipesWithBetterCrafting()

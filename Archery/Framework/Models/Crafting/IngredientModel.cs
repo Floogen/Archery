@@ -18,6 +18,14 @@
             {
                 actualId = parsedId;
             }
+            else if (Archery.apiManager.GetJsonAssetsApi() is not null)
+            {
+                int jsonObjectId = Archery.apiManager.GetJsonAssetsApi().GetObjectId(Id);
+                if (jsonObjectId != -1)
+                {
+                    actualId = jsonObjectId;
+                }
+            }
 
             return actualId;
         }

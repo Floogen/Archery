@@ -159,6 +159,11 @@ namespace Archery
                 // Do nothing
             }
 
+            if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets") && apiManager.HookIntoJsonAssets(Helper))
+            {
+                // Do nothing
+            }
+
             // Register the native special attacks from our framework
             apiManager.RegisterNativeSpecialAttacks();
 
