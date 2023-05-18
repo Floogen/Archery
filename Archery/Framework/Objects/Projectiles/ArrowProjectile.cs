@@ -298,7 +298,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             // Damage the monster
             int damageDone = monster.Health;
-            location.damageMonster(monster.GetBoundingBox(), _collectiveDamage, _collectiveDamage + 1, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            location.damageMonster(monster.GetBoundingBox(), _collectiveDamage, _collectiveDamage, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
             damageDone -= monster.Health;
 
             if (_isExplosive)
