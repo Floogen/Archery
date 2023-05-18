@@ -18,6 +18,8 @@ namespace Archery.Framework.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public List<ItemSpriteModel> ConditionalIcons { get; set; } = new List<ItemSpriteModel>();
+
         // Used additively by both weapons and ammo
         public float CriticalChance { get; set; }
         public float CriticalDamageMultiplier { get; set; } = 1f;
@@ -71,6 +73,20 @@ namespace Archery.Framework.Models
             }
 
             return false;
+        }
+
+        internal ItemSpriteModel GetIcon(Farmer who)
+        {
+            foreach (var sprite in ConditionalIcons.Where(s => s is not null))
+            {
+                if (sprite.AreConditionsValid(who))
+                {
+                    return sprite;
+                }
+            }
+            Archery.conditionManager.Reset(ConditionalIcons);
+
+            return Icon;
         }
 
         internal Direction GetSpriteDirectionFromGivenDirection(Farmer who)

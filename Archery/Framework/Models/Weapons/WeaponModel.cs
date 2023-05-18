@@ -1,19 +1,13 @@
 ﻿using Archery.Framework.Interfaces.Internal;
-using Archery.Framework.Models.Display;
 using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewValley;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Archery.Framework.Models.Weapons
 {
     public class WeaponModel : BaseModel
     {
         public WeaponType Type { get; set; }
-
-        public List<ItemSpriteModel> ConditionalIcons { get; set; } = new List<ItemSpriteModel>();
 
         public RandomRange DamageRange { get; set; }
         public float ProjectileSpeed { get; set; } = 1f;
@@ -48,20 +42,6 @@ namespace Archery.Framework.Models.Weapons
                 default:
                     return true;
             }
-        }
-
-        internal ItemSpriteModel GetIcon(Farmer who)
-        {
-            foreach (var sprite in ConditionalIcons.Where(s => s is not null))
-            {
-                if (sprite.AreConditionsValid(who))
-                {
-                    return sprite;
-                }
-            }
-            Archery.conditionManager.Reset(ConditionalIcons);
-
-            return Icon;
         }
 
         internal Texture2D GetArmsTexture()
