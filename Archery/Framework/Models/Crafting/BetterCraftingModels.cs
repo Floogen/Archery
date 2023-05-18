@@ -107,7 +107,13 @@ namespace Archery.Framework.Models.Crafting
             List<IIngredient> ingredients = new List<IIngredient>();
             foreach (var ingredient in baseModel.Recipe.Ingredients)
             {
-                ingredients.Add(_api.CreateBaseIngredient(ingredient.Id, ingredient.Amount));
+                var ingredientId = ingredient.GetObjectId();
+                if (ingredientId is null)
+                {
+                    continue;
+                }
+
+                ingredients.Add(_api.CreateBaseIngredient(ingredientId.Value, ingredient.Amount));
             }
 
             return new Recipe(baseModel, ingredients);

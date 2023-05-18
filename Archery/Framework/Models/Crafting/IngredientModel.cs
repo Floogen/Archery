@@ -2,7 +2,7 @@
 {
     public class IngredientModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int Amount { get; set; }
 
         internal bool IsValid()
@@ -13,7 +13,13 @@
         // When SDV v1.6 is released, we'll want to support QualifiedItemIds
         internal int? GetObjectId()
         {
-            return Id;
+            int? actualId = null;
+            if (int.TryParse(Id, out int parsedId))
+            {
+                actualId = parsedId;
+            }
+
+            return actualId;
         }
     }
 }
