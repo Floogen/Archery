@@ -10,7 +10,8 @@ namespace Archery.Framework.Models.Generic
             CurrentChargingPercentage,
             IsUsingSpecificArrow,
             IsLoaded,
-            FrameDuration
+            FrameDuration,
+            GameStateQuery
         }
 
         public Type Name { get; set; }

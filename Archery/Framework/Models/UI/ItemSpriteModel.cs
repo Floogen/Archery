@@ -2,6 +2,7 @@
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
+using Archery.Framework.Utilities.Backport;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -70,6 +71,10 @@ namespace Archery.Framework.Models.Display
                 {
                     condition.Operator = Enums.Comparison.LessThanOrEqualTo;
                     passedCheck = condition.IsValid(MillisecondsElapsed);
+                }
+                else if (condition.Name is Condition.Type.GameStateQuery)
+                {
+                    passedCheck = condition.IsValid(GameStateQuery.CheckConditions(condition.Value.ToString(), target_farmer: who));
                 }
 
                 // If the condition is independent and is true, then skip rest of evaluations
