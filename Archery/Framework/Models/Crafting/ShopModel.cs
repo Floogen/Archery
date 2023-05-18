@@ -8,7 +8,7 @@ namespace Archery.Framework.Models.Crafting
         public string Owner { get; set; }
         public string Context { get; set; }
 
-        public int Stock { get; set; } = 1;
+        public int Stock { get; set; } = -1;
         internal int? RemainingStock { get; set; }
         public int Price { get; set; }
 
