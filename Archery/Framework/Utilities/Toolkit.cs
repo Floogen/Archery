@@ -216,7 +216,6 @@ namespace Archery.Framework.Utilities
                 {
                     List<Vector2> dummyTiles = new List<Vector2>()
                     {
-                        new Vector2(16, 15),
                         new Vector2(13, 19),
                         new Vector2(20, 19),
                         new Vector2(17, 22)
@@ -238,6 +237,13 @@ namespace Archery.Framework.Utilities
                     if (arena.objects.ContainsKey(targetTile) is false && knockbackDummy is not null)
                     {
                         knockbackDummy.placementAction(arena, (int)targetTile.X * 64, (int)targetTile.Y * 64, null);
+                    }
+
+                    targetTile = new Vector2(16, 15);
+                    var maxHitDummy = dgaAPI.SpawnDGAItem("PeacefulEnd.PracticeDummy/MaxHitDummy") as StardewValley.Object;
+                    if (arena.objects.ContainsKey(targetTile) is false && maxHitDummy is not null)
+                    {
+                        maxHitDummy.placementAction(arena, (int)targetTile.X * 64, (int)targetTile.Y * 64, null);
                     }
                 }
             }
