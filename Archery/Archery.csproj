@@ -24,6 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Copper Bow\weapon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Examples\[Archery] Basic Pack\Weapons\Makeshift Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
