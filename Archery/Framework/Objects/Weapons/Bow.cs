@@ -318,16 +318,16 @@ namespace Archery.Framework.Objects.Weapons
                     bool first_fire = false;
                     if (slingshot.GetBackArmDistance(who) >= 20 && slingshot.nextAutoFire < 0f)
                     {
-                        slingshot.nextAutoFire = 0f;
+                        slingshot.nextAutoFire = 0;
                         first_fire = true;
                     }
                     if (slingshot.nextAutoFire > 0f || first_fire)
                     {
-                        slingshot.nextAutoFire -= (float)time.ElapsedGameTime.TotalSeconds;
+                        slingshot.nextAutoFire -= (float)time.ElapsedGameTime.TotalMilliseconds;
                         if (slingshot.nextAutoFire <= 0f)
                         {
                             slingshot.PerformFire(who.currentLocation, who);
-                            slingshot.nextAutoFire = slingshot.GetAutoFireRate();
+                            slingshot.nextAutoFire = weaponModel.AutoFireRateMilliseconds;
                         }
                     }
                 }

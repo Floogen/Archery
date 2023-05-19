@@ -36,6 +36,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.attach), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(AttachPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.CanAutoFire), null), postfix: new HarmonyMethod(GetType(), nameof(CanAutoFirePostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
         }
@@ -171,6 +172,14 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance))
             {
                 __result = Bow.GetSlingshotChargeTime(__instance);
+            }
+        }
+
+        private static void CanAutoFirePostfix(Slingshot __instance, ref bool __result)
+        {
+            if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.CanAutoFire)
+            {
+                __result = true;
             }
         }
 

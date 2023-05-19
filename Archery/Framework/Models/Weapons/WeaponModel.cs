@@ -20,6 +20,9 @@ namespace Archery.Framework.Models.Weapons
         // Only used by WeaponType.Crossbow
         public int MagazineSize { get; set; } = 1;
 
+        public bool CanAutoFire { get; set; }
+        public float AutoFireRateMilliseconds { get; set; } = 300f;
+
         public Sound StartChargingSound { get; set; }
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
