@@ -236,6 +236,21 @@ namespace Archery.Framework.Interfaces.Internal
             return GenerateResponsePair(true, $"Played sound {sound.Name} at {position}");
         }
 
+        public KeyValuePair<bool, IWeaponData> GetWeaponData(IManifest callerManifest, Slingshot slingshot)
+        {
+            if (slingshot is null)
+            {
+                return new KeyValuePair<bool, IWeaponData>(false, null);
+            }
+
+            if (Bow.IsValid(slingshot) is false)
+            {
+                return new KeyValuePair<bool, IWeaponData>(false, null);
+            }
+
+            return new KeyValuePair<bool, IWeaponData>(true, Bow.GetData(slingshot));
+        }
+
         public KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile)
         {
             if (projectile is null)

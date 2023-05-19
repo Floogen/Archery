@@ -111,6 +111,22 @@ namespace Archery.Framework.Objects.Weapons
             Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id);
         }
 
+        internal static IWeaponData GetData(Tool tool)
+        {
+            if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            {
+                return new WeaponData()
+                {
+                    WeaponId = weaponModel.Id,
+                    WeaponType = weaponModel.Type,
+                    AmmoInMagazine = weaponModel.Type is WeaponType.Crossbow ? Bow.GetLoaded(tool) : null,
+                    MagazineSize = weaponModel.Type is WeaponType.Crossbow ? weaponModel.AmmoCountOnReload : null
+                };
+            }
+
+            return null;
+        }
+
         internal static bool CanThisBeAttached(Tool tool, Object item)
         {
             if (Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo() is false)

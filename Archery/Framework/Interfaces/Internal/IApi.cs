@@ -13,6 +13,7 @@ namespace Archery.Framework.Interfaces.Internal
     public interface IApi
     {
         KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
+        KeyValuePair<bool, IWeaponData> GetWeaponData(IManifest callerManifest, Slingshot slingshot);
         KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile);
         KeyValuePair<bool, string> SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data);
         KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage);
@@ -68,6 +69,14 @@ namespace Archery.Framework.Interfaces.Internal
         public bool? DoesExplodeOnImpact { get; set; }
         public int? ExplosionRadius { get; set; }
         public int? ExplosionDamage { get; set; }
+    }
+
+    public interface IWeaponData
+    {
+        public string WeaponId { get; init; }
+        public WeaponType WeaponType { get; init; }
+        public int? MagazineSize { get; init; }
+        public int? AmmoInMagazine { get; set; }
     }
 
     public interface ISound
