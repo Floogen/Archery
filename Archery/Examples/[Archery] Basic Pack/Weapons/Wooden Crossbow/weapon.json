@@ -51,7 +51,7 @@
     "Stock": -1,
     "Price": 100,
 
-    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED Current 15"
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 15"
   },
 
 

@@ -59,7 +59,7 @@
       "Stock": 1,
       "Price": 250,
 
-      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bolt/Stone Bolt, MINE_LOWEST_LEVEL_REACHED Current 15"
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bolt/Stone Bolt, MINE_LOWEST_LEVEL_REACHED 15"
     }
   },
 
@@ -69,7 +69,7 @@
     "Stock": -1,
     "Price": 10,
 
-    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED Current 15"
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 15"
   },
 
   "DirectionalSprites": {

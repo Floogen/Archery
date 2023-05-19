@@ -33,8 +33,6 @@
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
-    // This unlock condition uses GameStateQuery to only show the recipe if the player has learned it
-    "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Bow/Makeshift Bow",
     "Ingredients": [
       {
         "Id": 388,
