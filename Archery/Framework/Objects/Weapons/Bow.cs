@@ -120,7 +120,7 @@ namespace Archery.Framework.Objects.Weapons
                     WeaponId = weaponModel.Id,
                     WeaponType = weaponModel.Type,
                     AmmoInMagazine = weaponModel.Type is WeaponType.Crossbow ? Bow.GetLoaded(tool) : null,
-                    MagazineSize = weaponModel.Type is WeaponType.Crossbow ? weaponModel.AmmoCountOnReload : null
+                    MagazineSize = weaponModel.Type is WeaponType.Crossbow ? weaponModel.MagazineSize : null
                 };
             }
 
@@ -241,7 +241,7 @@ namespace Archery.Framework.Objects.Weapons
                     Toolkit.SuppressToolButtons();
 
                     var currentAmmoCount = Bow.GetAmmoCount(slingshot);
-                    Bow.SetLoaded(slingshot, currentAmmoCount < weaponModel.AmmoCountOnReload ? currentAmmoCount : weaponModel.AmmoCountOnReload);
+                    Bow.SetLoaded(slingshot, currentAmmoCount < weaponModel.MagazineSize ? currentAmmoCount : weaponModel.MagazineSize);
 
                     // Trigger event
                     var ammoModel = Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(slingshot));

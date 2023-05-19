@@ -41,7 +41,7 @@
 
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 1000,
-  "AmmoCountOnReload": 3,
+  "MagazineSize": 3,
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
