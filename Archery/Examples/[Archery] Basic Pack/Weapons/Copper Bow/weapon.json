@@ -21,8 +21,8 @@
 
   // Determines the min and max base damage (before account for any additive arrow damage)
   "DamageRange": {
-    "Min": 5,
-    "Max": 9
+    "Min": 7,
+    "Max": 12
   },
 
   // How fast the projectile flies after being fired
@@ -30,6 +30,11 @@
 
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 350,
+
+  // The special attack to use upon right-clicking
+  "SpecialAttack": {
+    "Id": "PeacefulEnd.Archery/Snapshot"
+  },
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {

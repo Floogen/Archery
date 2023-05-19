@@ -25,12 +25,7 @@
   "ProjectileSpeed": 10.5,
 
   // The time (in milliseconds) for the bow to fully charge
-  "ChargeTimeRequiredMilliseconds": 300,
-
-  // The special attack to use upon right-clicking
-  "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Snapshot"
-  },
+  "ChargeTimeRequiredMilliseconds": 350,
 
   // The shop that the weapon will be available at
   "Shop": {
