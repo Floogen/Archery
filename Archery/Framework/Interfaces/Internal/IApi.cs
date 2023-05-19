@@ -56,7 +56,7 @@ namespace Archery.Framework.Interfaces.Internal
 
     public interface IProjectileData
     {
-        public string AmmoId { get; set; }
+        public string AmmoId { get; init; }
         public Vector2? Position { get; set; }
         public Vector2? Velocity { get; set; }
         public float? InitialSpeed { get; init; }
