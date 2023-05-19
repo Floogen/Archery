@@ -22,14 +22,14 @@
   // Determines the min and max base damage (before account for any additive arrow damage)
   "DamageRange": {
     "Min": 15,
-    "Max": 20
+    "Max": 25
   },
 
   // How fast the projectile flies after being fired
   "ProjectileSpeed": 15.0,
 
   // The time (in milliseconds) for the bow to fully charge
-  "ChargeTimeRequiredMilliseconds": 300,
+  "ChargeTimeRequiredMilliseconds": 325,
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
