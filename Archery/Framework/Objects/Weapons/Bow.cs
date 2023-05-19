@@ -316,7 +316,7 @@ namespace Archery.Framework.Objects.Weapons
                 if (slingshot.CanAutoFire())
                 {
                     bool first_fire = false;
-                    if (slingshot.GetBackArmDistance(who) >= 20 && slingshot.nextAutoFire < 0f)
+                    if (currentChargeTime >= 1f && slingshot.nextAutoFire < 0f)
                     {
                         slingshot.nextAutoFire = 0;
                         first_fire = true;
