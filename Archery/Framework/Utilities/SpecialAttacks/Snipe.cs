@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Interfaces.Internal;
+using StardewValley;
 using StardewValley.Projectiles;
 
 namespace Archery.Framework.Utilities.SpecialAttacks
@@ -8,6 +9,17 @@ namespace Archery.Framework.Utilities.SpecialAttacks
         internal static bool HandleSpecialAttack(ISpecialAttack specialAttack)
         {
             var slingshot = specialAttack.Slingshot;
+
+            var weaponDataResponse = Archery.internalApi.GetWeaponData(Archery.manifest, slingshot);
+            if (weaponDataResponse.Key is false)
+            {
+                return false;
+            }
+            else if (weaponDataResponse.Value.WeaponType is WeaponType.Crossbow && weaponDataResponse.Value.AmmoInMagazine == 0)
+            {
+                Game1.showRedMessage("The crossbow must be loaded before using the special attack!");
+                return false;
+            }
 
             var currentChargeTime = slingshot.GetSlingshotChargeTime();
             if (currentChargeTime < 0.7f)
