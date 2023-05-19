@@ -1,7 +1,7 @@
 {
   "Type": "Bow",
-  "Name": "Copper Bow",
-  "Description": "A shiny copper reinforced bow.",
+  "Name": "Gold Bow",
+  "Description": "A dazzling gold reinforced bow.",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {
@@ -21,15 +21,15 @@
 
   // Determines the min and max base damage (before account for any additive arrow damage)
   "DamageRange": {
-    "Min": 7,
-    "Max": 12
+    "Min": 30,
+    "Max": 40
   },
 
   // How fast the projectile flies after being fired
-  "ProjectileSpeed": 10.5,
+  "ProjectileSpeed": 16.5,
 
   // The time (in milliseconds) for the bow to fully charge
-  "ChargeTimeRequiredMilliseconds": 350,
+  "ChargeTimeRequiredMilliseconds": 250,
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
@@ -39,19 +39,19 @@
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
     // This unlock condition uses GameStateQuery to only show the recipe if the player has learned it
-    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Copper Bow",
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Gold Bow",
     "Ingredients": [
       {
-        "Id": 334,
+        "Id": 336,
         "Amount": 4
       },
       {
-        "Id": 388,
-        "Amount": 10
+        "Id": 709,
+        "Amount": 4
       },
       {
-        "Id": 771,
-        "Amount": 2
+        "Id": 440,
+        "Amount": 1
       }
     ],
 
@@ -61,9 +61,9 @@
 
       // Using the value -1 tells the framework to use an infinite stock
       "Stock": -1,
-      "Price": 1000,
+      "Price": 5000,
 
-      "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 40, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Copper Bow"
+      "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 80, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Gold Bow"
     }
   },
 

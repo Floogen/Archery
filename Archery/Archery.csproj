@@ -24,8 +24,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Copper Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Gold Bow\weapon.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Iridium Bow\weapon.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Steel Bow\weapon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Copper Bow\weapon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Examples\[Archery] Basic Pack\Weapons\Makeshift Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -49,7 +58,7 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Examples\[Archery] Example Pack\Weapons\Magic Bow\arms.png">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Examples\[Archery] Example Pack\Weapons\Magic Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
