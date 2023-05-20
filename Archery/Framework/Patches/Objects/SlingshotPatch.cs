@@ -71,7 +71,7 @@ namespace Archery.Framework.Patches.Objects
                 }
 
                 var weaponIcon = weaponModel.GetIcon(Game1.player);
-                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset) * scaleSize, weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponIcon.Scale + addedScale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset) * scaleSize, weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponIcon.Scale + addedScale, weaponIcon.GetSpriteEffects(), layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
