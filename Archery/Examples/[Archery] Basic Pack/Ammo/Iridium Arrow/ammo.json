@@ -1,10 +1,10 @@
 {
   "Type": "Arrow",
-  "Name": "Stone Arrow",
-  "Description": "A wooden arrow with stone tips.",
+  "Name": "Iridium Arrow",
+  "Description": "A wooden arrow with iridium tips.",
 
-  "BreakChance": 0.9,
-  "Damage": 3,
+  "BreakChance": 0.05,
+  "Damage": 18,
 
   "Icon": {
     "Source": {
@@ -58,15 +58,15 @@
 
 
   "Recipe": {
-    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow",
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Iridium Arrow",
     "Ingredients": [
       {
-        "Id": 388,
-        "Amount": 5
+        "Id": 709,
+        "Amount": 2
       },
       {
-        "Id": 390,
-        "Amount": 2
+        "Id": 337,
+        "Amount": 1
       }
     ],
     "OutputAmount": 10,
@@ -74,9 +74,9 @@
     "Shop": {
       "Owner": "Marlon",
       "Stock": 1,
-      "Price": 250,
+      "Price": 15000,
 
-      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow, MINE_LOWEST_LEVEL_REACHED 15"
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Iridium Arrow, MINE_LOWEST_LEVEL_REACHED 100"
     }
   },
 
@@ -84,9 +84,9 @@
   "Shop": {
     "Owner": "Marlon",
     "Stock": -1,
-    "Price": 10,
+    "Price": 5000,
 
-    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 15"
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 100"
   },
 
   "DirectionalSprites": {

@@ -1,10 +1,10 @@
 {
   "Type": "Arrow",
-  "Name": "Stone Arrow",
-  "Description": "A wooden arrow with stone tips.",
+  "Name": "Copper Arrow",
+  "Description": "A wooden arrow with copper tips.",
 
-  "BreakChance": 0.9,
-  "Damage": 3,
+  "BreakChance": 0.5,
+  "Damage": 6,
 
   "Icon": {
     "Source": {
@@ -58,15 +58,15 @@
 
 
   "Recipe": {
-    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow",
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Copper Arrow",
     "Ingredients": [
       {
         "Id": 388,
         "Amount": 5
       },
       {
-        "Id": 390,
-        "Amount": 2
+        "Id": 334,
+        "Amount": 1
       }
     ],
     "OutputAmount": 10,
@@ -74,9 +74,9 @@
     "Shop": {
       "Owner": "Marlon",
       "Stock": 1,
-      "Price": 250,
+      "Price": 1000,
 
-      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow, MINE_LOWEST_LEVEL_REACHED 15"
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Copper Arrow, MINE_LOWEST_LEVEL_REACHED 40"
     }
   },
 
@@ -84,9 +84,9 @@
   "Shop": {
     "Owner": "Marlon",
     "Stock": -1,
-    "Price": 10,
+    "Price": 100,
 
-    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 15"
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 40"
   },
 
   "DirectionalSprites": {

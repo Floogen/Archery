@@ -1,10 +1,10 @@
 {
   "Type": "Arrow",
-  "Name": "Stone Arrow",
-  "Description": "A wooden arrow with stone tips.",
+  "Name": "Steel Arrow",
+  "Description": "A wooden arrow with steel tips.",
 
-  "BreakChance": 0.9,
-  "Damage": 3,
+  "BreakChance": 0.25,
+  "Damage": 12,
 
   "Icon": {
     "Source": {
@@ -58,15 +58,15 @@
 
 
   "Recipe": {
-    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow",
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Steel Arrow",
     "Ingredients": [
       {
-        "Id": 388,
-        "Amount": 5
+        "Id": 709,
+        "Amount": 2
       },
       {
-        "Id": 390,
-        "Amount": 2
+        "Id": 335,
+        "Amount": 1
       }
     ],
     "OutputAmount": 10,
@@ -74,9 +74,9 @@
     "Shop": {
       "Owner": "Marlon",
       "Stock": 1,
-      "Price": 250,
+      "Price": 5000,
 
-      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Stone Arrow, MINE_LOWEST_LEVEL_REACHED 15"
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Steel Arrow, MINE_LOWEST_LEVEL_REACHED 60"
     }
   },
 
@@ -84,9 +84,9 @@
   "Shop": {
     "Owner": "Marlon",
     "Stock": -1,
-    "Price": 10,
+    "Price": 500,
 
-    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 15"
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 60"
   },
 
   "DirectionalSprites": {

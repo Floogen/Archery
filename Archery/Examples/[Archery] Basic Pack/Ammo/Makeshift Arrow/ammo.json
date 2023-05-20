@@ -42,7 +42,7 @@
 
 
   "Recipe": {
-    "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current ExampleAuthor.ExampleArcheryPack/Arrow/Makeshift Arrow",
+    "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Makeshift Arrow",
     "Ingredients": [
       {
         "Id": 388,
