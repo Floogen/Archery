@@ -6,20 +6,30 @@
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {
     "Source": {
-      "X": 0,
+      "X": 48,
       "Y": 0,
-      "Width": 16,
-      "Height": 16
-    }
+      "Width": 32,
+      "Height": 32
+    },
+    "Offset": {
+      "X": -18,
+      "Y": -16
+    },
+    "Scale": 2.0
   },
   "ConditionalIcons": [
     {
       "Source": {
-        "X": 16,
-        "Y": 0,
-        "Width": 16,
-        "Height": 16
+        "X": 48,
+        "Y": 32,
+        "Width": 32,
+        "Height": 32
       },
+      "Offset": {
+        "X": -18,
+        "Y": -16
+      },
+      "Scale": 2.0,
 
       "Conditions": [
         {
