@@ -10,6 +10,7 @@ namespace Archery.Framework.Interfaces.Internal
         public float? InitialSpeed { get; init; }
         public float? Rotation { get; set; }
         public int? BaseDamage { get; set; }
+        public float? BreakChance { get; set; }
         public float? CriticalChance { get; set; }
         public float? CriticalDamageMultiplier { get; set; }
         public bool? DoesExplodeOnImpact { get; set; }

@@ -28,6 +28,7 @@ namespace Archery.Framework.Objects.Projectiles
 
         private int _baseDamage;
         private int _collectiveDamage;
+        private float _breakChance;
         private float _criticalChance;
         private float _criticalDamageMultiplier;
 
@@ -49,6 +50,7 @@ namespace Archery.Framework.Objects.Projectiles
             _startingAlpha = 1f;
 
             _baseDamage = ammoModel.Damage;
+            _breakChance = ammoModel.BreakChance;
             _collectiveDamage = (int)(weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.attackIncreaseModifier));
             _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f);
             _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue);
@@ -78,6 +80,7 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 AmmoId = _ammoModel.Id,
                 BaseDamage = _baseDamage,
+                BreakChance = _criticalChance,
                 CriticalChance = _criticalChance,
                 CriticalDamageMultiplier = _criticalDamageMultiplier,
                 Position = base.position.Value,
@@ -101,6 +104,11 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 _baseDamage = projectileData.BaseDamage.Value;
                 _collectiveDamage = (int)(_weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.attackIncreaseModifier));
+            }
+
+            if (projectileData.BreakChance is not null)
+            {
+                _breakChance = projectileData.BreakChance.Value;
             }
 
             if (projectileData.CriticalChance is not null)
@@ -282,7 +290,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             // See if the ammo should break
             var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
-            if (_ammoModel.CanBreak() && (_ammoModel.ShouldAlwaysBreak() || Game1.random.NextDouble() < _ammoModel.BreakChance - playerLuckChance))
+            if (AmmoModel.CanBreak(_breakChance) && (AmmoModel.ShouldAlwaysBreak(_breakChance) || Game1.random.NextDouble() < _breakChance - playerLuckChance))
             {
                 // Draw debris based on ammo's sprite
                 if (_ammoModel.Debris is not null)

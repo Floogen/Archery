@@ -48,14 +48,14 @@ namespace Archery.Framework.Models.Weapons
             return ProjectileSprite;
         }
 
-        internal bool CanBreak()
+        internal static bool CanBreak(float breakChance)
         {
-            return BreakChance > 0;
+            return breakChance > 0;
         }
 
-        internal bool ShouldAlwaysBreak()
+        internal static bool ShouldAlwaysBreak(float breakChance)
         {
-            return BreakChance >= 1f;
+            return breakChance >= 1f;
         }
 
         internal override void SetId(IContentPack contentPack)
