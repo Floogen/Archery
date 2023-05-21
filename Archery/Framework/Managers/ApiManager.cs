@@ -138,10 +138,10 @@ namespace Archery.Framework.Managers
 
         public void RegisterNativeEnchantments()
         {
-            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Seeker", AmmoType.Any, TriggerType.OnFire, () => "Seeker", () => "Faintly moves toward enemies.", Seeker.HandleEnchantment);
-            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Vampiric", AmmoType.Any, TriggerType.OnImpact, () => "Vampiric", () => "Restores 10% of the damage done as health.", Vampiric.HandleEnchantment);
-            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Drain", AmmoType.Any, TriggerType.OnImpact, () => "Drain", () => "Restores 10% of the damage done as stamina.", Drain.HandleEnchantment);
-            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Shock", AmmoType.Any, TriggerType.OnImpact, () => "Shock", () => "Briefly stuns enemies upon impact.", Shock.HandleEnchantment);
+            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Seeker", AmmoType.Any, TriggerType.OnFire, (arguments) => "Seeker", (arguments) => "Faintly moves toward enemies.", Seeker.HandleEnchantment);
+            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Vampiric", AmmoType.Any, TriggerType.OnImpact, (arguments) => "Vampiric", Vampiric.GetDescription, Vampiric.HandleEnchantment);
+            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Drain", AmmoType.Any, TriggerType.OnImpact, (arguments) => "Drain", Drain.GetDescription, Drain.HandleEnchantment);
+            Archery.internalApi.RegisterEnchantment(Archery.manifest, "Shock", AmmoType.Any, TriggerType.OnImpact, (arguments) => "Shock", Shock.GetDescription, Shock.HandleEnchantment);
         }
     }
 }
