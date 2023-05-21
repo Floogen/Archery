@@ -10,7 +10,7 @@ namespace Archery.Framework.Utilities.Enchantments
 
         internal static string GetDescription(List<object> arguments)
         {
-            var stunTime = GetStunTime(arguments);
+            var stunTime = GetStunTime(arguments) / 1000;
             if (stunTime > 0)
             {
                 return $"Briefly stuns enemies upon impact for {stunTime} second(s).";
@@ -40,7 +40,7 @@ namespace Archery.Framework.Utilities.Enchantments
             {
                 try
                 {
-                    stunTime = (int)arguments[0];
+                    stunTime = Convert.ToInt32(arguments[0]);
                 }
                 catch (Exception ex)
                 {
