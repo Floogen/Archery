@@ -24,19 +24,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Gold Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Gold Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Iridium Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Iridium Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Steel Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Steel Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Copper Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Copper Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="Examples\[Archery] Basic Pack\Weapons\Makeshift Bow\weapon.png">
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Makeshift Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Examples\[Archery] Example Pack\Ammo\Exclusive Arrow\ammo.png">
