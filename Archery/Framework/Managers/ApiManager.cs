@@ -132,8 +132,8 @@ namespace Archery.Framework.Managers
 
         public void RegisterNativeSpecialAttacks()
         {
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, () => "Snapshot", () => "Fires two arrows in quick succession.", () => 3000, Snapshot.HandleSpecialAttack);
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Any, () => "Snipe", () => "Instantly fires the projectile with increased speed. Guaranteed to critical hit.", () => 3000, Snipe.HandleSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, (arguments) => "Snapshot", (arguments) => "Fires two arrows in quick succession.", () => 3000, Snapshot.HandleSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Any, (arguments) => "Snipe", (arguments) => "Instantly fires the projectile with increased speed. Guaranteed to critical hit.", () => 3000, Snipe.HandleSpecialAttack);
         }
 
         public void RegisterNativeEnchantments()

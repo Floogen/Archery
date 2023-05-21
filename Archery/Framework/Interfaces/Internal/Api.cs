@@ -131,8 +131,9 @@ namespace Archery.Framework.Interfaces.Internal
             {
                 return null;
             }
+            var specialAttackData = _registeredSpecialAttackData[specialAttackId];
 
-            return _registeredSpecialAttackData[specialAttackId].GetName();
+            return specialAttackData.GetName(specialAttackData.Arguments);
         }
 
         internal string GetSpecialAttackDescription(string specialAttackId)
@@ -141,8 +142,9 @@ namespace Archery.Framework.Interfaces.Internal
             {
                 return null;
             }
+            var specialAttackData = _registeredSpecialAttackData[specialAttackId];
 
-            return _registeredSpecialAttackData[specialAttackId].GetDescription();
+            return specialAttackData.GetDescription(specialAttackData.Arguments);
         }
 
         internal int GetSpecialAttackCooldown(string specialAttackId)
@@ -191,8 +193,9 @@ namespace Archery.Framework.Interfaces.Internal
             {
                 return null;
             }
+            var enchantmentData = _registeredEnchantmentData[enchantmentId];
 
-            return _registeredEnchantmentData[enchantmentId].GetName();
+            return enchantmentData.GetName(enchantmentData.Arguments);
         }
 
         internal string GetEnchantmentDescription(string enchantmentId)
@@ -201,8 +204,9 @@ namespace Archery.Framework.Interfaces.Internal
             {
                 return null;
             }
+            var enchantmentData = _registeredEnchantmentData[enchantmentId];
 
-            return _registeredEnchantmentData[enchantmentId].GetDescription();
+            return enchantmentData.GetDescription(enchantmentData.Arguments);
         }
 
         internal TriggerType GetEnchantmentTriggerType(string enchantmentId)
@@ -341,7 +345,7 @@ namespace Archery.Framework.Interfaces.Internal
             return PerformFire(callerManifest, ammoId: null, slingshot, location, who, suppressFiringSound);
         }
 
-        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<string> getDisplayName, Func<string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
+        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredSpecialAttackMethods[id] = specialAttackHandler;
@@ -371,7 +375,7 @@ namespace Archery.Framework.Interfaces.Internal
             return GenerateResponsePair(true, $"Unregistered the special attack method {id}.");
         }
 
-        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<string> getDisplayName, Func<string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
+        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredEnchantmentMethods[id] = enchantmentHandler;

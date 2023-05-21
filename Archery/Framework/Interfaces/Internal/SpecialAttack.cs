@@ -15,8 +15,8 @@ namespace Archery.Framework.Interfaces.Internal
         public List<object> Arguments { get; init; }
 
         internal WeaponType WeaponType { get; set; }
-        internal Func<string> GetName { get; set; }
-        internal Func<string> GetDescription { get; set; }
+        internal Func<List<object>, string> GetName { get; set; }
+        internal Func<List<object>, string> GetDescription { get; set; }
         internal Func<int> GetCooldownInMilliseconds { get; set; }
     }
 }
