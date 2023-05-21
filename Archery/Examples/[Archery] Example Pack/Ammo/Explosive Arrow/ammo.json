@@ -14,7 +14,6 @@
   // The enchantment to use upon firing
   "Enchantment": {
     "Id": "PeacefulEnd.Archery/Seeker",
-    "TriggerType": "OnFire",
     "TriggerChance": 1.0,
     "Arguments": [
       25
