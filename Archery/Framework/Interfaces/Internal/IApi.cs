@@ -12,6 +12,8 @@ namespace Archery.Framework.Interfaces.Internal
 {
     public interface IApi
     {
+        KeyValuePair<bool, Item> CreateWeapon(IManifest callerManifest, string weaponModelId);
+        KeyValuePair<bool, Item> CreateAmmo(IManifest callerManifest, string ammoModelId);
         KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
         KeyValuePair<bool, IWeaponData> GetWeaponData(IManifest callerManifest, Slingshot slingshot);
         KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile);

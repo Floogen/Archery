@@ -1,5 +1,6 @@
 ﻿using Archery.Framework.Models.Generic;
 using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Projectiles;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Utilities;
@@ -220,6 +221,26 @@ namespace Archery.Framework.Interfaces.Internal
             return $"{callerManifest.UniqueID}/{name}";
         }
         #endregion
+
+        public KeyValuePair<bool, Item> CreateWeapon(IManifest callerManifest, string weaponModelId)
+        {
+            if (Archery.modelManager.DoesModelExist<WeaponModel>(weaponModelId) is false)
+            {
+                return new KeyValuePair<bool, Item>(false, null);
+            }
+
+            return new KeyValuePair<bool, Item>(true, Bow.CreateInstance(Archery.modelManager.GetSpecificModel<WeaponModel>(weaponModelId)));
+        }
+
+        public KeyValuePair<bool, Item> CreateAmmo(IManifest callerManifest, string ammoModelId)
+        {
+            if (Archery.modelManager.DoesModelExist<AmmoModel>(ammoModelId) is false)
+            {
+                return new KeyValuePair<bool, Item>(false, null);
+            }
+
+            return new KeyValuePair<bool, Item>(true, Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(ammoModelId)));
+        }
 
         public KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position)
         {
