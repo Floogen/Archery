@@ -67,6 +67,17 @@
     }
   },
 
+  // The shop that the weapon will be available at
+  "Shop": {
+    "Owner": "Marlon",
+
+    // Using the value -1 tells the framework to use an infinite stock
+    "Stock": -1,
+    "Price": 50000,
+
+    "UnlockCondition": "PLAYER_HAS_FLAG Current galaxySword"
+  },
+
   // The following determines what bow and arm sprites to draw based on the direction and other given conditions
   "DirectionalSprites": {
     // Start of upward facing sprites

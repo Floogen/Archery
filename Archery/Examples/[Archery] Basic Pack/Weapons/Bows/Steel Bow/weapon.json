@@ -67,6 +67,17 @@
     }
   },
 
+  // The shop that the recipe will be available at
+  "Shop": {
+    "Owner": "Marlon",
+
+    // Using the value -1 tells the framework to use an infinite stock
+    "Stock": -1,
+    "Price": 9000,
+
+    "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 60"
+  },
+
   // The following determines what bow and arm sprites to draw based on the direction and other given conditions
   "DirectionalSprites": {
     // Start of upward facing sprites

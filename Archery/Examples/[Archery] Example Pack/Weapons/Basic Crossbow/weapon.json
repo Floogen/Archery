@@ -81,7 +81,7 @@
 
     // Using the value -1 tells the framework to use an infinite stock
     "Stock": -1,
-    "Price": 100
+    "Price": 1000
   },
 
 
