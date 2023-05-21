@@ -71,7 +71,7 @@ namespace Archery.Framework.Patches.Objects
                 }
 
                 var weaponIcon = weaponModel.GetIcon(Game1.player);
-                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset) * scaleSize, weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, weaponIcon.Scale + addedScale, weaponIcon.GetSpriteEffects(), layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset), weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f), weaponIcon.Scale + addedScale, weaponIcon.GetSpriteEffects(), layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
@@ -82,7 +82,7 @@ namespace Archery.Framework.Patches.Objects
                 int loadedAmmoCount = Bow.GetLoaded(__instance);
                 if (loadedAmmoCount > 0)
                 {
-                    Utility.drawTinyDigits(loadedAmmoCount, spriteBatch, location + new Vector2(56f, 4f) * scaleSize, 3f * scaleSize, 1f, Color.White);
+                    Utility.drawTinyDigits(loadedAmmoCount, spriteBatch, location + new Vector2(50f, 4f), 3f * scaleSize, 1f, Color.White);
                 }
 
                 if (isRecipe)
