@@ -63,7 +63,7 @@
       "Stock": -1,
       "Price": 10000,
 
-      "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 100, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Iridium Bow"
+      "UnlockCondition": "PLAYER_HAS_FLAG Current galaxySword, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Iridium Bow"
     }
   },
 
