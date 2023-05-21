@@ -1,7 +1,7 @@
 {
   "Type": "Bolt",
   "Name": "Gold Bolt",
-  "Description": "A wooden bolt with gold tips.\nThese bolts have a higher chance of critical hits.",
+  "Description": "A wooden bolt with gold tips.\nThese have a high chance of critical hits.",
 
   "CriticalChance": 0.25,
   "BreakChance": 0.25,
