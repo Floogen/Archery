@@ -57,6 +57,36 @@ namespace Archery.Framework.Patches.Locations
                     // Add the ammo
                     AddToShopMenu(Archery.modelManager.GetAllModels().Where(m => m is AmmoModel).ToList(), shopMenu);
 
+                    // Add the recipes
+                    foreach (var recipe in Archery.modelManager.GetRecipesForSale())
+                    {
+                        if (Game1.player.knowsRecipe(recipe.ParentId))
+                        {
+                            continue;
+                        }
+
+                        Item item;
+                        switch (Archery.modelManager.GetSpecificModel<BaseModel>(recipe.ParentId))
+                        {
+                            case WeaponModel weaponModel:
+                                item = Bow.CreateRecipe(weaponModel);
+                                break;
+                            case AmmoModel ammoModel:
+                                item = Arrow.CreateRecipe(ammoModel);
+                                break;
+                            default:
+                                continue;
+                        }
+                        item.Stack = 1;
+
+                        shopMenu.forSale.Add(item);
+                        shopMenu.itemPriceAndStock.Add(item, new int[2]
+                        {
+                            0,
+                            1
+                        });
+                    }
+
                     Game1.activeClickableMenu = shopMenu;
 
                     __result = true;
@@ -88,8 +118,8 @@ namespace Archery.Framework.Patches.Locations
                 shopMenu.forSale.Add(item);
                 shopMenu.itemPriceAndStock.Add(item, new int[2]
                 {
-                            0,
-                            int.MaxValue
+                    0,
+                    int.MaxValue
                 });
             }
         }
