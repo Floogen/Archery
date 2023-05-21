@@ -95,13 +95,13 @@ namespace Archery.Framework.Objects
 
                     if (model is WeaponModel weaponModel && weaponModel.SpecialAttack is not null)
                     {
-                        description = $"{description}\n\n{Archery.internalApi.GetSpecialAttackName(weaponModel.SpecialAttack.Id)}\n{Archery.internalApi.GetSpecialAttackDescription(weaponModel.SpecialAttack.Id)}";
+                        description = $"{description}\n\n{Archery.internalApi.GetSpecialAttackName(weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Arguments)}\n{Archery.internalApi.GetSpecialAttackDescription(weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Arguments)}";
                     }
                     else if (model is AmmoModel ammoModel)
                     {
                         if (ammoModel.Enchantment is not null)
                         {
-                            description = $"{description}\n\n{Archery.internalApi.GetEnchantmentName(ammoModel.Enchantment.Id)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id)}";
+                            description = $"{description}\n\n{Archery.internalApi.GetEnchantmentName(ammoModel.Enchantment.Id, ammoModel.Enchantment.Arguments)}\nTrigger Chance: {(ammoModel.Enchantment.TriggerChance >= 1f ? "Always" : $"{ammoModel.Enchantment.TriggerChance * 100}%")}\n\n{Archery.internalApi.GetEnchantmentDescription(ammoModel.Enchantment.Id, ammoModel.Enchantment.Arguments)}";
                         }
 
                         description = $"{description}\n\n+{ammoModel.Damage} Damage";

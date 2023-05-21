@@ -125,26 +125,24 @@ namespace Archery.Framework.Interfaces.Internal
             return false;
         }
 
-        internal string GetSpecialAttackName(string specialAttackId)
+        internal string GetSpecialAttackName(string specialAttackId, List<object> arguments)
         {
             if (_registeredSpecialAttackData.ContainsKey(specialAttackId) is false)
             {
                 return null;
             }
-            var specialAttackData = _registeredSpecialAttackData[specialAttackId];
 
-            return specialAttackData.GetName(specialAttackData.Arguments);
+            return _registeredSpecialAttackData[specialAttackId].GetName(arguments);
         }
 
-        internal string GetSpecialAttackDescription(string specialAttackId)
+        internal string GetSpecialAttackDescription(string specialAttackId, List<object> arguments)
         {
             if (_registeredSpecialAttackData.ContainsKey(specialAttackId) is false)
             {
                 return null;
             }
-            var specialAttackData = _registeredSpecialAttackData[specialAttackId];
 
-            return specialAttackData.GetDescription(specialAttackData.Arguments);
+            return _registeredSpecialAttackData[specialAttackId].GetDescription(arguments);
         }
 
         internal int GetSpecialAttackCooldown(string specialAttackId)
@@ -187,26 +185,24 @@ namespace Archery.Framework.Interfaces.Internal
             return false;
         }
 
-        internal string GetEnchantmentName(string enchantmentId)
+        internal string GetEnchantmentName(string enchantmentId, List<object> arguments)
         {
             if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
             {
                 return null;
             }
-            var enchantmentData = _registeredEnchantmentData[enchantmentId];
 
-            return enchantmentData.GetName(enchantmentData.Arguments);
+            return _registeredEnchantmentData[enchantmentId].GetName(arguments);
         }
 
-        internal string GetEnchantmentDescription(string enchantmentId)
+        internal string GetEnchantmentDescription(string enchantmentId, List<object> arguments)
         {
             if (_registeredEnchantmentData.ContainsKey(enchantmentId) is false)
             {
                 return null;
             }
-            var enchantmentData = _registeredEnchantmentData[enchantmentId];
 
-            return enchantmentData.GetDescription(enchantmentData.Arguments);
+            return _registeredEnchantmentData[enchantmentId].GetDescription(arguments);
         }
 
         internal TriggerType GetEnchantmentTriggerType(string enchantmentId)
