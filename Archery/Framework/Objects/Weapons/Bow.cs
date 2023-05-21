@@ -107,7 +107,6 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static void RefreshSpecialAttackCooldown(SpecialAttackModel specialAttack)
         {
-            Bow.CooldownAdditiveScale = 2f;
             Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id);
         }
 
