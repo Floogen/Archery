@@ -22,8 +22,8 @@ namespace Archery.Framework.Utilities.Enchantments
             }
             var farmer = enchantment.Farmer;
 
-            // Take 10% of the damage done and restore the farmer's health
-            var amountToHeal = enchantment.DamageDone.Value / GetPercentage(enchantment.Arguments);
+            // Take % of the damage done and restore the farmer's health
+            int amountToHeal = (int)(enchantment.DamageDone.Value * (GetPercentage(enchantment.Arguments) / 100f));
             farmer.health = amountToHeal + farmer.health > farmer.maxHealth ? farmer.maxHealth : amountToHeal + farmer.health;
 
             return false;
@@ -36,7 +36,7 @@ namespace Archery.Framework.Utilities.Enchantments
             {
                 try
                 {
-                    percentage = (float)arguments[0];
+                    percentage = Convert.ToSingle(arguments[0]);
                 }
                 catch (Exception ex)
                 {
