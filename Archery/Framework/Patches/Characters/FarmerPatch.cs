@@ -40,13 +40,13 @@ namespace Archery.Framework.Patches.Characters
                 Bow.ActiveCooldown -= time.ElapsedGameTime.Milliseconds;
                 if (Bow.ActiveCooldown <= 0)
                 {
-                    Bow.CooldownAdditiveScale = 2f;
+                    Bow.CooldownAdditiveScale = 0.5f;
                 }
             }
 
             if (Bow.CooldownAdditiveScale >= 0)
             {
-                Bow.CooldownAdditiveScale -= 0.05f;
+                Bow.CooldownAdditiveScale -= 0.03f;
             }
         }
     }

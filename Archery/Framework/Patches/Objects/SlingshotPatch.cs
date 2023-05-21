@@ -62,7 +62,11 @@ namespace Archery.Framework.Patches.Objects
                     {
                         coolDownLevel = Bow.ActiveCooldown / (float)(Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id));
                     }
-                    addedScale = Bow.CooldownAdditiveScale;
+
+                    if (Bow.CooldownAdditiveScale > 0)
+                    {
+                        addedScale = Bow.CooldownAdditiveScale;
+                    }
 
                     if (!drawShadow || drawingAsDebris)
                     {
@@ -71,7 +75,7 @@ namespace Archery.Framework.Patches.Objects
                 }
 
                 var weaponIcon = weaponModel.GetIcon(Game1.player);
-                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset), weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f), weaponIcon.Scale + addedScale, weaponIcon.GetSpriteEffects(), layerDepth);
+                spriteBatch.Draw(weaponModel.Texture, location + (new Vector2(34f, 32f) + weaponIcon.Offset), weaponIcon.Source, color * transparency, 0f, new Vector2(8f, 8f), weaponIcon.Scale * (1f + addedScale), weaponIcon.GetSpriteEffects(), layerDepth);
 
                 int ammoCount = Bow.GetAmmoCount(__instance);
                 if (weaponModel.UsesInternalAmmo() is false && drawStackNumber != 0 && ammoCount > 0)
