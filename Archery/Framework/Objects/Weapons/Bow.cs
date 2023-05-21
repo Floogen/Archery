@@ -492,8 +492,8 @@ namespace Archery.Framework.Objects.Weapons
             float frontArmRotation = GetFrontArmRotation(who, slingshot);
 
             // Get the arrow and bow sprites
-            var ammoSprite = ammoModel is not null ? ammoModel.GetSpriteFromDirection(who) : null;
-            var bowSprite = bowModel.GetSpriteFromDirection(who);
+            var ammoSprite = ammoModel is not null ? ammoModel.GetSpriteFromDirection(who, slingshot) : null;
+            var bowSprite = bowModel.GetSpriteFromDirection(who, slingshot);
             if (bowSprite is null)
             {
                 return false;

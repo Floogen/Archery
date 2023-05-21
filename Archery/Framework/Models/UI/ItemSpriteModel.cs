@@ -45,7 +45,7 @@ namespace Archery.Framework.Models.Display
             return SpriteEffects.None;
         }
 
-        internal bool AreConditionsValid(Farmer who)
+        internal bool AreConditionsValid(Farmer who, Tool tool = null)
         {
             Archery.conditionManager.Track(this);
 
@@ -59,13 +59,13 @@ namespace Archery.Framework.Models.Display
                 {
                     passedCheck = condition.IsValid(slingshot.GetSlingshotChargeTime());
                 }
-                else if (condition.Name is Condition.Type.IsUsingSpecificArrow && Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(who.CurrentTool)) is AmmoModel ammo && ammo is not null)
+                else if (condition.Name is Condition.Type.IsUsingSpecificArrow && tool is not null && Arrow.GetModel<AmmoModel>(Bow.GetAmmoItem(tool)) is AmmoModel ammo && ammo is not null)
                 {
                     passedCheck = condition.IsValid(ammo.Id);
                 }
-                else if (condition.Name is Condition.Type.IsLoaded)
+                else if (condition.Name is Condition.Type.IsLoaded && tool is not null)
                 {
-                    passedCheck = condition.IsValid(Bow.IsLoaded(who.CurrentTool));
+                    passedCheck = condition.IsValid(Bow.IsLoaded(tool));
                 }
                 else if (condition.Name is Condition.Type.FrameDuration)
                 {

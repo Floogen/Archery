@@ -75,11 +75,11 @@ namespace Archery.Framework.Models
             return false;
         }
 
-        internal ItemSpriteModel GetIcon(Farmer who)
+        internal ItemSpriteModel GetIcon(Farmer who, Tool tool = null)
         {
             foreach (var sprite in ConditionalIcons.Where(s => s is not null))
             {
-                if (sprite.AreConditionsValid(who))
+                if (sprite.AreConditionsValid(who, tool))
                 {
                     return sprite;
                 }
@@ -99,7 +99,7 @@ namespace Archery.Framework.Models
             return DirectionalSprites.GetActualDirection((Direction)who.FacingDirection);
         }
 
-        internal WorldSpriteModel GetSpriteFromDirection(Farmer who)
+        internal WorldSpriteModel GetSpriteFromDirection(Farmer who, Tool tool)
         {
             if (who is null || DirectionalSprites is null)
             {
@@ -112,14 +112,14 @@ namespace Archery.Framework.Models
                 spritesInGivenDirection = DirectionalSprites.GetSpritesFromDirection(Direction.Any);
             }
 
-            return GetValidOrDefaultSprite(who, spritesInGivenDirection);
+            return GetValidOrDefaultSprite(who, tool, spritesInGivenDirection);
         }
 
-        internal WorldSpriteModel GetValidOrDefaultSprite(Farmer who, List<WorldSpriteModel> sprites)
+        internal WorldSpriteModel GetValidOrDefaultSprite(Farmer who, Tool tool, List<WorldSpriteModel> sprites)
         {
             foreach (var sprite in sprites.Where(s => s is not null))
             {
-                if (sprite.AreConditionsValid(who))
+                if (sprite.AreConditionsValid(who, tool))
                 {
                     return sprite;
                 }
