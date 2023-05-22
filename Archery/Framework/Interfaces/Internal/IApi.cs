@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Models.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -86,9 +85,17 @@ namespace Archery.Framework.Interfaces.Internal
     {
         public string Name { get; set; }
         public int Pitch { get; set; }
-        public RandomRange PitchRandomness { get; set; }
+        public IRandomRange PitchRandomness { get; set; }
         public float Volume { get; set; }
         public float MaxDistance { get; set; }
+    }
+
+    public interface IRandomRange
+    {
+        public int Min { get; set; }
+        public int Max { get; set; }
+
+        public int Get(Random random, int minOffset = 0, int maxOffset = 0);
     }
     #endregion
 

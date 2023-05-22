@@ -8,7 +8,7 @@ namespace Archery.Framework.Models.Generic
     {
         public string Name { get; set; }
         public int Pitch { get; set; } = -1;
-        public RandomRange PitchRandomness { get; set; }
+        public IRandomRange PitchRandomness { get; set; }
         private float _volume { get; set; } = 1f;
         public float Volume { get { return _volume; } set { _volume = Utility.Clamp(value, 0f, 1f); } }
         public float MaxDistance { get; set; } = 1024f;
