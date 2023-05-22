@@ -115,6 +115,28 @@ namespace Archery.Framework.Utilities
             }
         }
 
+        internal static void DisplayIds(string command, string[] args)
+        {
+            var displayType = args.Length > 0 ? args[0] : "Weapon";
+
+            if (displayType.Equals("Ammo", StringComparison.OrdinalIgnoreCase))
+            {
+                Archery.monitor.Log("Displaying ammo IDs:", LogLevel.Info);
+                foreach (var ammoModel in Archery.modelManager.GetAllModels().Where(t => t is AmmoModel).OrderBy(t => t.ContentPack.Manifest.UniqueID))
+                {
+                    Archery.monitor.Log(ammoModel.Id, LogLevel.Debug);
+                }
+            }
+            else
+            {
+                Archery.monitor.Log("Displaying weapon IDs:", LogLevel.Info);
+                foreach (var weaponModel in Archery.modelManager.GetAllModels().Where(t => t is WeaponModel).OrderBy(t => t.ContentPack.Manifest.UniqueID))
+                {
+                    Archery.monitor.Log(weaponModel.Id, LogLevel.Debug);
+                }
+            }
+        }
+
         internal static void SuppressToolButtons()
         {
             foreach (var button in Game1.options.useToolButton)
