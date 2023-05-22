@@ -50,6 +50,11 @@ namespace Archery.Framework.Objects.Weapons
             return false;
         }
 
+        internal static bool IsFiring(Farmer who, Tool tool)
+        {
+            return Bow.IsLoaded(tool) && who.usingSlingshot;
+        }
+
         internal static bool IsLoaded(Tool tool)
         {
             return Bow.GetLoaded(tool) > 0;

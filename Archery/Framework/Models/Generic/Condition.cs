@@ -11,7 +11,8 @@ namespace Archery.Framework.Models.Generic
             IsUsingSpecificArrow,
             IsLoaded,
             FrameDuration,
-            GameStateQuery
+            GameStateQuery,
+            IsFiring
         }
 
         public Type Name { get; set; }

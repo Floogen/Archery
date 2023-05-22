@@ -76,6 +76,10 @@ namespace Archery.Framework.Models.Display
                 {
                     passedCheck = condition.IsValid(GameStateQuery.CheckConditions(condition.Value.ToString(), target_farmer: who));
                 }
+                else if (condition.Name is Condition.Type.IsFiring && tool is not null)
+                {
+                    passedCheck = condition.IsValid(Bow.IsFiring(who, tool));
+                }
 
                 // If the condition is independent and is true, then skip rest of evaluations
                 if (condition.Independent && passedCheck)
