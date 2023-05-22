@@ -30,13 +30,13 @@ namespace StarterPack.Framework.Patches.Locations
             var actionName = fullActionString.Split(' ')[0];
             if (actionName.Equals("legendarySword", System.StringComparison.OrdinalIgnoreCase))
             {
-                if (Game1.player.ActiveObject != null && Utility.IsNormalObjectAtParentSheetIndex(Game1.player.ActiveObject, 524) && !Game1.player.mailReceived.Contains("peacefulend.yobaWeapon"))
+                if (Game1.player.CurrentItem != null && Game1.player.CurrentItem.Name == "Ring of Yoba")
                 {
                     Game1.player.Halt();
                     Game1.player.faceDirection(2);
                     Game1.player.showCarrying();
                     Game1.player.jitterStrength = 1f;
-                    Game1.pauseThenDoFunction(7000, GetYobaWeapon);
+                    Game1.pauseThenDoFunction(7000, () => GetYobaWeapon(Game1.player.CurrentItem));
                     Game1.changeMusicTrack("none", track_interruptable: false, Game1.MusicContext.Event);
                     __instance.playSound("crit");
                     Game1.screenGlowOnce(new Color(30, 0, 150), hold: true, 0.01f, 0.999f);
@@ -50,9 +50,9 @@ namespace StarterPack.Framework.Patches.Locations
             }
         }
 
-        private static void GetYobaWeapon()
+        private static void GetYobaWeapon(Item item)
         {
-            var response = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, "PeacefulEnd.Archery.StarterPack/Weapon/Yoba's Divine Harp");
+            var response = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp");
             if (response.Key is false)
             {
                 return;
@@ -61,12 +61,11 @@ namespace StarterPack.Framework.Patches.Locations
 
             Game1.flashAlpha = 1f;
             Game1.player.holdUpItemThenMessage(weapon);
-            Game1.player.reduceActiveItemByOne();
+            Game1.player.removeItemFromInventory(item);
             if (!Game1.player.addItemToInventoryBool(weapon))
             {
                 Game1.createItemDebris(weapon, Game1.player.getStandingPosition(), 1);
             }
-            Game1.player.mailReceived.Add("peacefulend.yobaWeapon");
             Game1.player.jitterStrength = 0f;
             Game1.screenGlowHold = false;
         }
