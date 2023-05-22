@@ -321,7 +321,7 @@ namespace Archery.Framework.Objects.Weapons
                 if (slingshot.CanAutoFire())
                 {
                     bool first_fire = false;
-                    if (currentChargeTime >= 1f && slingshot.nextAutoFire < 0f)
+                    if ((currentChargeTime >= 1f || weaponModel.Type is WeaponType.Crossbow && Bow.IsLoaded(slingshot)) && slingshot.nextAutoFire < 0f)
                     {
                         slingshot.nextAutoFire = 0;
                         first_fire = true;
