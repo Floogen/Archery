@@ -1,4 +1,6 @@
-﻿using Archery.Framework.Models.Weapons;
+﻿using Archery.Framework.Models;
+using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
@@ -20,8 +22,26 @@ namespace Archery.Framework.Patches.Characters
 
         internal override void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Method(_object, nameof(Farmer.showHoldingItem), new[] { typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(ShowHoldingItemPrefix)));
+
             harmony.Patch(AccessTools.Method(_object, "get_ActiveObject", null), postfix: new HarmonyMethod(GetType(), nameof(IsCarringPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Farmer.Update), new[] { typeof(GameTime), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(UpdatePostfix)));
+        }
+
+        private static bool ShowHoldingItemPrefix(Farmer __instance, Farmer who)
+        {
+            if (Bow.IsValid(who.mostRecentlyGrabbedItem) && InstancedObject.GetModel<BaseModel>(who.mostRecentlyGrabbedItem) is BaseModel baseModel)
+            {
+                var icon = baseModel.GetIcon(who);
+                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(baseModel.TexturePath, icon.Source, 2500f, 1, 0, who.Position + new Vector2(0f, -124f), flicker: false, flipped: false, 1f, 0f, Color.White, icon.Scale, 0f, 0f, 0f)
+                {
+                    motion = new Vector2(0f, -0.1f)
+                });
+
+                return false;
+            }
+
+            return true;
         }
 
         private static void IsCarringPostfix(Farmer __instance, ref Object __result)
