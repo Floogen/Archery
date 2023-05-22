@@ -188,7 +188,7 @@ namespace Archery.Framework.Objects.Weapons
                 }
                 else if (weaponModel.UsesInternalAmmo())
                 {
-                    return Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(weaponModel.InternalAmmoId));
+                    return Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(weaponModel.GetInternalAmmoId()));
                 }
             }
 

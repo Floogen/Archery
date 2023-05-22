@@ -1,7 +1,11 @@
 ﻿using Archery.Framework.Interfaces.Internal;
+using Archery.Framework.Models.Ammo;
 using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models.Weapons
 {
@@ -16,6 +20,7 @@ namespace Archery.Framework.Models.Weapons
         public float ConsumeAmmoChance { get; set; } = 1f;
 
         public string InternalAmmoId { get; set; }
+        public List<WeightedModel> WeightedInternalAmmoIds { get; set; }
 
         // Only used by WeaponType.Crossbow
         public int MagazineSize { get; set; } = 1;
@@ -66,7 +71,33 @@ namespace Archery.Framework.Models.Weapons
 
         internal bool UsesInternalAmmo()
         {
-            return string.IsNullOrEmpty(InternalAmmoId) is false && Archery.modelManager.DoesModelExist<AmmoModel>(InternalAmmoId);
+            return string.IsNullOrEmpty(GetInternalAmmoId()) is false;
+        }
+
+        internal string GetInternalAmmoId()
+        {
+            string selectedInternalAmmoId = null;
+            if (string.IsNullOrEmpty(InternalAmmoId) is false)
+            {
+                selectedInternalAmmoId = InternalAmmoId;
+            }
+            else if (WeightedInternalAmmoIds is not null && WeightedInternalAmmoIds.Count > 0)
+            {
+                var weightedSelection = WeightedInternalAmmoIds.Where(v => v.ChanceWeight > Game1.random.NextDouble()).ToList();
+                if (weightedSelection.Count > 0)
+                {
+                    var randomWeightedSelection = Game1.random.Next(0, weightedSelection.Count());
+                    selectedInternalAmmoId = weightedSelection[randomWeightedSelection].Id;
+                }
+            }
+
+            // Validate the selected internal ammo ID exists
+            if (Archery.modelManager.DoesModelExist<AmmoModel>(selectedInternalAmmoId) is false)
+            {
+                return null;
+            }
+
+            return selectedInternalAmmoId;
         }
 
         internal bool ShouldAlwaysConsumeAmmo()
