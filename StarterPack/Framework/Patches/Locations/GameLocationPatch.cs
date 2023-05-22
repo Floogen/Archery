@@ -30,13 +30,24 @@ namespace StarterPack.Framework.Patches.Locations
             var actionName = fullActionString.Split(' ')[0];
             if (actionName.Equals("legendarySword", System.StringComparison.OrdinalIgnoreCase))
             {
-                if (Game1.player.CurrentItem != null && Game1.player.CurrentItem.Name == "Ring of Yoba")
+                if (Game1.player.CurrentItem is null)
+                {
+                    return;
+                }
+
+                string weaponModelId = null;
+                if (Game1.player.CurrentItem.Name == "Ring of Yoba")
+                {
+                    weaponModelId = "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp";
+                }
+
+                if (string.IsNullOrEmpty(weaponModelId) is false)
                 {
                     Game1.player.Halt();
                     Game1.player.faceDirection(2);
                     Game1.player.showCarrying();
                     Game1.player.jitterStrength = 1f;
-                    Game1.pauseThenDoFunction(7000, () => GetYobaWeapon(Game1.player.CurrentItem));
+                    Game1.pauseThenDoFunction(7000, () => GetSpecialWeapon(Game1.player.CurrentItem, weaponModelId));
                     Game1.changeMusicTrack("none", track_interruptable: false, Game1.MusicContext.Event);
                     __instance.playSound("crit");
                     Game1.screenGlowOnce(new Color(30, 0, 150), hold: true, 0.01f, 0.999f);
@@ -50,9 +61,9 @@ namespace StarterPack.Framework.Patches.Locations
             }
         }
 
-        private static void GetYobaWeapon(Item item)
+        private static void GetSpecialWeapon(Item item, string weaponModelId)
         {
-            var response = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp");
+            var response = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, weaponModelId);
             if (response.Key is false)
             {
                 return;
