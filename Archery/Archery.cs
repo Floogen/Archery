@@ -359,15 +359,6 @@ namespace Archery
         {
             // Check for shared required properties
             List<string> missingPropertyNames = new List<string>();
-            if (model.Icon is null)
-            {
-                missingPropertyNames.Add("Icon");
-            }
-
-            if (model.DirectionalSprites is null || model.DirectionalSprites.IsEmpty())
-            {
-                missingPropertyNames.Add("DirectionalSprites");
-            }
 
             // Perform model specific checks
             switch (model)
