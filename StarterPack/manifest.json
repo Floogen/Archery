@@ -1,0 +1,16 @@
+{
+  "Name": "Archery - Starter Pack",
+  "Author": "PeacefulEnd",
+  "Version": "1.0.0",
+  "Description": "Code side for the Archery - Starter Pack.",
+  "UniqueID": "PeacefulEnd.Archery.StarterPack.Code",
+  "EntryDll": "StarterPack.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:????" ],
+  "Dependencies": [
+    {
+      "UniqueID": "PeacefulEnd.Archery.StarterPack",
+      "IsRequired": true
+    }
+  ]
+}
