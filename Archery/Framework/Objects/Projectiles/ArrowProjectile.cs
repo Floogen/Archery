@@ -63,6 +63,8 @@ namespace Archery.Framework.Objects.Projectiles
 
             base.maxTravelDistance.Value = _ammoModel.MaxTravelDistance;
 
+            base.rotationVelocity.Value = _ammoModel.RotationVelocity;
+
             if (ammoModel.Light is not null)
             {
                 base.light.Value = true;
