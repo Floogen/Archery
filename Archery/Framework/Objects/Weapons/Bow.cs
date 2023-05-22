@@ -241,6 +241,11 @@ namespace Archery.Framework.Objects.Weapons
                     Toolkit.SuppressToolButtons();
 
                     var currentAmmoCount = Bow.GetAmmoCount(slingshot);
+                    if (currentAmmoCount <= 0)
+                    {
+                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Slingshot.cs.14254"));
+                        return;
+                    }
                     Bow.SetLoaded(slingshot, currentAmmoCount < weaponModel.MagazineSize ? currentAmmoCount : weaponModel.MagazineSize);
 
                     // Trigger event
