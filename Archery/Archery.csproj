@@ -39,6 +39,9 @@
 		<None Update="Examples\[Archery] Basic Pack\Weapons\Bows\Makeshift Bow\weapon.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="Examples\[Archery] Basic Pack\Weapons\Specials\Yoba's Divine Harp\weapon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Examples\[Archery] Example Pack\Ammo\Exclusive Arrow\ammo.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
