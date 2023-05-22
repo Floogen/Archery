@@ -1,7 +1,7 @@
 {
   "Type": "Bow",
   "Name": "Yoba's Divine Harp",
-  "Description": "...",
+  "Description": "A bow-like harp that fires a random note with each strum.",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {
@@ -31,6 +31,10 @@
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 350,
 
+  // The special attack to use upon right-clicking
+  "SpecialAttack": {
+    "Id": "PeacefulEnd.Archery/Buff:Speed"
+  },
 
   // Specifying this optional property causes the bow to always fire this ammo infinitely
   // Note that this disables the ability to attach other ammo to this weapon
@@ -41,7 +45,7 @@
     },
     {
       "Id": "PeacefulEnd.Archery.StarterPack/Arrow/Quaver Note",
-      "ChanceWeight": 0.5
+      "ChanceWeight": 0.25
     },
     {
       "Id": "PeacefulEnd.Archery.StarterPack/Arrow/Double Quaver Note",
@@ -49,6 +53,10 @@
     },
     {
       "Id": "PeacefulEnd.Archery.StarterPack/Arrow/Crotchet Note",
+      "ChanceWeight": 0.25
+    },
+    {
+      "Id": "PeacefulEnd.Archery.StarterPack/Arrow/Semiquaver Note",
       "ChanceWeight": 0.25
     }
   ],
