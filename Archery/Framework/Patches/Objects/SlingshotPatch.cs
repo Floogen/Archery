@@ -37,6 +37,7 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.attach), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(AttachPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.CanAutoFire), null), postfix: new HarmonyMethod(GetType(), nameof(CanAutoFirePostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetShootOrigin), new[] { typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(GetShootOriginPostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
         }
@@ -184,6 +185,14 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.CanAutoFire)
             {
                 __result = true;
+            }
+        }
+
+        private static void GetShootOriginPostfix(Slingshot __instance, ref Vector2 __result, Farmer who)
+        {
+            if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel)
+            {
+                __result += weaponModel.GetProjectileOrigin(who);
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Models.Ammo;
+using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -15,6 +17,7 @@ namespace Archery.Framework.Models.Weapons
 
         public RandomRange DamageRange { get; set; }
         public float ProjectileSpeed { get; set; } = 1f;
+        public List<DirectionalOffset> ProjectileOrigins { get; set; }
         public float Knockback { get; set; } = 1f;
         public float ChargeTimeRequiredMilliseconds { get; set; } = 1000f;
         public float ConsumeAmmoChance { get; set; } = 1f;
@@ -67,6 +70,33 @@ namespace Archery.Framework.Models.Weapons
             }
 
             return RecoloredArmsTexture;
+        }
+
+        internal Vector2 GetProjectileOrigin(Farmer who)
+        {
+            var direction = Direction.Any;
+            if (who is not null)
+            {
+                direction = (Direction)who.FacingDirection;
+            }
+
+            if (ProjectileOrigins is not null && ProjectileOrigins.Count > 0)
+            {
+                if (ProjectileOrigins.Any(p => p.Direction == direction))
+                {
+                    return ProjectileOrigins.First(p => p.Direction == direction).Offset;
+                }
+                else if ((direction is Direction.Left || direction is Direction.Right) && ProjectileOrigins.Any(p => p.Direction == Direction.Sideways))
+                {
+                    return ProjectileOrigins.First(p => p.Direction == Direction.Sideways).Offset;
+                }
+                else if (ProjectileOrigins.Any(p => p.Direction == Direction.Any))
+                {
+                    return ProjectileOrigins.First(p => p.Direction == Direction.Any).Offset;
+                }
+            }
+
+            return Vector2.Zero;
         }
 
         internal bool UsesInternalAmmo()
