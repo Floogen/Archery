@@ -23,12 +23,12 @@ namespace Archery.Framework.Interfaces.Internal
         private Dictionary<string, Func<IEnchantment, bool>> _registeredEnchantmentMethods;
         private Dictionary<string, Enchantment> _registeredEnchantmentData;
 
-        public event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
-        public event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
-        public event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
-        public event EventHandler<CrossbowLoadedEventArgs> OnCrossbowLoaded;
-        public event EventHandler<AmmoChangedEventArgs> OnAmmoChanged;
-        public event EventHandler<AmmoHitMonsterEventArgs> OnAmmoHitMonster;
+        public event EventHandler<IWeaponFiredEventArgs> OnWeaponFired;
+        public event EventHandler<IWeaponChargeEventArgs> OnWeaponCharging;
+        public event EventHandler<IWeaponChargeEventArgs> OnWeaponCharged;
+        public event EventHandler<ICrossbowLoadedEventArgs> OnCrossbowLoaded;
+        public event EventHandler<IAmmoChangedEventArgs> OnAmmoChanged;
+        public event EventHandler<IAmmoHitMonsterEventArgs> OnAmmoHitMonster;
 
 
         internal Api(IMonitor monitor, IModHelper helper)
@@ -47,7 +47,7 @@ namespace Archery.Framework.Interfaces.Internal
         }
 
         #region Events
-        internal void TriggerOnWeaponFired(WeaponFiredEventArgs weaponFiredEventArgs)
+        internal void TriggerOnWeaponFired(IWeaponFiredEventArgs weaponFiredEventArgs)
         {
             var handler = OnWeaponFired;
             if (handler is not null)
@@ -56,7 +56,7 @@ namespace Archery.Framework.Interfaces.Internal
             }
         }
 
-        internal void TriggerOnWeaponCharging(WeaponChargeEventArgs weaponChargeEventArgs)
+        internal void TriggerOnWeaponCharging(IWeaponChargeEventArgs weaponChargeEventArgs)
         {
             var handler = OnWeaponCharging;
             if (handler is not null)
@@ -65,7 +65,7 @@ namespace Archery.Framework.Interfaces.Internal
             }
         }
 
-        internal void TriggerOnWeaponCharged(WeaponChargeEventArgs weaponChargeEventArgs)
+        internal void TriggerOnWeaponCharged(IWeaponChargeEventArgs weaponChargeEventArgs)
         {
             var handler = OnWeaponCharged;
             if (handler is not null)
@@ -74,7 +74,7 @@ namespace Archery.Framework.Interfaces.Internal
             }
         }
 
-        internal void TriggerOnCrossbowLoaded(CrossbowLoadedEventArgs crossbowLoadedEventArgs)
+        internal void TriggerOnCrossbowLoaded(ICrossbowLoadedEventArgs crossbowLoadedEventArgs)
         {
             var handler = OnCrossbowLoaded;
             if (handler is not null)
@@ -83,7 +83,7 @@ namespace Archery.Framework.Interfaces.Internal
             }
         }
 
-        internal void TriggerOnAmmoChanged(AmmoChangedEventArgs ammoChangedEventArgs)
+        internal void TriggerOnAmmoChanged(IAmmoChangedEventArgs ammoChangedEventArgs)
         {
             var handler = OnAmmoChanged;
             if (handler is not null)
@@ -92,7 +92,7 @@ namespace Archery.Framework.Interfaces.Internal
             }
         }
 
-        internal void TriggerOnAmmoHitMonster(AmmoHitMonsterEventArgs ammoHitMonsterEventArgs)
+        internal void TriggerOnAmmoHitMonster(IAmmoHitMonsterEventArgs ammoHitMonsterEventArgs)
         {
             var handler = OnAmmoHitMonster;
             if (handler is not null)

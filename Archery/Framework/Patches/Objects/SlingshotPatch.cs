@@ -1,4 +1,4 @@
-﻿using Archery.Framework.Interfaces.Internal;
+﻿using Archery.Framework.Interfaces.Internal.Events;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects;
 using Archery.Framework.Objects.Items;

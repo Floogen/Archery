@@ -26,12 +26,12 @@ namespace StarterPack.Framework.Interfaces
         KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler);
         KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name);
 
-        event EventHandler<WeaponFiredEventArgs> OnWeaponFired;
-        event EventHandler<WeaponChargeEventArgs> OnWeaponCharging;
-        event EventHandler<WeaponChargeEventArgs> OnWeaponCharged;
-        event EventHandler<CrossbowLoadedEventArgs> OnCrossbowLoaded;
-        event EventHandler<AmmoChangedEventArgs> OnAmmoChanged;
-        event EventHandler<AmmoHitMonsterEventArgs> OnAmmoHitMonster;
+        event EventHandler<IWeaponFiredEventArgs> OnWeaponFired;
+        event EventHandler<IWeaponChargeEventArgs> OnWeaponCharging;
+        event EventHandler<IWeaponChargeEventArgs> OnWeaponCharged;
+        event EventHandler<ICrossbowLoadedEventArgs> OnCrossbowLoaded;
+        event EventHandler<IAmmoChangedEventArgs> OnAmmoChanged;
+        event EventHandler<IAmmoHitMonsterEventArgs> OnAmmoHitMonster;
     }
 
     #region Interface objects
@@ -94,6 +94,8 @@ namespace StarterPack.Framework.Interfaces
     {
         public int Min { get; set; }
         public int Max { get; set; }
+
+        public int Get(Random random, int minOffset = 0, int maxOffset = 0);
     }
     #endregion
 
@@ -125,37 +127,37 @@ namespace StarterPack.Framework.Interfaces
     #endregion
 
     #region Events
-    public class BaseEventArgs : EventArgs
+    public interface IBaseEventArgs
     {
         public Vector2 Origin { get; init; }
     }
 
-    public class WeaponFiredEventArgs : BaseEventArgs
+    public interface IWeaponFiredEventArgs : IBaseEventArgs
     {
         public string WeaponId { get; init; }
         public string AmmoId { get; init; }
         public BasicProjectile Projectile { get; init; }
     }
 
-    public class WeaponChargeEventArgs : BaseEventArgs
+    public interface IWeaponChargeEventArgs : IBaseEventArgs
     {
         public string WeaponId { get; init; }
         public float ChargePercentage { get; init; }
     }
 
-    public class CrossbowLoadedEventArgs : BaseEventArgs
+    public interface ICrossbowLoadedEventArgs : IBaseEventArgs
     {
         public string WeaponId { get; init; }
         public string AmmoId { get; init; }
     }
 
-    public class AmmoChangedEventArgs : BaseEventArgs
+    public interface IAmmoChangedEventArgs : IBaseEventArgs
     {
         public string WeaponId { get; init; }
         public string AmmoId { get; init; }
     }
 
-    public class AmmoHitMonsterEventArgs : WeaponFiredEventArgs
+    public interface IAmmoHitMonsterEventArgs : IWeaponFiredEventArgs
     {
         public Monster Monster { get; init; }
         public int DamageDone { get; init; }
