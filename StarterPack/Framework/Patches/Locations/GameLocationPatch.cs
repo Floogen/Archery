@@ -40,6 +40,10 @@ namespace StarterPack.Framework.Patches.Locations
                 {
                     weaponModelId = "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp";
                 }
+                else if (Game1.player.CurrentItem.Name == "Rusty Cog")
+                {
+                    weaponModelId = "PeacefulEnd.Archery.StarterPack/Crossbow/Dwarven Repeating Crossbow";
+                }
 
                 if (string.IsNullOrEmpty(weaponModelId) is false)
                 {
