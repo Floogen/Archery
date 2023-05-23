@@ -26,10 +26,10 @@
   },
 
   // How fast the projectile flies after being fired
-  "ProjectileSpeed": 18.0,
+  "ProjectileSpeed": 16.0,
 
   // The time (in milliseconds) for the bow to fully charge
-  "ChargeTimeRequiredMilliseconds": 250,
+  "ChargeTimeRequiredMilliseconds": 225,
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {

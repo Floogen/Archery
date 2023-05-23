@@ -26,14 +26,14 @@
   },
 
   // How fast the projectile flies after being fired
-  "ProjectileSpeed": 15.0,
+  "ProjectileSpeed": 13.5,
 
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 325,
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Snipe"
+    "Id": "PeacefulEnd.Archery/Snapshot"
   },
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements

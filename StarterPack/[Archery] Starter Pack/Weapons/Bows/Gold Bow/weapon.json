@@ -26,7 +26,7 @@
   },
 
   // How fast the projectile flies after being fired
-  "ProjectileSpeed": 16.5,
+  "ProjectileSpeed": 14.5,
 
   // The time (in milliseconds) for the bow to fully charge
   "ChargeTimeRequiredMilliseconds": 300,
