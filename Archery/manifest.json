@@ -10,7 +10,8 @@
   "Dependencies": [
     {
       "UniqueID": "PeacefulEnd.FashionSense",
-      "IsRequired": false
+      "IsRequired": false,
+      "MinimumVersion": "5.6.0"
     },
     {
       "UniqueID": "spacechase0.DynamicGameAssets",
