@@ -6,7 +6,7 @@
   "UniqueID": "PeacefulEnd.Archery.StarterPack.Code",
   "EntryDll": "StarterPack.dll",
   "MinimumApiVersion": "3.14.0",
-  "UpdateKeys": [ "Nexus:????" ],
+  "UpdateKeys": [ "Nexus:16768" ],
   "Dependencies": [
     {
       "UniqueID": "PeacefulEnd.Archery.StarterPack",

@@ -6,7 +6,7 @@
   "UniqueID": "PeacefulEnd.Archery",
   "EntryDll": "Archery.dll",
   "MinimumApiVersion": "3.14.0",
-  "UpdateKeys": [ "Nexus:????" ],
+  "UpdateKeys": [ "Nexus:16767" ],
   "Dependencies": [
     {
       "UniqueID": "PeacefulEnd.FashionSense",
