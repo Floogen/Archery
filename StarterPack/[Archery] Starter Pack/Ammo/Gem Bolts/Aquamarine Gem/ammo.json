@@ -9,7 +9,7 @@
   // The enchantment to use upon firing
   "Enchantment": {
     "Id": "PeacefulEnd.Archery/Shock",
-    "TriggerChance": 1.0,
+    "TriggerChance": 0.5,
     "Arguments": [
       2000
     ]
