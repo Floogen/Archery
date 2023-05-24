@@ -22,8 +22,8 @@
 
   // Determines the min and max base damage (before account for any additive arrow damage)
   "DamageRange": {
-    "Min": 40,
-    "Max": 45
+    "Min": 25,
+    "Max": 40
   },
 
   // How fast the projectile flies after being fired
