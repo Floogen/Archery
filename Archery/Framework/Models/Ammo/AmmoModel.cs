@@ -29,7 +29,7 @@ namespace Archery.Framework.Models.Weapons
         public int MaxTravelDistance { get; set; } = -1;
         public float RotationVelocity { get; set; } = 0f;
 
-        public Sound ImpactSound { get; set; }
+        public Sound ImpactSound { get; set; } = new Sound() { Name = "hammer" };
         public Light Light { get; set; }
         public RandomRange BounceCountRange { get; set; }
 

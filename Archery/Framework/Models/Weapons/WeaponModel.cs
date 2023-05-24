@@ -31,7 +31,7 @@ namespace Archery.Framework.Models.Weapons
         public bool CanAutoFire { get; set; }
         public float AutoFireRateMilliseconds { get; set; } = 300f;
 
-        public Sound StartChargingSound { get; set; }
+        public Sound StartChargingSound { get; set; } = new Sound() { Name = "slingshot" };
         public Sound FinishChargingSound { get; set; }
         public Sound FiringSound { get; set; }
 
