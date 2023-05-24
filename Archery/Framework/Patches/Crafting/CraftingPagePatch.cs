@@ -78,7 +78,7 @@ namespace Archery.Framework.Patches.Objects
                 }
 
                 int id = 200 + i;
-                ClickableTextureComponent component = new ClickableTextureComponent("", new Rectangle(craftingPageX + x * (64 + spaceBetweenCraftingIcons), CraftingPageYReversePatch(__instance) + y * 72, 64, recipe.bigCraftable ? 128 : 64), null, String.Empty, model.Texture, model.Icon.Source, 4f)
+                ClickableTextureComponent component = new ClickableTextureComponent("", new Rectangle(craftingPageX + x * (64 + spaceBetweenCraftingIcons), CraftingPageYReversePatch(__instance) + y * 72, 64, 64), null, String.Empty, model.Texture, model.Icon.Source, model.Icon.Scale)
                 {
                     myID = id,
                     rightNeighborID = -99998,
@@ -90,10 +90,6 @@ namespace Archery.Framework.Patches.Objects
                 };
                 currentPage.Add(component, recipe);
                 pageLayout[x, y] = component;
-                if (model is WeaponModel)
-                {
-                    pageLayout[x, y + 1] = component;
-                }
             }
         }
 
