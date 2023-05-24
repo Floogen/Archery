@@ -48,7 +48,7 @@ namespace Archery.Framework.Utilities
                 if (sound.MaxDistance > 0)
                 {
                     float distance = Vector2.Distance(sourcePosition, Game1.player.getStandingPosition());
-                    actualVolume = Math.Min(1f, 1f - distance / sound.MaxDistance) * sound.Volume * Math.Min(Game1.ambientPlayerVolume, Game1.options.ambientVolumeLevel);
+                    actualVolume = Math.Min(1f, 1f - distance / sound.MaxDistance) * sound.Volume * Game1.options.ambientVolumeLevel;
                 }
                 cue.Volume = actualVolume;
 
