@@ -56,6 +56,17 @@
   "CanAutoFire": true,
   "AutoFireRateMilliseconds": 250,
 
+  // Sound properties
+  "FiringSound": {
+    "Name": "shwip",
+    "Volume": 1,
+    "Pitch": 0,
+    "PitchRandomness": {
+      "Min": 0,
+      "Max": 10
+    }
+  },
+
   // The following determines what bow and arm sprites to draw based on the direction and other given conditions
   "DirectionalSprites": {
     // Start of upward facing sprites
