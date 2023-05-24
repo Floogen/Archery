@@ -40,7 +40,7 @@
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
   "Recipe": {
     // This unlock condition uses GameStateQuery to only show the recipe if the player has learned it
-    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Copper Bow",
+    "UnlockCondition": "PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Crossbow/Copper Bow",
     "Ingredients": [
       {
         "Id": 334,
@@ -64,7 +64,7 @@
       "Stock": -1,
       "Price": 1000,
 
-      "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 40, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Bow/Copper Bow"
+      "UnlockCondition": "MINE_LOWEST_LEVEL_REACHED 40, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Crossbow/Copper Bow"
     }
   },
 
