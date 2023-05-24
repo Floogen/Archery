@@ -44,8 +44,8 @@ namespace Archery.Framework.Patches.Objects
                 return;
             }
 
-            ___DisplayName = baseModel.DisplayName;
-            ___description = baseModel.Description;
+            ___DisplayName = baseModel.GetTranslation(baseModel.DisplayName);
+            ___description = baseModel.GetTranslation(baseModel.Description);
         }
 
         private static bool DrawMenuViewPrefix(CraftingRecipe __instance, string ___name, SpriteBatch b, int x, int y, float layerDepth = 0.88f, bool shadow = true)
