@@ -24,9 +24,9 @@ namespace Archery.Framework.Models.Crafting
 
         public string Name => _baseModel.Id;
 
-        public string DisplayName => _baseModel.DisplayName;
+        public string DisplayName => _baseModel.GetTranslation(_baseModel.DisplayName);
 
-        public string Description => _baseModel.Description;
+        public string Description => _baseModel.GetTranslation(_baseModel.Description);
 
         public CraftingRecipe CraftingRecipe => new CraftingRecipe(_baseModel.Name, false);
 
