@@ -146,14 +146,14 @@ namespace Archery.Framework.Interfaces.Internal
             return _registeredSpecialAttackData[specialAttackId].GetDescription(arguments);
         }
 
-        internal int GetSpecialAttackCooldown(string specialAttackId)
+        internal int GetSpecialAttackCooldown(string specialAttackId, List<object> arguments)
         {
             if (_registeredSpecialAttackData.ContainsKey(specialAttackId) is false)
             {
                 return 0;
             }
 
-            return _registeredSpecialAttackData[specialAttackId].GetCooldownInMilliseconds();
+            return _registeredSpecialAttackData[specialAttackId].GetCooldownInMilliseconds(arguments);
         }
 
         private string GetSpecialAttackId(IManifest callerManifest, string name)
@@ -362,7 +362,7 @@ namespace Archery.Framework.Interfaces.Internal
             return PerformFire(callerManifest, ammoId: null, slingshot, location, who, suppressFiringSound);
         }
 
-        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
+        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<List<object>, int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredSpecialAttackMethods[id] = specialAttackHandler;

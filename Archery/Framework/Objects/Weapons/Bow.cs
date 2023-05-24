@@ -113,7 +113,7 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static void RefreshSpecialAttackCooldown(SpecialAttackModel specialAttack)
         {
-            Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id);
+            Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id, specialAttack.Arguments);
         }
 
         internal static IWeaponData GetData(Tool tool)

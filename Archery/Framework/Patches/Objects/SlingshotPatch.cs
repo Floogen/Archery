@@ -61,7 +61,7 @@ namespace Archery.Framework.Patches.Objects
                 {
                     if (Bow.ActiveCooldown > 0)
                     {
-                        coolDownLevel = Bow.ActiveCooldown / (float)(Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id));
+                        coolDownLevel = Bow.ActiveCooldown / (float)(Archery.internalApi.GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Arguments));
                     }
 
                     if (Bow.CooldownAdditiveScale > 0)
