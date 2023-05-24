@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Archery.Framework.Models.Weapons;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -89,7 +90,7 @@ namespace Archery.Framework.Patches.Objects
                 };
                 currentPage.Add(component, recipe);
                 pageLayout[x, y] = component;
-                if (recipe.bigCraftable)
+                if (model is WeaponModel)
                 {
                     pageLayout[x, y + 1] = component;
                 }
