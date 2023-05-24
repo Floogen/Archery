@@ -34,7 +34,7 @@ namespace Archery.Framework.Utilities
             }
 
             int actualPitch = 1200;
-            if (sound.Pitch != -1)
+            if (sound.Pitch != -1 && sound.PitchRandomness is not null)
             {
                 actualPitch = sound.Pitch + sound.PitchRandomness.Get(Game1.random);
             }
@@ -51,6 +51,11 @@ namespace Archery.Framework.Utilities
                     actualVolume = Math.Min(1f, 1f - distance / sound.MaxDistance) * sound.Volume * Game1.options.ambientVolumeLevel;
                 }
                 cue.Volume = actualVolume;
+
+                if (cue.Volume <= 0)
+                {
+                    return true;
+                }
 
                 cue.Play();
                 try

@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Interfaces.Internal;
-using StardewValley;
+﻿using StardewValley;
 using System;
 
 namespace Archery.Framework.Models.Generic
