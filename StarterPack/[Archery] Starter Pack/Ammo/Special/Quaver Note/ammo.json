@@ -7,6 +7,17 @@
   "Damage": 0,
   "RotationVelocity": 0.05,
 
+  // Sound properties
+  "ImpactSound": {
+    "Name": "toyPiano",
+    "Volume": 0.7,
+    "Pitch": 0,
+    "PitchRandomness": {
+      "Min": 1,
+      "Max": 100
+    }
+  },
+
   // The enchantment to use upon firing
   "Enchantment": {
     "Id": "PeacefulEnd.Archery/Vampiric",

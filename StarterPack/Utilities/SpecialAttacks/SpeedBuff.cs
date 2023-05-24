@@ -24,6 +24,11 @@ namespace StarterPack.Framework.Utilities.SpecialAttacks
             }
             Game1.buffsDisplay.addOtherBuff(GetSpeedBuff(specialAttack.Arguments));
 
+            if (specialAttack.Location is not null)
+            {
+                specialAttack.Location.playSound("toyPiano");
+            }
+
             return false;
         }
 

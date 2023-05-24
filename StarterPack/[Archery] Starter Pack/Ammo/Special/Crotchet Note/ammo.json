@@ -16,6 +16,17 @@
     ]
   },
 
+  // Sound properties
+  "ImpactSound": {
+    "Name": "toyPiano",
+    "Volume": 0.7,
+    "Pitch": 0,
+    "PitchRandomness": {
+      "Min": 1,
+      "Max": 100
+    }
+  },
+
   "ProjectileSprite": {
     "Source": {
       "X": 5,

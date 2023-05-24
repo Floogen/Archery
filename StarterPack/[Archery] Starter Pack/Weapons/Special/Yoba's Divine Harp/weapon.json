@@ -33,7 +33,18 @@
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery.StarterPack/Buff:Speed"
+    "Id": "PeacefulEnd.Archery.StarterPack.Code/Buff:Speed"
+  },
+
+  // Sound properties
+  "StartChargingSound": {
+    "Name": "miniharp_note",
+    "Volume": 0.5,
+    "Pitch": 1500,
+    "PitchRandomness": {
+      "Min": 0,
+      "Max": 10
+    }
   },
 
   // Specifying this optional property causes the bow to always fire this ammo infinitely
