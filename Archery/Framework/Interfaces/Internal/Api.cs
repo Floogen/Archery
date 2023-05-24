@@ -374,8 +374,8 @@ namespace Archery.Framework.Interfaces.Internal
                 GetCooldownInMilliseconds = getCooldownMilliseconds
             };
 
-            _monitor.Log($"The mod {callerManifest.Name} registered a special attack {name} with the type {whichWeaponTypeCanUse}", LogLevel.Info);
-            return GenerateResponsePair(true, $"Registered the special attack method for {name} with the type {whichWeaponTypeCanUse}.");
+            _monitor.Log($"The mod {callerManifest.Name} registered a special attack {id} with the type {whichWeaponTypeCanUse}", LogLevel.Info);
+            return GenerateResponsePair(true, $"Registered the special attack method for {id} with the type {whichWeaponTypeCanUse}.");
         }
 
         public KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name)
@@ -404,8 +404,8 @@ namespace Archery.Framework.Interfaces.Internal
                 GetDescription = getDescription
             };
 
-            _monitor.Log($"The mod {callerManifest.Name} registered an enchantment {name} with the type {whichAmmoTypeCanUse}", LogLevel.Info);
-            return GenerateResponsePair(true, $"Registered the enchantment method for {name} with the type {whichAmmoTypeCanUse}.");
+            _monitor.Log($"The mod {callerManifest.Name} registered an enchantment {id} with the type {whichAmmoTypeCanUse}", LogLevel.Info);
+            return GenerateResponsePair(true, $"Registered the enchantment method for {id} with the type {whichAmmoTypeCanUse}.");
         }
 
         public KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name)
