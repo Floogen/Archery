@@ -148,7 +148,7 @@ namespace Archery.Framework.Patches.Objects
         private static void BeginUsingPostfix(Slingshot __instance, GameLocation location, int x, int y, Farmer who)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(__instance);
-            if (weaponModel is not null)
+            if (weaponModel is not null && Bow.IsLoaded(__instance) is false)
             {
                 // Play charging sound
                 Toolkit.PlaySound(weaponModel.StartChargingSound, weaponModel.Id, who.getStandingPosition());
