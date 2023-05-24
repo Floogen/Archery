@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Diamond Bolt",
-  "Description": "A steel tipped bolt with an embedded diamond.",
+  "DisplayName": "Ammo.Name.Enchanted.DiamondBolt",
+  "Description": "Ammo.Description.Enchanted.DiamondBolt",
 
   "BreakChance": 0.75,
   "Damage": 12,

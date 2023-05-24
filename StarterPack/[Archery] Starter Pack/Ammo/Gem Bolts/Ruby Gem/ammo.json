@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Ruby Bolt",
-  "Description": "A steel tipped bolt with an embedded ruby.",
+  "DisplayName": "Ammo.Name.Enchanted.RubyBolt",
+  "Description": "Ammo.Description.Enchanted.RubyBolt",
 
   "BreakChance": 0.75,
   "Damage": 12,

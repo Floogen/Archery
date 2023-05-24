@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Basic Bow",
-  "Description": "A basic bow made of wood and string.",
+  "DisplayName": "Weapon.Name.BasicBow",
+  "Description": "Weapon.Description.BasicBow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

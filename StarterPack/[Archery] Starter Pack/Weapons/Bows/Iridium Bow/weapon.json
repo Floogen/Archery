@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Iridium Bow",
-  "Description": "An ultra-light bow made of material you've never seen before.",
+  "DisplayName": "Weapon.Name.IridiumBow",
+  "Description": "Weapon.Description.IridiumBow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

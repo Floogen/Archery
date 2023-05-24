@@ -1,7 +1,8 @@
 {
   "Type": "Crossbow",
   "Name": "Iridium Crossbow",
-  "Description": "An ultra-light crossbow made of material you've never seen before.",
+  "DisplayName": "Weapon.Name.IridiumCrossbow",
+  "Description": "Weapon.Description.IridiumCrossbow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

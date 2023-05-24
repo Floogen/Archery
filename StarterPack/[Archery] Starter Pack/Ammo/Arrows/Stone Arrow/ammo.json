@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Stone Arrow",
-  "Description": "A wooden arrow with stone tips.",
+  "DisplayName": "Ammo.Name.StoneArrow",
+  "Description": "Ammo.Description.StoneArrow",
 
   "BreakChance": 0.9,
   "Damage": 3,

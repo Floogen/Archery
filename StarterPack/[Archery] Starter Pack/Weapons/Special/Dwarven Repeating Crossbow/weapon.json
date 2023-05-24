@@ -1,7 +1,8 @@
 {
   "Type": "Crossbow",
   "Name": "Dwarven Repeating Crossbow",
-  "Description": "An ancient dwarven crossbow capable of firing multiple bolts before needing to reload.",
+  "DisplayName": "Weapon.Name.DwarvenRepeatingCrossbow",
+  "Description": "Weapon.Description.DwarvenRepeatingCrossbow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

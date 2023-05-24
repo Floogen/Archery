@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Stone Bolt",
-  "Description": "A wooden bolt with stone tips.",
+  "DisplayName": "Ammo.Name.StoneBolt",
+  "Description": "Ammo.Description.StoneBolt",
 
   "BreakChance": 0.9,
   "Damage": 3,
@@ -93,5 +94,5 @@
         }
       }
     ]
-  },
+  }
 }

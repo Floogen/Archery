@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Aquamarine Bolt",
-  "Description": "A steel tipped bolt with an embedded aquamarine.",
+  "DisplayName": "Ammo.Name.Enchanted.AquamarineBolt",
+  "Description": "Ammo.Description.Enchanted.AquamarineBolt",
 
   "BreakChance": 0.75,
   "Damage": 12,

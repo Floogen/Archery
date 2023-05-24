@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Diamond Arrow",
-  "Description": "A steel tipped arrow with an embedded diamond.",
+  "DisplayName": "Ammo.Name.Enchanted.DiamondArrow",
+  "Description": "Ammo.Description.Enchanted.DiamondArrow",
 
   "BreakChance": 0.75,
   "Damage": 12,

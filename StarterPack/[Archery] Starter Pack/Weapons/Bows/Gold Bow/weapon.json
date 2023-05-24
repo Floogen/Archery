@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Gold Bow",
-  "Description": "A dazzling gold reinforced bow.",
+  "DisplayName": "Weapon.Name.GoldBow",
+  "Description": "Weapon.Description.GoldBow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

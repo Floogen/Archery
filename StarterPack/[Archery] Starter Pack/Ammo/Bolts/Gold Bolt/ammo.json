@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Gold Bolt",
-  "Description": "A wooden bolt with gold tips.\nThese have a high chance of critical hits.",
+  "DisplayName": "Ammo.Name.GoldBolt",
+  "Description": "Ammo.Description.GoldBolt",
 
   "CriticalChance": 0.25,
   "BreakChance": 0.25,

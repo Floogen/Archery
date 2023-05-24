@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Copper Bolt",
-  "Description": "A wooden bolt with copper tips.",
+  "DisplayName": "Ammo.Name.CopperBolt",
+  "Description": "Ammo.Description.CopperBolt",
 
   "BreakChance": 0.5,
   "Damage": 6,

@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Steel Bolt",
-  "Description": "A wooden bolt with steel tips.",
+  "DisplayName": "Ammo.Name.SteelBolt",
+  "Description": "Ammo.Description.SteelBolt",
 
   "BreakChance": 0.25,
   "Damage": 12,

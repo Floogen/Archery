@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Steel Bow",
-  "Description": "A heavy steel bow that packs quite the punch.",
+  "DisplayName": "Weapon.Name.SteelBow",
+  "Description": "Weapon.Description.SteelBow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Emerald Bolt",
-  "Description": "A steel tipped bolt with an embedded emerald.",
+  "DisplayName": "Ammo.Name.Enchanted.EmeraldBolt",
+  "Description": "Ammo.Description.Enchanted.EmeraldBolt",
 
   "BreakChance": 0.75,
   "Damage": 12,

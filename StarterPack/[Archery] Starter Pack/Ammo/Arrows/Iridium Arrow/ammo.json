@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Iridium Arrow",
-  "Description": "A wooden arrow with iridium tips.",
+  "DisplayName": "Ammo.Name.IridiumArrow",
+  "Description": "Ammo.Description.IridiumArrow",
 
   "BreakChance": 0.05,
   "Damage": 18,

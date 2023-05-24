@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Aquamarine Arrow",
-  "Description": "A steel tipped arrow with an embedded aquamarine.",
+  "DisplayName": "Ammo.Name.Enchanted.AquamarineArrow",
+  "Description": "Ammo.Description.Enchanted.AquamarineArrow",
 
   "BreakChance": 0.75,
   "Damage": 12,

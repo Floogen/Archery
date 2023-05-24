@@ -1,7 +1,8 @@
 {
   "Type": "Bolt",
   "Name": "Iridium Bolt",
-  "Description": "A wooden bolt with iridium tips.",
+  "DisplayName": "Ammo.Name.IridiumBolt",
+  "Description": "Ammo.Description.IridiumBolt",
 
   "BreakChance": 0.05,
   "Damage": 18,

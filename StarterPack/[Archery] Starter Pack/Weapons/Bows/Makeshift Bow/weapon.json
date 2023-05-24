@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Makeshift Bow",
-  "Description": "A haphazardly constructed bow made out of fiber and twigs.",
+  "DisplayName": "Weapon.Name.MakeshiftBow",
+  "Description": "Weapon.Description.MakeshiftBow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {
@@ -416,7 +417,7 @@
               "Y": 32,
               "Width": 16,
               "Height": 32
-            },
+            }
           }
         ]
       }

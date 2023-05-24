@@ -1,7 +1,8 @@
 {
   "Type": "Crossbow",
   "Name": "Gold Crossbow",
-  "Description": "A dazzling gold reinforced crossbow.",
+  "DisplayName": "Weapon.Name.GoldCrossbow",
+  "Description": "Weapon.Description.GoldCrossbow",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Emerald Arrow",
-  "Description": "A steel tipped arrow with an embedded emerald.",
+  "DisplayName": "Ammo.Name.Enchanted.EmeraldArrow",
+  "Description": "Ammo.Description.Enchanted.EmeraldArrow",
 
   "BreakChance": 0.75,
   "Damage": 12,

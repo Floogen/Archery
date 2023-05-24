@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Gold Arrow",
-  "Description": "A wooden arrow with gold tips.\nThese have a high chance of critical hits.",
+  "DisplayName": "Ammo.Name.GoldArrow",
+  "Description": "Ammo.Description.GoldArrow",
 
   "CriticalChance": 0.25,
   "BreakChance": 0.25,

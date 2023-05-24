@@ -1,7 +1,8 @@
 {
   "Type": "Bow",
   "Name": "Yoba's Divine Harp",
-  "Description": "A bow-like harp that fires a random note with each strum.",
+  "DisplayName": "Weapon.Name.YobasDivineHarp",
+  "Description": "Weapon.Description.YobasDivineHarp",
 
   // Determines where to locate the icon sprite on weapon.png and how to display it to the player
   "Icon": {

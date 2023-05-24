@@ -1,7 +1,8 @@
 {
   "Type": "Arrow",
   "Name": "Makeshift Arrow",
-  "Description": "A simple arrow made of wood.",
+  "DisplayName": "Ammo.Name.MakeshiftArrow",
+  "Description": "Ammo.Description.MakeshiftArrow",
 
   "BreakChance": 1,
   "Damage": 1,
