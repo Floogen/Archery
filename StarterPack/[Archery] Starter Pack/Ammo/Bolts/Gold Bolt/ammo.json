@@ -5,7 +5,7 @@
   "Description": "Ammo.Description.GoldBolt",
 
   "CriticalChance": 0.25,
-  "BreakChance": 0.25,
+  "BreakChance": 0.5,
   "Damage": 4,
 
   "Icon": {

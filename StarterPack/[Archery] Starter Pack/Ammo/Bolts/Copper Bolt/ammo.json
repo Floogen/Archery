@@ -4,7 +4,7 @@
   "DisplayName": "Ammo.Name.CopperBolt",
   "Description": "Ammo.Description.CopperBolt",
 
-  "BreakChance": 0.5,
+  "BreakChance": 0.75,
   "Damage": 6,
 
   "Icon": {

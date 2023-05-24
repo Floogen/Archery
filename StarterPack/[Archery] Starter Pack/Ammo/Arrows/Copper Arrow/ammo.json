@@ -4,7 +4,7 @@
   "DisplayName": "Ammo.Name.CopperArrow",
   "Description": "Ammo.Description.CopperArrow",
 
-  "BreakChance": 0.5,
+  "BreakChance": 0.75,
   "Damage": 6,
 
   "Icon": {

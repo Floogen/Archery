@@ -4,7 +4,7 @@
   "DisplayName": "Ammo.Name.IridiumBolt",
   "Description": "Ammo.Description.IridiumBolt",
 
-  "BreakChance": 0.05,
+  "BreakChance": 0.1,
   "Damage": 18,
 
   "Icon": {
