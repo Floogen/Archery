@@ -292,8 +292,8 @@ namespace Archery.Framework.Objects.Projectiles
             var monster = (Monster)n;
 
             // See if the ammo should break
-            var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
-            if (AmmoModel.CanBreak(_breakChance) && (AmmoModel.ShouldAlwaysBreak(_breakChance) || Game1.random.NextDouble() < _breakChance - playerLuckChance))
+            //var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
+            if (AmmoModel.CanBreak(_breakChance) && (AmmoModel.ShouldAlwaysBreak(_breakChance) || Game1.random.NextDouble() < _breakChance))
             {
                 // Draw debris based on ammo's sprite
                 if (_ammoModel.Debris is not null)
