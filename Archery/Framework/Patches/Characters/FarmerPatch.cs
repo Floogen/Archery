@@ -66,7 +66,7 @@ namespace Archery.Framework.Patches.Characters
 
             if (Bow.CooldownAdditiveScale >= 0)
             {
-                Bow.CooldownAdditiveScale -= 0.03f;
+                Bow.CooldownAdditiveScale -= 0.01f;
             }
         }
     }
