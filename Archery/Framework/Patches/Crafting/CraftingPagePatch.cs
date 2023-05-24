@@ -25,6 +25,7 @@ namespace Archery.Framework.Patches.Objects
             {
                 _monitor.Log($"Applying CraftingPagePatch...", LogLevel.Trace);
 
+                harmony.Patch(AccessTools.Method(_object, "layoutRecipes", new[] { typeof(List<string>) }), prefix: new HarmonyMethod(GetType(), nameof(LayoutRecipesPrefix)));
                 harmony.Patch(AccessTools.Method(_object, "layoutRecipes", new[] { typeof(List<string>) }), postfix: new HarmonyMethod(GetType(), nameof(LayoutRecipesPostfix)));
 
                 harmony.CreateReversePatcher(AccessTools.Method(_object, "spaceOccupied", null), new HarmonyMethod(GetType(), nameof(SpaceOccupiedReversePatch))).Patch();
@@ -36,6 +37,25 @@ namespace Archery.Framework.Patches.Objects
             {
                 _monitor.Log($"Skipped applying CraftingPagePatch, due to Better Crafting being loaded!", LogLevel.Trace);
             }
+        }
+
+        [HarmonyPriority(Priority.High)]
+        private static bool LayoutRecipesPrefix(CraftingPage __instance, List<string> playerRecipes)
+        {
+            if (playerRecipes is null)
+            {
+                return true;
+            }
+
+            foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player)))
+            {
+                if (playerRecipes.Contains(model.Id))
+                {
+                    playerRecipes.Remove(model.Id);
+                }
+            }
+
+            return true;
         }
 
         private static void LayoutRecipesPostfix(CraftingPage __instance, List<string> playerRecipes)
