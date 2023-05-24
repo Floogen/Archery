@@ -33,7 +33,7 @@
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Buff:Speed"
+    "Id": "PeacefulEnd.Archery.StarterPack/Buff:Speed"
   },
 
   // Specifying this optional property causes the bow to always fire this ammo infinitely

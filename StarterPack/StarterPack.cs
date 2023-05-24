@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StarterPack.Framework.Managers;
 using StarterPack.Framework.Patches.Locations;
+using StarterPack.Framework.Utilities.SpecialAttacks;
 using System;
 
 namespace StarterPack
@@ -56,7 +57,7 @@ namespace StarterPack
             if (Helper.ModRegistry.IsLoaded("PeacefulEnd.Archery") && apiManager.HookIntoArchery(Helper))
             {
                 // Register the native special attacks from our framework
-                //apiManager.GetArcheryApi().RegisterSpecialAttack();
+                apiManager.GetArcheryApi().RegisterSpecialAttack(this.ModManifest, "Buff:Speed", Framework.Interfaces.WeaponType.Bow, (arguments) => "Graceful Winds", SpeedBuff.GetDescription, SpeedBuff.GetCooldown, SpeedBuff.HandleSpecialAttack);
             }
         }
     }

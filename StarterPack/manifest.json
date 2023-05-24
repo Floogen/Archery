@@ -9,7 +9,7 @@
   "UpdateKeys": [ "Nexus:16768" ],
   "Dependencies": [
     {
-      "UniqueID": "PeacefulEnd.Archery.StarterPack",
+      "UniqueID": "PeacefulEnd.Archery",
       "IsRequired": true
     }
   ]
