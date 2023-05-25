@@ -11,3 +11,9 @@ See [the wiki](https://github.com/Floogen/Archery/wiki) for detailed instruction
 &nbsp;
 ## Example Content Packs
 Some examples are included in this repository, which can be [found here](https://github.com/Floogen/Archery/tree/development/Archery/Examples).
+
+&nbsp;
+## Translations
+Archery has been generously translated by the following users:
+
+- **Turkish** - zenychan
