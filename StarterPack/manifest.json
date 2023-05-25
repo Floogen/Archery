@@ -1,7 +1,7 @@
 {
   "Name": "Archery - Starter Pack",
   "Author": "PeacefulEnd",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Code side for the Archery - Starter Pack.",
   "UniqueID": "PeacefulEnd.Archery.StarterPack.Code",
   "EntryDll": "StarterPack.dll",
