@@ -38,7 +38,7 @@ namespace Archery.Framework.Patches.Renderer
 
             if (Game1.player.UsingTool is true && Bow.IsValid(Game1.player.CurrentTool) is true)
             {
-                Bow.Draw(who, b, layerDepth, position, ___positionOffset, origin, rotation, scale, overrideColor);
+                Bow.Draw(who, b, Game1.player.FacingDirection == Game1.up ? 0f : layerDepth, position, ___positionOffset, origin, rotation, scale, overrideColor);
             }
         }
 
