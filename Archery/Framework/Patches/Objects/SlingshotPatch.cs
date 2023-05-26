@@ -119,6 +119,7 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
+        [HarmonyPriority(Priority.High)]
         private static bool TickUpdatePrefix(Slingshot __instance, ref bool ___canPlaySound, ref Farmer ___lastUser, NetEvent0 ___finishEvent, GameTime time, Farmer who)
         {
             if (Bow.IsValid(__instance))
@@ -131,6 +132,7 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
+        [HarmonyPriority(Priority.High)]
         private static bool PerformFirePrefix(Slingshot __instance, ref bool ___canPlaySound, GameLocation location, Farmer who)
         {
             if (Bow.IsValid(__instance))
@@ -146,6 +148,7 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
+        [HarmonyPriority(Priority.High)]
         private static void BeginUsingPostfix(Slingshot __instance, GameLocation location, int x, int y, Farmer who)
         {
             var weaponModel = Bow.GetModel<WeaponModel>(__instance);
