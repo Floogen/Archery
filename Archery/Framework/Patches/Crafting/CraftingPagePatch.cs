@@ -57,8 +57,14 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
-        private static void LayoutRecipesPostfix(CraftingPage __instance, List<string> playerRecipes)
+        private static void LayoutRecipesPostfix(CraftingPage __instance, bool ___cooking, List<string> playerRecipes)
         {
+            // Skip if this is the cooking crafting page
+            if (___cooking)
+            {
+                return;
+            }
+
             int craftingPageX = __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth - 16;
             int spaceBetweenCraftingIcons = 8;
             Dictionary<ClickableTextureComponent, CraftingRecipe> currentPage = CreateNewPageReversePatch(__instance);
