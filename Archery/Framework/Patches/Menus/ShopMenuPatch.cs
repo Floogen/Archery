@@ -107,8 +107,35 @@ namespace Archery.Framework.Patches.Objects
             }
         }
 
+        private static bool DoesShopCurrentlyHaveCustomStock(ShopMenu shopMenu)
+        {
+            if (shopMenu is null || shopMenu.forSale is null || shopMenu.itemPriceAndStock is null)
+            {
+                return false;
+            }
+
+            bool hasCustomForSaleItem = false;
+            if (shopMenu.forSale.Any(i => InstancedObject.IsValid((Item)i)))
+            {
+                hasCustomForSaleItem = true;
+            }
+
+            bool hasCustomInStock = false;
+            if (shopMenu.itemPriceAndStock.Keys.Any(i => InstancedObject.IsValid((Item)i)))
+            {
+                hasCustomInStock = true;
+            }
+
+            return hasCustomForSaleItem && hasCustomInStock;
+        }
+
         private static void HandleCustomStock(ShopMenu shopMenu)
         {
+            if (DoesShopCurrentlyHaveCustomStock(shopMenu) is true)
+            {
+                return;
+            }
+
             // Add the weapons and ammo
             foreach (var model in Archery.modelManager.GetModelsForSale())
             {
