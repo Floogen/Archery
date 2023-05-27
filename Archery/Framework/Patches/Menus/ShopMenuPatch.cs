@@ -115,13 +115,13 @@ namespace Archery.Framework.Patches.Objects
             }
 
             bool hasCustomForSaleItem = false;
-            if (shopMenu.forSale.Any(i => InstancedObject.IsValid((Item)i)))
+            if (shopMenu.forSale.Any(i => i is Item item && InstancedObject.IsValid(item)))
             {
                 hasCustomForSaleItem = true;
             }
 
             bool hasCustomInStock = false;
-            if (shopMenu.itemPriceAndStock.Keys.Any(i => InstancedObject.IsValid((Item)i)))
+            if (shopMenu.itemPriceAndStock.Keys.Any(i => i is Item item && InstancedObject.IsValid(item)))
             {
                 hasCustomInStock = true;
             }
