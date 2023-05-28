@@ -1,11 +1,71 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using StardewValley;
 using StardewValley.Projectiles;
+using System;
+using System.Collections.Generic;
 
 namespace Archery.Framework.Utilities.SpecialAttacks
 {
     public class Snipe
     {
+        private static float _defaultCriticalChance = 1f;
+        private static int _defaultCooldownInMilliseconds = 3000;
+
+        internal static string GetDescription(List<object> arguments)
+        {
+            string criticalChanceStatement = string.Empty;
+
+            var criticalChance = GetCriticalChance(arguments);
+            if (criticalChance < 1f && criticalChance > 0f)
+            {
+                criticalChanceStatement = $" Has an increased chance of landing a critical hit.";
+            }
+            else if (criticalChance <= 1f)
+            {
+                criticalChanceStatement = " Guaranteed to critical hit.";
+            }
+
+            return $"Instantly fires the projectile with increased speed.{criticalChanceStatement}";
+        }
+
+        private static float GetCriticalChance(List<object> arguments)
+        {
+            var chance = _defaultCriticalChance;
+            if (arguments is not null && arguments.Count > 1)
+            {
+                try
+                {
+                    chance = Convert.ToSingle(arguments[1]);
+                }
+                catch (Exception ex)
+                {
+                    Archery.monitor.LogOnce($"Failed to process critical chance argument for PeacefulEnd.Archery/Snipe! See the log for details.", StardewModdingAPI.LogLevel.Error);
+                    Archery.monitor.LogOnce($"Failed to process critical chance argument for PeacefulEnd.Archery/Snipe:\n{ex}", StardewModdingAPI.LogLevel.Trace);
+                }
+            }
+
+            return chance;
+        }
+
+        internal static int GetCooldown(List<object> arguments)
+        {
+            var duration = _defaultCooldownInMilliseconds;
+            if (arguments is not null && arguments.Count > 2)
+            {
+                try
+                {
+                    duration = Convert.ToInt32(arguments[2]);
+                }
+                catch (Exception ex)
+                {
+                    Archery.monitor.LogOnce($"Failed to process cooldown argument for PeacefulEnd.Archery/Snipe! See the log for details.", StardewModdingAPI.LogLevel.Error);
+                    Archery.monitor.LogOnce($"Failed to process cooldown argument for PeacefulEnd.Archery/Snipe:\n{ex}", StardewModdingAPI.LogLevel.Trace);
+                }
+            }
+
+            return duration;
+        }
+
         internal static bool HandleSpecialAttack(ISpecialAttack specialAttack)
         {
             var slingshot = specialAttack.Slingshot;
@@ -44,7 +104,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
                     projectileData.Velocity *= 2;
 
                     // Guarantee critical hit
-                    projectileData.CriticalChance = 1f;
+                    projectileData.CriticalChance = GetCriticalChance(specialAttack.Arguments);
 
                     // Set the internal projectile data
                     Archery.internalApi.SetProjectileData(Archery.manifest, projectile, projectileData);
