@@ -48,7 +48,7 @@
   },
 
   // How fast the projectile flies after being fired
-  "ProjectileSpeed": 18.5,
+  "ProjectileSpeed": 17.5,
   "Knockback": 2.0,
 
   // The time (in milliseconds) for the bow to fully charge
@@ -57,7 +57,11 @@
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Snipe"
+    "Id": "PeacefulEnd.Archery/Snipe",
+    "Arguments": [
+      1,
+      10000
+    ]
   },
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements

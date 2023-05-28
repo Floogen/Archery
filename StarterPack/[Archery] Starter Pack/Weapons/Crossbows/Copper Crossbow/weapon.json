@@ -57,7 +57,11 @@
 
   // The special attack to use upon right-clicking
   "SpecialAttack": {
-    "Id": "PeacefulEnd.Archery/Snipe"
+    "Id": "PeacefulEnd.Archery/Snipe",
+    "Arguments": [
+      0.1,
+      5000
+    ]
   },
 
   // Optional, but when specified allows for the player to create this weapon if they have the requirements
