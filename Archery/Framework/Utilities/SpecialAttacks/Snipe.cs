@@ -20,7 +20,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
             {
                 criticalChanceStatement = $" Has an increased chance of landing a critical hit.";
             }
-            else if (criticalChance <= 1f)
+            else if (criticalChance >= 1f)
             {
                 criticalChanceStatement = " Guaranteed to critical hit.";
             }
@@ -31,11 +31,11 @@ namespace Archery.Framework.Utilities.SpecialAttacks
         private static float GetCriticalChance(List<object> arguments)
         {
             var chance = _defaultCriticalChance;
-            if (arguments is not null && arguments.Count > 1)
+            if (arguments is not null && arguments.Count > 0)
             {
                 try
                 {
-                    chance = Convert.ToSingle(arguments[1]);
+                    chance = Convert.ToSingle(arguments[0]);
                 }
                 catch (Exception ex)
                 {
@@ -50,11 +50,11 @@ namespace Archery.Framework.Utilities.SpecialAttacks
         internal static int GetCooldown(List<object> arguments)
         {
             var duration = _defaultCooldownInMilliseconds;
-            if (arguments is not null && arguments.Count > 2)
+            if (arguments is not null && arguments.Count > 1)
             {
                 try
                 {
-                    duration = Convert.ToInt32(arguments[2]);
+                    duration = Convert.ToInt32(arguments[1]);
                 }
                 catch (Exception ex)
                 {
