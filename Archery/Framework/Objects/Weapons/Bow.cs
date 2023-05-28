@@ -104,16 +104,21 @@ namespace Archery.Framework.Objects.Weapons
             {
                 if (state)
                 {
-                    RefreshSpecialAttackCooldown(weaponModel.SpecialAttack);
+                    RefreshSpecialAttackCooldown(tool, weaponModel.SpecialAttack);
                 }
 
                 tool.modData[ModDataKeys.IS_USING_SPECIAL_ATTACK_FLAG] = state.ToString();
             }
         }
 
-        internal static void RefreshSpecialAttackCooldown(SpecialAttackModel specialAttack)
+        internal static void RefreshSpecialAttackCooldown(Tool tool, SpecialAttackModel specialAttack)
         {
             Bow.ActiveCooldown = Archery.internalApi.GetSpecialAttackCooldown(specialAttack.Id, specialAttack.Arguments);
+
+            if (tool.getLastFarmerToUse() is Farmer farmer && farmer is not null && farmer.professions.Contains(Farmer.acrobat))
+            {
+                Bow.ActiveCooldown /= 2;
+            }
         }
 
         internal static IWeaponData GetData(Tool tool)
@@ -455,7 +460,7 @@ namespace Archery.Framework.Objects.Weapons
 
             if (weaponModel.SpecialAttack.TriggerAfterButtonRelease && Toolkit.AreSpecialAttackButtonsPressed() is true)
             {
-                RefreshSpecialAttackCooldown(weaponModel.SpecialAttack);
+                RefreshSpecialAttackCooldown(slingshot, weaponModel.SpecialAttack);
                 return;
             }
 
