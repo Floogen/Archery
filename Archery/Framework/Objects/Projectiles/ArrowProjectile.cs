@@ -32,6 +32,7 @@ namespace Archery.Framework.Objects.Projectiles
         private float _breakChance;
         private float _criticalChance;
         private float _criticalDamageMultiplier;
+        private float _knockback;
 
         private bool _isExplosive;
         private int _explosionRadius;
@@ -49,6 +50,8 @@ namespace Archery.Framework.Objects.Projectiles
             _tail = new Queue<Vector2>();
 
             _startingAlpha = 1f;
+
+            _knockback = weaponModel.Knockback;
 
             _baseDamage = ammoModel.Damage;
             _breakChance = ammoModel.BreakChance;
@@ -92,7 +95,8 @@ namespace Archery.Framework.Objects.Projectiles
                 Rotation = base.rotation,
                 DoesExplodeOnImpact = _isExplosive,
                 ExplosionRadius = _explosionRadius,
-                ExplosionDamage = _explosionDamage
+                ExplosionDamage = _explosionDamage,
+                Knockback = _knockback
             };
         }
 
@@ -137,6 +141,11 @@ namespace Archery.Framework.Objects.Projectiles
             if (projectileData.Rotation is not null)
             {
                 base.rotation = projectileData.Rotation.Value;
+            }
+
+            if (projectileData.Knockback is not null)
+            {
+                _knockback = projectileData.Knockback.Value;
             }
         }
 
@@ -309,7 +318,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             // Damage the monster
             int damageDone = monster.Health;
-            location.damageMonster(monster.GetBoundingBox(), _collectiveDamage, _collectiveDamage, isBomb: false, _weaponModel.Knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
+            location.damageMonster(monster.GetBoundingBox(), _collectiveDamage, _collectiveDamage, isBomb: false, _knockback, 0, _criticalChance, _criticalDamageMultiplier, triggerMonsterInvincibleTimer: false, (base.theOneWhoFiredMe.Get(location) is Farmer) ? (base.theOneWhoFiredMe.Get(location) as Farmer) : Game1.player);
             damageDone -= monster.Health;
 
             if (_isExplosive)
