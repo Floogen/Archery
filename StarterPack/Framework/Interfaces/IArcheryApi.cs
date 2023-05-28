@@ -67,6 +67,7 @@ namespace StarterPack.Framework.Interfaces
         public float? BreakChance { get; set; }
         public float? CriticalChance { get; set; }
         public float? CriticalDamageMultiplier { get; set; }
+        public float? Knockback { get; set; }
 
         public bool? DoesExplodeOnImpact { get; set; }
         public int? ExplosionRadius { get; set; }
