@@ -1,6 +1,6 @@
 ﻿namespace Archery.Framework.Interfaces.Internal
 {
-    internal class WeaponData : IWeaponData
+    public class WeaponData : IWeaponData
     {
         public string WeaponId { get; init; }
         public WeaponType WeaponType { get; init; }

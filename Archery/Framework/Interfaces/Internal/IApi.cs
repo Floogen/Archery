@@ -44,6 +44,7 @@ namespace Archery.Framework.Interfaces.Internal
 
         public List<object> Arguments { get; init; }
     }
+
     public interface IEnchantment
     {
         public BasicProjectile Projectile { get; init; }

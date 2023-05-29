@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Archery.Framework.Interfaces.Internal
 {
-    internal class Enchantment : IEnchantment
+    public class Enchantment : IEnchantment
     {
         public BasicProjectile Projectile { get; init; }
         public GameTime Time { get; init; }

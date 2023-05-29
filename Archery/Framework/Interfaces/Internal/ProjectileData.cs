@@ -2,7 +2,7 @@
 
 namespace Archery.Framework.Interfaces.Internal
 {
-    internal class ProjectileData : IProjectileData
+    public class ProjectileData : IProjectileData
     {
         public string AmmoId { get; init; }
         public Vector2? Position { get; set; }

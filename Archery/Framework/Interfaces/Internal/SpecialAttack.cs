@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Archery.Framework.Interfaces.Internal
 {
-    internal class SpecialAttack : ISpecialAttack
+    public class SpecialAttack : ISpecialAttack
     {
         public Slingshot Slingshot { get; init; }
         public GameTime Time { get; init; }
