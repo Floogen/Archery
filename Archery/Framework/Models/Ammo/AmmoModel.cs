@@ -1,9 +1,9 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using Archery.Framework.Models.Ammo;
+using Archery.Framework.Models.ContentPack;
 using Archery.Framework.Models.Display;
 using Archery.Framework.Models.Generic;
 using Microsoft.Xna.Framework;
-using SolidFoundations.Framework.Models.ContentPack;
 using StardewModdingAPI;
 using StardewValley;
 using System;

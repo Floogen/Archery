@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using StardewValley;
 using System;
 
-namespace SolidFoundations.Framework.Models.ContentPack
+namespace Archery.Framework.Models.ContentPack
 {
     public class Light
     {
