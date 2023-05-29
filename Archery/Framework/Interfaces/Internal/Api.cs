@@ -41,9 +41,16 @@ namespace Archery.Framework.Interfaces.Internal
             _registeredEnchantmentData = new Dictionary<string, Enchantment>();
         }
 
-        private KeyValuePair<bool, string> GenerateResponsePair(bool wasSuccessful, string responseText)
+        private void GenerateApiMessage(IManifest callerManifest, string message, bool logOnce = true, LogLevel logLevel = LogLevel.Trace)
         {
-            return new KeyValuePair<bool, string>(wasSuccessful, responseText);
+            if (logOnce)
+            {
+                _monitor.LogOnce($"[API][{callerManifest.UniqueID}]: {message}", logLevel);
+            }
+            else
+            {
+                _monitor.Log($"[API][{callerManifest.UniqueID}]: {message}", logLevel);
+            }
         }
 
         #region Events
@@ -222,124 +229,140 @@ namespace Archery.Framework.Interfaces.Internal
         }
         #endregion
 
-        public KeyValuePair<bool, Item> CreateWeapon(IManifest callerManifest, string weaponModelId)
+        public Item CreateWeapon(IManifest callerManifest, string weaponModelId)
         {
             if (Archery.modelManager.DoesModelExist<WeaponModel>(weaponModelId) is false)
             {
-                return new KeyValuePair<bool, Item>(false, null);
+                GenerateApiMessage(callerManifest, $"Given weaponModelId {weaponModelId} does not exist");
+                return null;
             }
+            GenerateApiMessage(callerManifest, $"Creating weapon instance with weaponModelId {weaponModelId}");
 
-            return new KeyValuePair<bool, Item>(true, Bow.CreateInstance(Archery.modelManager.GetSpecificModel<WeaponModel>(weaponModelId)));
+            return Bow.CreateInstance(Archery.modelManager.GetSpecificModel<WeaponModel>(weaponModelId));
         }
 
-        public KeyValuePair<bool, Item> CreateAmmo(IManifest callerManifest, string ammoModelId)
+        public Item CreateAmmo(IManifest callerManifest, string ammoModelId)
         {
             if (Archery.modelManager.DoesModelExist<AmmoModel>(ammoModelId) is false)
             {
-                return new KeyValuePair<bool, Item>(false, null);
+                GenerateApiMessage(callerManifest, $"Given ammoModelId {ammoModelId} does not exist");
+                return null;
             }
+            GenerateApiMessage(callerManifest, $"Creating ammo instance with ammoModelId {ammoModelId}");
 
-            return new KeyValuePair<bool, Item>(true, Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(ammoModelId)));
+            return Arrow.CreateInstance(Archery.modelManager.GetSpecificModel<AmmoModel>(ammoModelId));
         }
 
-        public KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position)
+        public bool PlaySound(IManifest callerManifest, ISound sound, Vector2 position)
         {
             if (sound is null)
             {
-                return GenerateResponsePair(false, "Given ISound is not a valid!");
+                GenerateApiMessage(callerManifest, "Given ISound is not a valid");
+                return false;
             }
 
             if (Toolkit.PlaySound((Sound)sound, callerManifest.UniqueID, position) is false)
             {
-                return GenerateResponsePair(false, "Failed to play ISound, see log for details!");
+                GenerateApiMessage(callerManifest, "Failed to play ISound, see log for details");
+                return false;
             }
 
-            return GenerateResponsePair(true, $"Played sound {sound.Name} at {position}");
+            GenerateApiMessage(callerManifest, $"Played sound {sound.Name} at {position}");
+            return true;
         }
 
-        public KeyValuePair<bool, IWeaponData> GetWeaponData(IManifest callerManifest, Slingshot slingshot)
+        public IWeaponData GetWeaponData(IManifest callerManifest, Slingshot slingshot)
         {
             if (slingshot is null)
             {
-                return new KeyValuePair<bool, IWeaponData>(false, null);
+                GenerateApiMessage(callerManifest, "Given slingshot is null");
+                return null;
             }
 
             if (Bow.IsValid(slingshot) is false)
             {
-                return new KeyValuePair<bool, IWeaponData>(false, null);
+                GenerateApiMessage(callerManifest, "Given slingshot is not valid Archery object");
+                return null;
             }
 
-            return new KeyValuePair<bool, IWeaponData>(true, Bow.GetData(slingshot));
+            return Bow.GetData(slingshot);
         }
 
-        public KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile)
+        public IProjectileData GetProjectileData(IManifest callerManifest, BasicProjectile projectile)
         {
             if (projectile is null)
             {
-                return new KeyValuePair<bool, IProjectileData>(false, null);
+                GenerateApiMessage(callerManifest, "Given projectile is null");
+                return null;
             }
 
             if (projectile is not ArrowProjectile arrowProjectile)
             {
-                return new KeyValuePair<bool, IProjectileData>(false, null);
+                GenerateApiMessage(callerManifest, "Given projectile is not valid ArrowProjectile");
+                return null;
             }
 
-            return new KeyValuePair<bool, IProjectileData>(true, arrowProjectile.GetData());
+            return arrowProjectile.GetData();
         }
 
-        public KeyValuePair<bool, string> SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data)
+        public bool SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data)
         {
             if (projectile is null)
             {
-                return GenerateResponsePair(false, "Given projectile is null!");
+                GenerateApiMessage(callerManifest, "Given projectile is null");
+                return false;
             }
 
             if (projectile is not ArrowProjectile arrowProjectile)
             {
-                return GenerateResponsePair(false, "Given projectile is not a ArrowProjectile!");
+                GenerateApiMessage(callerManifest, "Given projectile is not valid ArrowProjectile");
+                return false;
             }
 
             arrowProjectile.Override(data);
+            GenerateApiMessage(callerManifest, "Overrode the projectile with the given IProjectile");
 
-            return GenerateResponsePair(true, $"Overrode the projectile with the given IProjectile");
+            return true;
         }
 
-        public KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage)
+        public bool SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage)
         {
             if (Bow.IsValid(slingshot) is false)
             {
-                return GenerateResponsePair(false, "Given slingshot object is not a valid Archery.WeaponModel!");
+                GenerateApiMessage(callerManifest, "Given slingshot object is not a valid Archery.WeaponModel");
+                return false;
             }
 
             Bow.SetSlingshotChargeTime(slingshot, percentage);
+            GenerateApiMessage(callerManifest, $"Set Archery.WeaponModel's charge percentage to {percentage}");
 
-            return GenerateResponsePair(true, $"Set Archery.WeaponModel's charge percentage to {percentage}");
+            return true;
         }
 
-        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        public BasicProjectile PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             if (Bow.IsValid(slingshot) is false)
             {
-                _monitor.Log("Given slingshot object is not a valid Archery.WeaponModel!", LogLevel.Trace);
-                return new KeyValuePair<bool, BasicProjectile>(false, null);
+                GenerateApiMessage(callerManifest, "Given slingshot object is not a valid Archery.WeaponModel");
+                return null;
             }
 
             var arrow = Bow.PerformFire(projectile, null, slingshot, location, who, suppressFiringSound);
             if (arrow is null)
             {
-                _monitor.Log("Bow.PerformFire returned null!", LogLevel.Trace);
-                return new KeyValuePair<bool, BasicProjectile>(false, null);
+                GenerateApiMessage(callerManifest, "Bow.PerformFire returned null");
+                return null;
             }
 
-            return new KeyValuePair<bool, BasicProjectile>(true, arrow);
+            return arrow;
         }
 
-        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        public BasicProjectile PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             if (Bow.IsValid(slingshot) is false)
             {
-                _monitor.Log("Given slingshot object is not a valid Archery.WeaponModel!", LogLevel.Trace);
-                return new KeyValuePair<bool, BasicProjectile>(false, null);
+                GenerateApiMessage(callerManifest, "Given slingshot object is not a valid Archery.WeaponModel");
+                return null;
             }
 
             var arrow = Bow.PerformFire(Archery.modelManager.GetSpecificModel<AmmoModel>(ammoId), slingshot, location, who, suppressFiringSound);
@@ -349,20 +372,20 @@ namespace Archery.Framework.Interfaces.Internal
 
                 if (arrow is null)
                 {
-                    _monitor.Log("Bow.PerformFire returned null!", LogLevel.Trace);
-                    return new KeyValuePair<bool, BasicProjectile>(false, null);
+                    GenerateApiMessage(callerManifest, "Bow.PerformFire returned null");
+                    return null;
                 }
             }
 
-            return new KeyValuePair<bool, BasicProjectile>(true, arrow);
+            return arrow;
         }
 
-        public KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
+        public BasicProjectile PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false)
         {
             return PerformFire(callerManifest, ammoId: null, slingshot, location, who, suppressFiringSound);
         }
 
-        public KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<List<object>, int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
+        public bool RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<List<object>, int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredSpecialAttackMethods[id] = specialAttackHandler;
@@ -374,25 +397,27 @@ namespace Archery.Framework.Interfaces.Internal
                 GetCooldownInMilliseconds = getCooldownMilliseconds
             };
 
-            _monitor.Log($"The mod {callerManifest.Name} registered a special attack {id} with the type {whichWeaponTypeCanUse}", LogLevel.Info);
-            return GenerateResponsePair(true, $"Registered the special attack method for {id} with the type {whichWeaponTypeCanUse}.");
+            GenerateApiMessage(callerManifest, $"The mod {callerManifest.Name} registered a special attack {id} with the type {whichWeaponTypeCanUse}");
+            return true;
         }
 
-        public KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name)
+        public bool DeregisterSpecialAttack(IManifest callerManifest, string name)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             if (_registeredSpecialAttackMethods.ContainsKey(id) is false)
             {
-                return GenerateResponsePair(false, $"There were no registered special attack methods under {id}.");
+                GenerateApiMessage(callerManifest, $"There were no registered special attack methods under {id}.");
+                return false;
             }
 
             _registeredSpecialAttackMethods.Remove(id);
             _registeredSpecialAttackData.Remove(id);
 
-            return GenerateResponsePair(true, $"Unregistered the special attack method {id}.");
+            GenerateApiMessage(callerManifest, $"Unregistered the special attack method {id}.");
+            return true;
         }
 
-        public KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
+        public bool RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             _registeredEnchantmentMethods[id] = enchantmentHandler;
@@ -404,22 +429,24 @@ namespace Archery.Framework.Interfaces.Internal
                 GetDescription = getDescription
             };
 
-            _monitor.Log($"The mod {callerManifest.Name} registered an enchantment {id} with the type {whichAmmoTypeCanUse}", LogLevel.Info);
-            return GenerateResponsePair(true, $"Registered the enchantment method for {id} with the type {whichAmmoTypeCanUse}.");
+            GenerateApiMessage(callerManifest, $"The mod {callerManifest.Name} registered an enchantment {id} with the type {whichAmmoTypeCanUse}");
+            return true;
         }
 
-        public KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name)
+        public bool DeregisterEnchantment(IManifest callerManifest, string name)
         {
             string id = GetSpecialAttackId(callerManifest, name);
             if (_registeredEnchantmentMethods.ContainsKey(id) is false)
             {
-                return GenerateResponsePair(false, $"There were no registered enchantment methods under {id}.");
+                GenerateApiMessage(callerManifest, $"There were no registered enchantments methods under {id}.");
+                return false;
             }
 
             _registeredEnchantmentMethods.Remove(id);
             _registeredEnchantmentData.Remove(id);
 
-            return GenerateResponsePair(true, $"Unregistered the enchantment method {id}.");
+            GenerateApiMessage(callerManifest, $"Unregistered the enchantment method {id}.");
+            return true;
         }
     }
 }

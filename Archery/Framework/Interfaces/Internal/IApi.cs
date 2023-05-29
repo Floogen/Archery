@@ -11,20 +11,20 @@ namespace Archery.Framework.Interfaces.Internal
 {
     public interface IApi
     {
-        KeyValuePair<bool, Item> CreateWeapon(IManifest callerManifest, string weaponModelId);
-        KeyValuePair<bool, Item> CreateAmmo(IManifest callerManifest, string ammoModelId);
-        KeyValuePair<bool, string> PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
-        KeyValuePair<bool, IWeaponData> GetWeaponData(IManifest callerManifest, Slingshot slingshot);
-        KeyValuePair<bool, IProjectileData> GetProjectileData(IManifest callerManifest, BasicProjectile projectile);
-        KeyValuePair<bool, string> SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data);
-        KeyValuePair<bool, string> SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage);
-        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
-        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
-        KeyValuePair<bool, BasicProjectile> PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
-        KeyValuePair<bool, string> RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<List<object>, int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
-        KeyValuePair<bool, string> DeregisterSpecialAttack(IManifest callerManifest, string name);
-        KeyValuePair<bool, string> RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler);
-        KeyValuePair<bool, string> DeregisterEnchantment(IManifest callerManifest, string name);
+        Item CreateWeapon(IManifest callerManifest, string weaponModelId);
+        Item CreateAmmo(IManifest callerManifest, string ammoModelId);
+        bool PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
+        IWeaponData GetWeaponData(IManifest callerManifest, Slingshot slingshot);
+        IProjectileData GetProjectileData(IManifest callerManifest, BasicProjectile projectile);
+        bool SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data);
+        bool SetChargePercentage(IManifest callerManifest, Slingshot slingshot, float percentage);
+        BasicProjectile PerformFire(IManifest callerManifest, BasicProjectile projectile, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
+        BasicProjectile PerformFire(IManifest callerManifest, string ammoId, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
+        BasicProjectile PerformFire(IManifest callerManifest, Slingshot slingshot, GameLocation location, Farmer who, bool suppressFiringSound = false);
+        bool RegisterSpecialAttack(IManifest callerManifest, string name, WeaponType whichWeaponTypeCanUse, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<List<object>, int> getCooldownMilliseconds, Func<ISpecialAttack, bool> specialAttackHandler);
+        bool DeregisterSpecialAttack(IManifest callerManifest, string name);
+        bool RegisterEnchantment(IManifest callerManifest, string name, AmmoType whichAmmoTypeCanUse, TriggerType triggerType, Func<List<object>, string> getDisplayName, Func<List<object>, string> getDescription, Func<IEnchantment, bool> enchantmentHandler);
+        bool DeregisterEnchantment(IManifest callerManifest, string name);
 
         event EventHandler<IWeaponFiredEventArgs> OnWeaponFired;
         event EventHandler<IWeaponChargeEventArgs> OnWeaponCharging;
