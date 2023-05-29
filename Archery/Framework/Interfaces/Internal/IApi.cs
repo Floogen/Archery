@@ -14,6 +14,7 @@ namespace Archery.Framework.Interfaces.Internal
         Item CreateWeapon(IManifest callerManifest, string weaponModelId);
         Item CreateAmmo(IManifest callerManifest, string ammoModelId);
         bool PlaySound(IManifest callerManifest, ISound sound, Vector2 position);
+        int? GetSpecialAttackCooldown(IManifest callerManifest, Slingshot slingshot);
         IWeaponData GetWeaponData(IManifest callerManifest, Slingshot slingshot);
         IProjectileData GetProjectileData(IManifest callerManifest, BasicProjectile projectile);
         bool SetProjectileData(IManifest callerManifest, BasicProjectile projectile, IProjectileData data);

@@ -271,6 +271,29 @@ namespace Archery.Framework.Interfaces.Internal
             return true;
         }
 
+        public int? GetSpecialAttackCooldown(IManifest callerManifest, Slingshot slingshot)
+        {
+            if (slingshot is null)
+            {
+                GenerateApiMessage(callerManifest, "Given slingshot is null");
+                return null;
+            }
+
+            if (Bow.IsValid(slingshot) is false)
+            {
+                GenerateApiMessage(callerManifest, "Given slingshot is not valid Archery object");
+                return null;
+            }
+
+            if (Bow.GetModel<WeaponModel>(slingshot) is WeaponModel weaponModel && weaponModel.SpecialAttack is not null)
+            {
+                return GetSpecialAttackCooldown(weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Arguments);
+            }
+
+            GenerateApiMessage(callerManifest, "Given slingshot does not have a SpecialAttack associated to it");
+            return null;
+        }
+
         public IWeaponData GetWeaponData(IManifest callerManifest, Slingshot slingshot)
         {
             if (slingshot is null)
