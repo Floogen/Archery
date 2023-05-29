@@ -168,6 +168,11 @@ namespace Archery.Framework.Objects.Weapons
         {
             if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
+                if (Bow.IsLoaded(tool))
+                {
+                    return 1f;
+                }
+
                 var requiredChargingTime = weaponModel.ChargeTimeRequiredMilliseconds;
                 var pullStartTimeInMilliseconds = slingshot.pullStartTime * 1000;
 
