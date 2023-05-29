@@ -54,6 +54,12 @@ namespace Archery.Framework.Patches.Characters
 
         private static void UpdatePostfix(Farmer __instance, GameTime time, GameLocation location)
         {
+            // Don't update cooldowns if the menu is currently open
+            if (Game1.activeClickableMenu is not null)
+            {
+                return;
+            }
+
             // Update the special attack cooldown, if applicable
             if (Bow.ActiveCooldown >= 0)
             {
