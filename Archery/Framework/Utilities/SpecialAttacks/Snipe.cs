@@ -70,12 +70,12 @@ namespace Archery.Framework.Utilities.SpecialAttacks
         {
             var slingshot = specialAttack.Slingshot;
 
-            var weaponDataResponse = Archery.internalApi.GetWeaponData(Archery.manifest, slingshot);
-            if (weaponDataResponse.Key is false)
+            var weaponData = Archery.internalApi.GetWeaponData(Archery.manifest, slingshot);
+            if (weaponData is null)
             {
                 return false;
             }
-            else if (weaponDataResponse.Value.WeaponType is WeaponType.Crossbow && weaponDataResponse.Value.AmmoInMagazine == 0)
+            else if (weaponData.WeaponType is WeaponType.Crossbow && weaponData.AmmoInMagazine == 0)
             {
                 Game1.showRedMessage("The crossbow must be loaded before using the special attack!");
                 return false;
@@ -88,17 +88,15 @@ namespace Archery.Framework.Utilities.SpecialAttacks
             }
             else if (currentChargeTime >= 1f)
             {
-                var firedResponse = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
-                if (firedResponse.Key is true && firedResponse.Value is BasicProjectile projectile)
+                var projectileObject = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
+                if (projectileObject is not null && projectileObject is BasicProjectile projectile)
                 {
                     // Get the internal projectile data
-                    var dataResponse = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
-                    if (dataResponse.Key is false)
+                    var projectileData = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
+                    if (projectileData is null)
                     {
                         return false;
                     }
-
-                    var projectileData = dataResponse.Value;
 
                     // Double the velocity
                     projectileData.Velocity *= 2;

@@ -12,12 +12,11 @@ namespace Archery.Framework.Utilities.Enchantments
     {
         internal static bool HandleEnchantment(IEnchantment enchantment)
         {
-            var response = Archery.internalApi.GetProjectileData(Archery.manifest, enchantment.Projectile);
-            if (response.Key is false)
+            var projectileData = Archery.internalApi.GetProjectileData(Archery.manifest, enchantment.Projectile);
+            if (projectileData is null)
             {
                 return false;
             }
-            var projectileData = response.Value;
 
             var distanceFromFarmer = Vector2.Distance(enchantment.Farmer.Position / 64f, projectileData.Position.Value / 64f);
             if (distanceFromFarmer < 2f)

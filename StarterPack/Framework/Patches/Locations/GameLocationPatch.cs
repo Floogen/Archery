@@ -67,12 +67,11 @@ namespace StarterPack.Framework.Patches.Locations
 
         private static void GetSpecialWeapon(Item item, string weaponModelId)
         {
-            var response = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, weaponModelId);
-            if (response.Key is false)
+            var weapon = StarterPack.apiManager.GetArcheryApi().CreateWeapon(StarterPack.manifest, weaponModelId);
+            if (weapon is null)
             {
                 return;
             }
-            var weapon = response.Value;
 
             Game1.flashAlpha = 1f;
             Game1.player.holdUpItemThenMessage(weapon);
