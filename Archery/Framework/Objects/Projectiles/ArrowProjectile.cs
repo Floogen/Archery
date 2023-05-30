@@ -149,6 +149,24 @@ namespace Archery.Framework.Objects.Projectiles
             }
         }
 
+        internal void HandleProjectileBreakage(GameLocation location, Vector2 position, int facingDirection)
+        {
+            //var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
+            if (AmmoModel.CanBreak(_breakChance) && (AmmoModel.ShouldAlwaysBreak(_breakChance) || Game1.random.NextDouble() < _breakChance))
+            {
+                // Draw debris based on ammo's sprite
+                if (_ammoModel.Debris is not null)
+                {
+                    Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Debris.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, _ammoModel.Debris.Amount);
+                }
+            }
+            else
+            {
+                // Drop the ammo
+                Game1.createItemDebris(Arrow.CreateInstance(_ammoModel), position, facingDirection, location);
+            }
+        }
+
         public override bool update(GameTime time, GameLocation location)
         {
             if (Game1.IsMasterGame && base.hostTimeUntilAttackable > 0f)
@@ -289,6 +307,9 @@ namespace Archery.Framework.Objects.Projectiles
                 location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
             }
 
+            // See if the ammo should break
+            HandleProjectileBreakage(location, base.position.Value, Game1.down);
+
             base.behaviorOnCollisionWithOther(location);
         }
 
@@ -301,20 +322,7 @@ namespace Archery.Framework.Objects.Projectiles
             var monster = (Monster)n;
 
             // See if the ammo should break
-            //var playerLuckChance = Utility.Clamp(Game1.player.LuckLevel / 10f, 0f, 1f) + Game1.player.DailyLuck;
-            if (AmmoModel.CanBreak(_breakChance) && (AmmoModel.ShouldAlwaysBreak(_breakChance) || Game1.random.NextDouble() < _breakChance))
-            {
-                // Draw debris based on ammo's sprite
-                if (_ammoModel.Debris is not null)
-                {
-                    Game1.createRadialDebris(location, _ammoModel.TexturePath, _ammoModel.Debris.Source, (int)(base.position.X + 32f) / 64, (int)(base.position.Y + 32f) / 64, _ammoModel.Debris.Amount);
-                }
-            }
-            else
-            {
-                // Drop the ammo
-                Game1.createItemDebris(Arrow.CreateInstance(_ammoModel), monster.getStandingPosition(), monster.FacingDirection, location);
-            }
+            HandleProjectileBreakage(location, monster.getStandingPosition(), monster.FacingDirection);
 
             // Damage the monster
             int damageDone = monster.Health;
@@ -396,7 +404,6 @@ namespace Archery.Framework.Objects.Projectiles
                 }
             }
         }
-
 
         public override void draw(SpriteBatch b)
         {
