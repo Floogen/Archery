@@ -1,6 +1,7 @@
 ﻿using Archery.Framework.Interfaces.Internal;
 using StardewValley;
 using StardewValley.Projectiles;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,8 @@ namespace Archery.Framework.Utilities.SpecialAttacks
     {
         private static float _defaultCriticalChance = 1f;
         private static int _defaultCooldownInMilliseconds = 3000;
+
+        private static int _internalTimer = 0;
 
         internal static string GetDescription(List<object> arguments)
         {
@@ -75,12 +78,21 @@ namespace Archery.Framework.Utilities.SpecialAttacks
             {
                 return false;
             }
-            else if (weaponData.WeaponType is WeaponType.Crossbow && weaponData.AmmoInMagazine == 0)
+
+            if (weaponData.WeaponType is WeaponType.Bow)
             {
-                Game1.showRedMessage("The crossbow must be loaded before using the special attack!");
-                return false;
+                return HandleSpecialAttackForCrossbow(specialAttack, weaponData, slingshot);
+            }
+            else if (weaponData.WeaponType is WeaponType.Crossbow)
+            {
+                return HandleSpecialAttackForCrossbow(specialAttack, weaponData, slingshot);
             }
 
+            return false;
+        }
+
+        internal static bool HandleSpecialAttackForBow(ISpecialAttack specialAttack, IWeaponData weaponData, Slingshot slingshot)
+        {
             var currentChargeTime = slingshot.GetSlingshotChargeTime();
             if (currentChargeTime < 0.7f)
             {
@@ -88,30 +100,55 @@ namespace Archery.Framework.Utilities.SpecialAttacks
             }
             else if (currentChargeTime >= 1f)
             {
-                var projectileObject = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
-                if (projectileObject is not null && projectileObject is BasicProjectile projectile)
-                {
-                    // Get the internal projectile data
-                    var projectileData = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
-                    if (projectileData is null)
-                    {
-                        return false;
-                    }
-
-                    // Double the velocity
-                    projectileData.Velocity *= 2;
-
-                    // Guarantee critical hit
-                    projectileData.CriticalChance = GetCriticalChance(specialAttack.Arguments);
-
-                    // Set the internal projectile data
-                    Archery.internalApi.SetProjectileData(Archery.manifest, projectile, projectileData);
-                }
+                HandleProjectile(specialAttack, slingshot);
 
                 return false;
             }
 
             return true;
+        }
+
+        internal static bool HandleSpecialAttackForCrossbow(ISpecialAttack specialAttack, IWeaponData weaponData, Slingshot slingshot)
+        {
+            if (weaponData.AmmoInMagazine == 0)
+            {
+                Game1.showRedMessage("The crossbow must be loaded before using the special attack!");
+                Archery.internalApi.SetCooldownRemaining(Archery.manifest, 0);
+                return false;
+            }
+
+            _internalTimer += (int)specialAttack.Time.ElapsedGameTime.TotalMilliseconds;
+            if (_internalTimer > 250)
+            {
+                _internalTimer = 0;
+                HandleProjectile(specialAttack, slingshot);
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static void HandleProjectile(ISpecialAttack specialAttack, Slingshot slingshot)
+        {
+            var projectileObject = Archery.internalApi.PerformFire(Archery.manifest, slingshot, specialAttack.Location, specialAttack.Farmer);
+            if (projectileObject is not null && projectileObject is BasicProjectile projectile)
+            {
+                // Get the internal projectile data
+                var projectileData = Archery.internalApi.GetProjectileData(Archery.manifest, projectile);
+                if (projectileData is null)
+                {
+                    return;
+                }
+
+                // Double the velocity
+                projectileData.Velocity *= 2;
+
+                // Guarantee critical hit
+                projectileData.CriticalChance = GetCriticalChance(specialAttack.Arguments);
+
+                // Set the internal projectile data
+                Archery.internalApi.SetProjectileData(Archery.manifest, projectile, projectileData);
+            }
         }
     }
 }
