@@ -340,7 +340,7 @@ namespace Archery
                     if (missingRequiredProperties.Count > 0)
                     {
                         Monitor.Log($"Unable to add {fileKeyword} for {model.Name} from {contentPack.Manifest.Name}: Missing the following required properties: {string.Join(", ", missingRequiredProperties)}", LogLevel.Warn);
-                        return;
+                        continue;
                     }
 
                     // Track the model
