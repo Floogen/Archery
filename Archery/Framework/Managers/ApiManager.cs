@@ -132,7 +132,7 @@ namespace Archery.Framework.Managers
 
         public void RegisterNativeSpecialAttacks()
         {
-            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Bow, (arguments) => "Snapshot", (arguments) => "Fires two arrows in quick succession.", (arguments) => 3000, Snapshot.HandleSpecialAttack);
+            Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snapshot", WeaponType.Any, (arguments) => "Snapshot", (arguments) => "Fires two arrows in quick succession.", (arguments) => 3000, Snapshot.HandleSpecialAttack);
             Archery.internalApi.RegisterSpecialAttack(Archery.manifest, "Snipe", WeaponType.Any, (arguments) => "Snipe", Snipe.GetDescription, Snipe.GetCooldown, Snipe.HandleSpecialAttack);
         }
 

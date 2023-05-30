@@ -9,8 +9,8 @@ namespace Archery.Framework.Utilities.SpecialAttacks
 {
     public class Snipe
     {
-        private static float _defaultCriticalChance = 1f;
-        private static int _defaultCooldownInMilliseconds = 3000;
+        private const float DEFAULT_CRITICAL_CHANCE = 1f;
+        private const int DEFAULT_COOLDOWN_IN_MILLISECONDS = 3000;
 
         private static int _internalTimer = 0;
 
@@ -33,7 +33,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
 
         private static float GetCriticalChance(List<object> arguments)
         {
-            var chance = _defaultCriticalChance;
+            var chance = DEFAULT_CRITICAL_CHANCE;
             if (arguments is not null && arguments.Count > 0)
             {
                 try
@@ -52,7 +52,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
 
         internal static int GetCooldown(List<object> arguments)
         {
-            var duration = _defaultCooldownInMilliseconds;
+            var duration = DEFAULT_COOLDOWN_IN_MILLISECONDS;
             if (arguments is not null && arguments.Count > 1)
             {
                 try
@@ -81,7 +81,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
 
             if (weaponData.WeaponType is WeaponType.Bow)
             {
-                return HandleSpecialAttackForCrossbow(specialAttack, weaponData, slingshot);
+                return HandleSpecialAttackForBow(specialAttack, weaponData, slingshot);
             }
             else if (weaponData.WeaponType is WeaponType.Crossbow)
             {
@@ -112,7 +112,7 @@ namespace Archery.Framework.Utilities.SpecialAttacks
         {
             if (weaponData.AmmoInMagazine == 0)
             {
-                Game1.showRedMessage("The crossbow must be loaded before using the special attack!");
+                Game1.showRedMessage("The weapon must be loaded before using the special attack!");
                 Archery.internalApi.SetCooldownRemaining(Archery.manifest, 0);
                 return false;
             }
