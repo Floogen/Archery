@@ -294,6 +294,17 @@ namespace Archery.Framework.Interfaces.Internal
             return null;
         }
 
+        public int GetCooldownRemaining(IManifest callerManifest)
+        {
+            return Bow.ActiveCooldown;
+        }
+
+        public void SetCooldownRemaining(IManifest callerManifest, int cooldownInMilliseconds)
+        {
+            GenerateApiMessage(callerManifest, $"Set the weapon cooldown to {cooldownInMilliseconds}");
+            Bow.ActiveCooldown = cooldownInMilliseconds;
+        }
+
         public IWeaponData GetWeaponData(IManifest callerManifest, Slingshot slingshot)
         {
             if (slingshot is null)
