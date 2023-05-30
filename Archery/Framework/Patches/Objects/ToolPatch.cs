@@ -26,6 +26,9 @@ namespace Archery.Framework.Patches.Objects
             harmony.Patch(AccessTools.Method(_object, "get_description", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
             harmony.Patch(AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed), null), postfix: new HarmonyMethod(GetType(), nameof(CanBeTrashedPostfix)));
 
+            harmony.Patch(AccessTools.Method(_object, nameof(Tool.getExtraSpaceNeededForTooltipSpecialIcons), new[] { typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(StringBuilder), typeof(string), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(GetExtraSpaceNeededForTooltipSpecialIconsPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Tool.attachmentSlots)), postfix: new HarmonyMethod(GetType(), nameof(AttachmentSlotsPostfix)));
+
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawTooltip)), postfix: new HarmonyMethod(GetType(), nameof(DrawTooltipPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.DoFunction), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(DoFunctionPrefix)));
@@ -56,6 +59,22 @@ namespace Archery.Framework.Patches.Objects
             {
                 __result = true;
                 return;
+            }
+        }
+
+        private static void GetExtraSpaceNeededForTooltipSpecialIconsPostfix(Tool __instance, ref Point __result, SpriteFont font, int minWidth, int horizontalBuffer, int startingHeight, StringBuilder descriptionText, string boldTitleText, int moneyAmountToDisplayAtBottom)
+        {
+            if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
+            {
+                __result.Y += 48;
+            }
+        }
+
+        private static void AttachmentSlotsPostfix(Tool __instance, ref int __result)
+        {
+            if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
+            {
+                __result = 0;
             }
         }
 
