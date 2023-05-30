@@ -130,7 +130,10 @@ namespace Archery.Framework.Objects.Weapons
                     WeaponId = weaponModel.Id,
                     WeaponType = weaponModel.Type,
                     AmmoInMagazine = weaponModel.Type is WeaponType.Crossbow ? Bow.GetLoaded(tool) : null,
-                    MagazineSize = weaponModel.Type is WeaponType.Crossbow ? weaponModel.MagazineSize : null
+                    MagazineSize = weaponModel.Type is WeaponType.Crossbow ? weaponModel.MagazineSize : null,
+                    ChargeTimeRequiredMilliseconds = weaponModel.ChargeTimeRequiredMilliseconds,
+                    ProjectileSpeed = weaponModel.ProjectileSpeed,
+                    DamageRange = weaponModel.DamageRange
                 };
             }
 
