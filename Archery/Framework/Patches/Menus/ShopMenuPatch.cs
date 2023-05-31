@@ -54,7 +54,7 @@ namespace Archery.Framework.Patches.Objects
             if (___forSale is not null)
             {
                 // Handle ___itemPriceAndStock being overriden via itemPriceAndStock by grabbing our items from ___forSale and re-adding them
-                foreach (Item item in ___forSale.Where(i => i is not null))
+                foreach (Item item in ___forSale.Where(i => i is not null && i is Item))
                 {
                     if (InstancedObject.IsValid(item) && InstancedObject.GetModel<BaseModel>(item) is BaseModel model && model.Shop is not null)
                     {
