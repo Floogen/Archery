@@ -169,7 +169,7 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static float GetSlingshotChargeTime(Tool tool)
         {
-            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && slingshot.getLastFarmerToUse() is Farmer farmer && farmer.usingSlingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
                 if (Bow.IsLoaded(tool))
                 {
