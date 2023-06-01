@@ -475,9 +475,7 @@ namespace Archery.Framework.Objects.Weapons
             if (Archery.internalApi.HandleSpecialAttack(weaponModel.Type, weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
             {
                 // Reset the required farmer flags
-                who.usingSlingshot = false;
-                who.UsingTool = false;
-                who.CanMove = true;
+                who.forceCanMove();
 
                 Bow.SetUsingSpecialAttack(slingshot, false);
             }
