@@ -2,7 +2,6 @@
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
-using Archery.Framework.Utilities.Backport;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -74,7 +73,7 @@ namespace Archery.Framework.Models.Display
                 }
                 else if (condition.Name is Condition.Type.GameStateQuery)
                 {
-                    passedCheck = condition.IsValid(GameStateQuery.CheckConditions(condition.Value.ToString(), target_farmer: who));
+                    passedCheck = condition.IsValid(GameStateQuery.CheckConditions(condition.Value.ToString(), player: who));
                 }
                 else if (condition.Name is Condition.Type.IsFiring && tool is not null)
                 {

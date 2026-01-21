@@ -6,7 +6,7 @@ namespace Archery.Framework.Objects.Items
 {
     internal class Arrow : InstancedObject
     {
-        private const int ARROW_BASE_ID = 590;
+        private const string ARROW_BASE_ID = "590";
 
         public static Object CreateInstance(AmmoModel ammoModel, int stackCount = 1)
         {

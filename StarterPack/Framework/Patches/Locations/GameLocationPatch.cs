@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData;
 using System;
 
 namespace StarterPack.Framework.Patches.Locations
@@ -52,14 +53,14 @@ namespace StarterPack.Framework.Patches.Locations
                     Game1.player.showCarrying();
                     Game1.player.jitterStrength = 1f;
                     Game1.pauseThenDoFunction(7000, () => GetSpecialWeapon(Game1.player.CurrentItem, weaponModelId));
-                    Game1.changeMusicTrack("none", track_interruptable: false, Game1.MusicContext.Event);
+                    Game1.changeMusicTrack("none", track_interruptable: false, MusicContext.Event);
                     __instance.playSound("crit");
                     Game1.screenGlowOnce(new Color(30, 0, 150), hold: true, 0.01f, 0.999f);
                     DelayedAction.playSoundAfterDelay("stardrop", 1500);
                     Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Color.White, 10, 2000));
                     Game1.afterDialogues = (Game1.afterFadeFunction)Delegate.Combine(Game1.afterDialogues, (Game1.afterFadeFunction)delegate
                     {
-                        Game1.stopMusicTrack(Game1.MusicContext.Event);
+                        Game1.stopMusicTrack(MusicContext.Event);
                     });
                 }
             }

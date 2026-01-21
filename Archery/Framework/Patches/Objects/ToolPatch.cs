@@ -1,4 +1,5 @@
-﻿using Archery.Framework.Models.Weapons;
+﻿using Archery.Framework.Interfaces.Internal.Events;
+using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Tools;
 using System;
 using System.Text;
 
@@ -28,6 +30,8 @@ namespace Archery.Framework.Patches.Objects
 
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.getExtraSpaceNeededForTooltipSpecialIcons), new[] { typeof(SpriteFont), typeof(int), typeof(int), typeof(int), typeof(StringBuilder), typeof(string), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(GetExtraSpaceNeededForTooltipSpecialIconsPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.attachmentSlots)), postfix: new HarmonyMethod(GetType(), nameof(AttachmentSlotsPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawAttachments), new[] { typeof(SpriteBatch), typeof(int), typeof(int) }), prefix: new HarmonyMethod(GetType(), nameof(DrawAttachmentsPrefix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Tool.attach), new[] { typeof(StardewValley.Object) }), postfix: new HarmonyMethod(GetType(), nameof(AttachPostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawTooltip)), postfix: new HarmonyMethod(GetType(), nameof(DrawTooltipPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
@@ -75,6 +79,25 @@ namespace Archery.Framework.Patches.Objects
             if (Bow.IsValid(__instance) && Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
             {
                 __result = 0;
+            }
+        }
+
+        private static bool DrawAttachmentsPrefix(Slingshot __instance, SpriteBatch b, int x, int y)
+        {
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static void AttachPostfix(Slingshot __instance, StardewValley.Object o)
+        {
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && Arrow.GetModel<AmmoModel>(o) is AmmoModel ammoModel)
+            {
+                // Trigger event
+                Archery.internalApi.TriggerOnAmmoChanged(new AmmoChangedEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoModel.Id, Origin = Game1.player.getStandingPosition() });
             }
         }
 

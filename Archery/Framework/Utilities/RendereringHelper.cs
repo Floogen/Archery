@@ -39,7 +39,7 @@ namespace Archery.Framework.Utilities
             Color skinLightest = skinColorsData[which * 3 % (skinColors.Height * 3) + 2];
 
             // Get the shirt 
-            bool isSleevesShirt = farmer.GetShirtExtraData().Contains("Sleeveless");
+            bool isSleevesShirt = farmer.ShirtHasSleeves() is false;
 
             Color shirtColor = farmer.GetShirtColor();
             if (isSleevesShirt is false && Archery.apiManager.IsFashionSenseDrawOverrideActive())
@@ -60,9 +60,10 @@ namespace Archery.Framework.Utilities
             }
             else if (Archery.apiManager.IsFashionSenseDrawOverrideActive() is false)
             {
-                Color[] shirtData = new Color[FarmerRenderer.shirtsTexture.Bounds.Width * FarmerRenderer.shirtsTexture.Bounds.Height];
-                FarmerRenderer.shirtsTexture.GetData(shirtData);
-                int index = ClampShirt(farmer.GetShirtIndex()) * 8 / 128 * 32 * FarmerRenderer.shirtsTexture.Bounds.Width + ClampShirt(farmer.GetShirtIndex()) * 8 % 128 + FarmerRenderer.shirtsTexture.Width * 4;
+                farmer.GetDisplayShirt(out var shirtTexture, out var shirtIndex);
+                Color[] shirtData = new Color[shirtTexture.Bounds.Width * shirtTexture.Bounds.Height];
+                int index = shirtIndex * 8 / 128 * 32 * shirtTexture.Bounds.Width + shirtIndex * 8 % 128 + shirtTexture.Width * 4;
+                shirtTexture.GetData(shirtData);
 
                 shirtColor = Utility.MakeCompletelyOpaque(Utility.MultiplyColor(shirtData[index - FarmerRenderer.shirtsTexture.Width * 2], farmer.GetShirtColor()));
             }
@@ -103,15 +104,5 @@ namespace Archery.Framework.Utilities
             maskedTexture.SetData(data);
             return maskedTexture;
         }
-
-        private static int ClampShirt(int shirt_value)
-        {
-            if (shirt_value > Clothing.GetMaxShirtValue() || shirt_value < 0)
-            {
-                return 0;
-            }
-            return shirt_value;
-        }
-
     }
 }

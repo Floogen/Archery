@@ -25,8 +25,8 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(List<ISalable>), typeof(int), typeof(string), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ShopMenuPostfix)));
-            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(Dictionary<ISalable, int[]>), typeof(int), typeof(string), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ShopMenuOverloadPostfix)));
+            //harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(List<ISalable>), typeof(int), typeof(string), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ShopMenuPostfix)));
+            //harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(Dictionary<ISalable, int[]>), typeof(int), typeof(string), typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(ShopMenuOverloadPostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(ShopMenu.setItemPriceAndStock), new[] { typeof(Dictionary<ISalable, int[]>) }), postfix: new HarmonyMethod(GetType(), nameof(SetItemPriceAndStockPostfix)));
             harmony.Patch(AccessTools.Method(_object, "tryToPurchaseItem", new[] { typeof(ISalable), typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(TryToPurchaseItemPostfix)));
@@ -35,7 +35,7 @@ namespace Archery.Framework.Patches.Objects
         private static void ShopMenuPostfix(ShopMenu __instance, ref List<ISalable> ___forSale, ref Dictionary<ISalable, int[]> ___itemPriceAndStock, List<ISalable> itemsForSale, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
         {
             _shopOwner = who;
-            if (who is null && String.IsNullOrEmpty(__instance.storeContext))
+            if (who is null && String.IsNullOrEmpty(__instance.ShopId))
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Archery.Framework.Patches.Objects
         private static void ShopMenuOverloadPostfix(ShopMenu __instance, List<ISalable> ___forSale, Dictionary<ISalable, int[]> ___itemPriceAndStock, Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
         {
             _shopOwner = who;
-            if (who is null && String.IsNullOrEmpty(__instance.storeContext))
+            if (who is null && String.IsNullOrEmpty(__instance.ShopId))
             {
                 return;
             }
@@ -108,7 +108,7 @@ namespace Archery.Framework.Patches.Objects
                     }
                     catch (Exception)
                     {
-                        _monitor.Log($"Failed to learn custom recipe {model.Id} in shop {_shopOwner} at {__instance.storeContext}!");
+                        _monitor.Log($"Failed to learn custom recipe {model.Id} in shop {_shopOwner} at {__instance.ShopId}!");
                     }
 
                     held_item = null;
@@ -149,7 +149,7 @@ namespace Archery.Framework.Patches.Objects
             // Add the weapons and ammo
             foreach (var model in Archery.modelManager.GetModelsForSale())
             {
-                if (String.Equals(_shopOwner, model.Shop.Owner, StringComparison.OrdinalIgnoreCase) is false && String.Equals(shopMenu.storeContext, model.Shop.Context, StringComparison.OrdinalIgnoreCase) is false)
+                if (String.Equals(_shopOwner, model.Shop.Owner, StringComparison.OrdinalIgnoreCase) is false && String.Equals(shopMenu.ShopId, model.Shop.Context, StringComparison.OrdinalIgnoreCase) is false)
                 {
                     continue;
                 }
@@ -173,17 +173,13 @@ namespace Archery.Framework.Patches.Objects
                 item.Stack = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock();
 
                 shopMenu.forSale.Add(item);
-                shopMenu.itemPriceAndStock.Add(item, new int[2]
-                {
-                    model.Shop.Price,
-                    model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock()
-                });
+                shopMenu.itemPriceAndStock.Add(item, new ItemStockInformation(model.Shop.Price, model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock()));
             }
 
             // Add the recipes
             foreach (var recipe in Archery.modelManager.GetRecipesForSale())
             {
-                if (String.Equals(_shopOwner, recipe.Shop.Owner, StringComparison.OrdinalIgnoreCase) is false && String.Equals(shopMenu.storeContext, recipe.Shop.Context, StringComparison.OrdinalIgnoreCase) is false)
+                if (String.Equals(_shopOwner, recipe.Shop.Owner, StringComparison.OrdinalIgnoreCase) is false && String.Equals(shopMenu.ShopId, recipe.Shop.Context, StringComparison.OrdinalIgnoreCase) is false)
                 {
                     continue;
                 }
@@ -212,11 +208,7 @@ namespace Archery.Framework.Patches.Objects
                 item.Stack = 1;
 
                 shopMenu.forSale.Add(item);
-                shopMenu.itemPriceAndStock.Add(item, new int[2]
-                {
-                    recipe.Shop.Price,
-                    item.Stack
-                });
+                shopMenu.itemPriceAndStock.Add(item, new ItemStockInformation(recipe.Shop.Price, item.Stack));
             }
         }
     }

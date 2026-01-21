@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using StardewValley.Buffs;
 using StarterPack.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace StarterPack.Framework.Utilities.SpecialAttacks
             {
                 return false;
             }
-            Game1.buffsDisplay.addOtherBuff(GetSpeedBuff(specialAttack.Arguments));
+            specialAttack.Farmer.applyBuff(GetSpeedBuff(specialAttack.Arguments));
 
             if (specialAttack.Location is not null)
             {
@@ -34,11 +35,8 @@ namespace StarterPack.Framework.Utilities.SpecialAttacks
 
         private static Buff GetSpeedBuff(List<object> arguments)
         {
-            int speedBuff = 9;
-            var buff = new Buff(null, GetMovementDuration(arguments), "Yoba's Divine Harp", speedBuff) { displaySource = "Yoba's Divine Harp" };
-
-            // Set the speed buff to +2
-            buff.buffAttributes[speedBuff] = GetMovementSpeed(arguments);
+            var buffEffect = new BuffEffects(new StardewValley.GameData.Buffs.BuffAttributesData() { Speed = GetMovementSpeed(arguments) });
+            var buff = new Buff("Archery.Buff.YobaDivineHarp.Speed", null, "Yoba's Divine Harp", duration: _defaultDurationInMilliseconds, iconSheetIndex: 9, effects: buffEffect);
 
             return buff;
         }

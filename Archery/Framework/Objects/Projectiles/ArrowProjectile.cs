@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Projectiles;
+using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace Archery.Framework.Objects.Projectiles
         private Queue<Vector2> _tail;
 
         private float _startingAlpha;
-        private int _lightId;
+        private string _lightId;
 
         private int _baseDamage;
         private int _collectiveDamage;
@@ -40,7 +41,7 @@ namespace Archery.Framework.Objects.Projectiles
 
         private bool _shouldCheckForOnFire;
 
-        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Trail is not null ? ammoModel.Trail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, false, damagesMonsters, location, owner, spriteFromObjectSheet, collisionBehavior)
+        public ArrowProjectile(WeaponModel weaponModel, AmmoModel ammoModel, Farmer owner, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string bounceSound, string firingSound, bool damagesMonsters = false, GameLocation location = null, bool spriteFromObjectSheet = false, onCollisionBehavior collisionBehavior = null) : base(0, VANILLA_STONE_SPRITE_ID, 0, ammoModel is not null && ammoModel.Trail is not null ? ammoModel.Trail.Amount : 0, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, bounceSound, firingSound, false, damagesMonsters, location, owner, collisionBehavior)
         {
             _weaponModel = weaponModel;
             _ammoModel = ammoModel;
@@ -51,13 +52,13 @@ namespace Archery.Framework.Objects.Projectiles
 
             _startingAlpha = 1f;
 
-            _knockback = weaponModel.Knockback * (1f + _owner.knockbackModifier);
+            _knockback = weaponModel.Knockback * (1f + _owner.buffs.KnockbackMultiplier);
 
             _baseDamage = ammoModel.Damage;
             _breakChance = ammoModel.BreakChance;
-            _collectiveDamage = (int)(weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.attackIncreaseModifier));
-            _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f) * (1f + _owner.critChanceModifier);
-            _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue) * (1f + _owner.critPowerModifier);
+            _collectiveDamage = (int)(weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.buffs.Attack));
+            _criticalChance = Utility.Clamp(_weaponModel.CriticalChance + _ammoModel.CriticalChance, 0f, 1f) * (1f + _owner.buffs.CriticalChanceMultiplier);
+            _criticalDamageMultiplier = Utility.Clamp(_weaponModel.CriticalDamageMultiplier + _ammoModel.CriticalDamageMultiplier, 1f, float.MaxValue) * (1f + _owner.buffs.CriticalPowerMultiplier);
 
             _isExplosive = ammoModel.Explosion is not null;
             _explosionRadius = ammoModel.Explosion is not null ? ammoModel.Explosion.Radius : 0;
@@ -110,7 +111,7 @@ namespace Archery.Framework.Objects.Projectiles
             if (projectileData.BaseDamage is not null)
             {
                 _baseDamage = projectileData.BaseDamage.Value;
-                _collectiveDamage = (int)(_weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.attackIncreaseModifier));
+                _collectiveDamage = (int)(_weaponModel.DamageRange.Get(Game1.random, maxOffset: _baseDamage) * (1f + _owner.buffs.Attack));
             }
 
             if (projectileData.BreakChance is not null)
@@ -185,8 +186,8 @@ namespace Archery.Framework.Objects.Projectiles
                 if (!base.hasLit)
                 {
                     base.hasLit = true;
-                    _lightId = Game1.random.Next(int.MinValue, int.MaxValue);
-                    Game1.currentLightSources.Add(new LightSource(lightModel.GetTextureSource(), base.position + lightModel.Offset, lightModel.GetRadius(), lightModel.GetColor(), _lightId, LightSource.LightContext.None, 0L));
+                    _lightId = $"Archery.Projectile.Lights.Id.{Game1.random.Next()}";
+                    Game1.currentLightSources[_lightId] = new LightSource(_lightId, lightModel.GetTextureSource(), base.position.Value + lightModel.Offset, lightModel.GetRadius(), lightModel.GetColor(), LightSource.LightContext.None, 0L);
                 }
                 else
                 {
@@ -196,7 +197,7 @@ namespace Archery.Framework.Objects.Projectiles
                         lightSource.color.Value *= _startingAlpha;
                     }
 
-                    Utility.repositionLightSource(_lightId, base.position + lightModel.Offset);
+                    Utility.repositionLightSource(_lightId, base.position.Value + lightModel.Offset);
                 }
             }
 
@@ -234,7 +235,7 @@ namespace Archery.Framework.Objects.Projectiles
                 }
             }
 
-            if (this.isColliding(location) && (base.travelTime > 100 || base.ignoreTravelGracePeriod.Value))
+            if (this.isColliding(location, out var target, out var terrainFeature) && (base.travelTime > 100 || base.ignoreTravelGracePeriod.Value))
             {
                 if (base.bouncesLeft.Value <= 0)
                 {
@@ -302,7 +303,7 @@ namespace Archery.Framework.Objects.Projectiles
         {
             if (_isExplosive)
             {
-                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
+                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position.Value, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
 
                 location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
             }
@@ -331,7 +332,7 @@ namespace Archery.Framework.Objects.Projectiles
 
             if (_isExplosive)
             {
-                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
+                Archery.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(362, Game1.random.Next(30, 90), 6, 1, base.position.Value, flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false));
 
                 location.explode(new Vector2(base.position.X / 64, base.position.Y / 64), _explosionRadius, _owner, false, _explosionDamage);
             }
@@ -346,7 +347,7 @@ namespace Archery.Framework.Objects.Projectiles
             Archery.internalApi.TriggerOnAmmoHitMonster(new AmmoHitMonsterEventArgs() { WeaponId = _weaponModel.Id, AmmoId = _ammoModel.Id, Monster = monster, Projectile = this, Origin = this.position.Value, DamageDone = damageDone });
         }
 
-        public override bool isColliding(GameLocation location)
+        public override bool isColliding(GameLocation location, out Character target, out TerrainFeature terrainFeature)
         {
             var collisionBox = this.getBoundingBox();
             foreach (var monster in location.characters)
@@ -358,11 +359,13 @@ namespace Archery.Framework.Objects.Projectiles
 
                 if (monster.GetBoundingBox().Intersects(collisionBox))
                 {
+                    target = monster;
+                    terrainFeature = null;
                     return true;
                 }
             }
 
-            return base.isColliding(location);
+            return base.isColliding(location, out target, out terrainFeature);
         }
 
         public override Rectangle getBoundingBox()
@@ -397,7 +400,7 @@ namespace Archery.Framework.Objects.Projectiles
             if (_tailTimer <= 0)
             {
                 _tailTimer = _ammoModel.Trail is not null ? _ammoModel.Trail.SpawnIntervalInMilliseconds : 50;
-                _tail.Enqueue(this.position);
+                _tail.Enqueue(this.position.Value);
                 if (_tail.Count > base.tailLength.Value)
                 {
                     _tail.Dequeue();
@@ -421,7 +424,7 @@ namespace Archery.Framework.Objects.Projectiles
             {
                 for (int i = _tail.Count - 1; i >= 0; i--)
                 {
-                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? ((Vector2)base.position) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Trail.SpacingStep)), _ammoModel.Trail.Source, base.color.Value * alpha * _startingAlpha, base.rotation, _ammoModel.Trail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
+                    b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, Vector2.Lerp((i == _tail.Count - 1) ? (base.position.Value) : _tail.ElementAt(i + 1), _tail.ElementAt(i), _ammoModel.Trail.SpacingStep)), _ammoModel.Trail.Source, base.color.Value * alpha * _startingAlpha, base.rotation, _ammoModel.Trail.Offset, current_scale, SpriteEffects.None, (base.position.Y - (float)(_tail.Count - i) + 96f) / 10000f);
 
                     if (_ammoModel.Trail.AlphaStep is not null)
                     {
@@ -436,7 +439,7 @@ namespace Archery.Framework.Objects.Projectiles
             }
 
             // Draw the arrow
-            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position), ammoSprite.Source, base.color.Value * _startingAlpha, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
+            b.Draw(_ammoModel.Texture, Game1.GlobalToLocal(Game1.viewport, base.position.Value), ammoSprite.Source, base.color.Value * _startingAlpha, base.rotation, ammoSprite.Source.Size.ToVector2(), 4f * base.localScale, SpriteEffects.None, (base.position.Y + 96f) / 10000f);
 
             // Draw collision box, if enabled
             if (Archery.shouldShowAmmoCollisionBox)

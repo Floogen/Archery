@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>2.2.5</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>3.0.0</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
@@ -53,7 +53,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"' -Recurse -Force
-			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\bin\Debug\net6.0" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
 			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\Archery-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
 
 			powershell Remove-Item -Path '$(GameModsPath)\Archery' -Recurse -Force

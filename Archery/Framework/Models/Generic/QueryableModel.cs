@@ -1,5 +1,4 @@
-﻿using Archery.Framework.Utilities.Backport;
-using StardewValley;
+﻿using StardewValley;
 
 namespace Archery.Framework.Models.Generic
 {
@@ -9,7 +8,7 @@ namespace Archery.Framework.Models.Generic
 
         internal bool HasRequirements(Farmer who)
         {
-            return GameStateQuery.CheckConditions(UnlockCondition, target_farmer: who);
+            return GameStateQuery.CheckConditions(UnlockCondition, player: who);
         }
     }
 }

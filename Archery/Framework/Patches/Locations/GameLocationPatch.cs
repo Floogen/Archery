@@ -49,7 +49,7 @@ namespace Archery.Framework.Patches.Locations
                 string actionProperty = __instance.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
                 if (actionProperty == "ArcheryShop")
                 {
-                    var shopMenu = new ShopMenu(new Dictionary<ISalable, int[]>());
+                    var shopMenu = new ShopMenu("ArcheryShop", new List<ISalable>());
 
                     // Add the weapons
                     AddToShopMenu(Archery.modelManager.GetAllModels().Where(m => m is WeaponModel).ToList(), shopMenu);
@@ -80,11 +80,7 @@ namespace Archery.Framework.Patches.Locations
                         item.Stack = 1;
 
                         shopMenu.forSale.Add(item);
-                        shopMenu.itemPriceAndStock.Add(item, new int[2]
-                        {
-                            0,
-                            1
-                        });
+                        shopMenu.itemPriceAndStock.Add(item, new ItemStockInformation(1, 0));
                     }
 
                     Game1.activeClickableMenu = shopMenu;
@@ -116,11 +112,7 @@ namespace Archery.Framework.Patches.Locations
                 item.Stack = 999;
 
                 shopMenu.forSale.Add(item);
-                shopMenu.itemPriceAndStock.Add(item, new int[2]
-                {
-                    0,
-                    int.MaxValue
-                });
+                shopMenu.itemPriceAndStock.Add(item, new ItemStockInformation(0, int.MaxValue));
             }
         }
     }

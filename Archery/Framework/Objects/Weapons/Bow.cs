@@ -277,7 +277,7 @@ namespace Archery.Framework.Objects.Weapons
                 int mouseX = slingshot.aimPos.X;
                 int mouseY = slingshot.aimPos.Y;
 
-                Game1.debugOutput = "playerPos: " + who.getStandingPosition().ToString() + ", mousePos: " + mouseX + ", " + mouseY;
+                //Game1.debugOutput = "playerPos: " + who.getStandingPosition().ToString() + ", mousePos: " + mouseX + ", " + mouseY;
                 slingshot.mouseDragAmount++;
 
                 Vector2 shootOrigin = slingshot.GetShootOrigin(who);
@@ -429,12 +429,12 @@ namespace Archery.Framework.Objects.Weapons
                 int mouseY = slingshot.aimPos.Y;
 
                 Vector2 shootOrigin = slingshot.GetShootOrigin(who);
-                Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.weaponSpeedModifier));
+                Vector2 v = Utility.getVelocityTowardPoint(slingshot.GetShootOrigin(who), slingshot.AdjustForHeight(new Vector2(mouseX, mouseY)), weaponModel.ProjectileSpeed * (1f + who.buffs.WeaponSpeedMultiplier));
 
                 v.X *= -1f;
                 v.Y *= -1f;
 
-                arrow = new ArrowProjectile(weaponModel, ammoModel, who, 0f, 0f - v.X, 0f - v.Y, shootOrigin, String.Empty, String.Empty, damagesMonsters: true, location, spriteFromObjectSheet: true)
+                arrow = new ArrowProjectile(weaponModel, ammoModel, who, 0f, 0f - v.X, 0f - v.Y, shootOrigin, String.Empty, String.Empty, String.Empty, damagesMonsters: true, location, spriteFromObjectSheet: true)
                 {
                     IgnoreLocationCollision = (Game1.currentLocation.currentEvent != null || Game1.currentMinigame != null)
                 };

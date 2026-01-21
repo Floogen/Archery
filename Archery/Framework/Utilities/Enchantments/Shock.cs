@@ -28,7 +28,7 @@ namespace Archery.Framework.Utilities.Enchantments
             var monster = enchantment.Monster;
 
             // Stun the monster for 1 second
-            monster.stunTime += GetStunTime(enchantment.Arguments);
+            monster.stunTime.Value += GetStunTime(enchantment.Arguments);
 
             return false;
         }

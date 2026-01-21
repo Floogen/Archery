@@ -28,18 +28,25 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(StardewValley.Object), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
+
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.drawAttachments), new[] { typeof(SpriteBatch), typeof(int), typeof(int) }), prefix: new HarmonyMethod(GetType(), nameof(DrawAttachmentsPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.PerformFire), new[] { typeof(GameLocation), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(PerformFirePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.tickUpdate), new[] { typeof(GameTime), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(TickUpdatePrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(BeginUsingPostfix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.canThisBeAttached), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(CanThisBeAttachedPostfix)));
-            harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.attach), new[] { typeof(Object) }), postfix: new HarmonyMethod(GetType(), nameof(AttachPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetSlingshotChargeTime), null), postfix: new HarmonyMethod(GetType(), nameof(GetSlingshotChargeTimePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.CanAutoFire), null), postfix: new HarmonyMethod(GetType(), nameof(CanAutoFirePostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Slingshot.GetShootOrigin), new[] { typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(GetShootOriginPostfix)));
 
             harmony.CreateReversePatcher(AccessTools.Method(_object, "updateAimPos", null), new HarmonyMethod(GetType(), nameof(UpdateAimPosReversePatch))).Patch();
+        }
+
+        private static void CanThisBeAttachedPostfix(Slingshot __instance, ref bool __result, StardewValley.Object o, int slot)
+        {
+            if (Bow.IsValid(__instance))
+            {
+                __result = Bow.CanThisBeAttached(__instance, o);
+            }
         }
 
         private static bool DrawInMenuPrefix(Slingshot __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
@@ -109,16 +116,6 @@ namespace Archery.Framework.Patches.Objects
             return true;
         }
 
-        private static bool DrawAttachmentsPrefix(Slingshot __instance, SpriteBatch b, int x, int y)
-        {
-            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel.UsesInternalAmmo())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         [HarmonyPriority(Priority.High)]
         private static bool TickUpdatePrefix(Slingshot __instance, ref bool ___canPlaySound, ref Farmer ___lastUser, NetEvent0 ___finishEvent, GameTime time, Farmer who)
         {
@@ -156,23 +153,6 @@ namespace Archery.Framework.Patches.Objects
             {
                 // Play charging sound
                 Toolkit.PlaySound(weaponModel.StartChargingSound, weaponModel.Id, who.getStandingPosition());
-            }
-        }
-
-        private static void CanThisBeAttachedPostfix(Slingshot __instance, ref bool __result, Object o)
-        {
-            if (Bow.IsValid(__instance))
-            {
-                __result = Bow.CanThisBeAttached(__instance, o);
-            }
-        }
-
-        private static void AttachPostfix(Slingshot __instance, Object o)
-        {
-            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && Arrow.GetModel<AmmoModel>(o) is AmmoModel ammoModel)
-            {
-                // Trigger event
-                Archery.internalApi.TriggerOnAmmoChanged(new AmmoChangedEventArgs() { WeaponId = weaponModel.Id, AmmoId = ammoModel.Id, Origin = Game1.player.getStandingPosition() });
             }
         }
 

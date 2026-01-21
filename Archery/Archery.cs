@@ -10,7 +10,6 @@ using Archery.Framework.Patches.Locations;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Patches.Renderer;
 using Archery.Framework.Utilities;
-using Archery.Framework.Utilities.Backport;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -78,9 +77,6 @@ namespace Archery
                 // Apply Character patches
                 new FarmerPatch(monitor, modHelper).Apply(harmony);
                 new DrawPatch(monitor, modHelper).Apply(harmony);
-
-                // Apply Menu patches
-                new ShopMenuPatch(monitor, modHelper).Apply(harmony);
             }
             catch (Exception e)
             {
@@ -216,9 +212,6 @@ namespace Archery
                 Monitor.Log($"Loading ammo from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
                 AddContentPacks<AmmoModel>(contentPack, PackType.Ammo);
             }
-
-            // Set up the backported GameStateQuery
-            GameStateQuery.SetupQueryTypes();
 
             // Invalidate Data/CraftingRecipes
             Helper.GameContent.InvalidateCache("Data/CraftingRecipes");

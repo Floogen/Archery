@@ -16,7 +16,24 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Method(_object, nameof(Item.addToStack), new[] { typeof(Item) }), prefix: new HarmonyMethod(GetType(), nameof(AddToStackPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Item.canStackWith), new[] { typeof(ISalable) }), postfix: new HarmonyMethod(GetType(), nameof(CanStackWithPostfix)));
+        }
+
+        private static bool AddToStackPrefix(Object __instance, ref int __result, Item otherStack)
+        {
+            if (Arrow.IsValid(__instance))
+            {
+                if (Arrow.IsValid(otherStack) && Arrow.GetInternalId(__instance) == Arrow.GetInternalId(otherStack))
+                {
+                    return true;
+                }
+
+                __result = otherStack.Stack;
+                return false;
+            }
+
+            return true;
         }
 
         private static void CanStackWithPostfix(Item __instance, ref bool __result, ISalable other)

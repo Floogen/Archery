@@ -227,7 +227,7 @@ namespace Archery.Framework.Utilities
                         continue;
                     }
 
-                    Torch torch = new Torch(tile, 149, bigCraftable: true);
+                    Torch torch = new Torch("149", bigCraftable: true);
                     torch.shakeTimer = 25;
                     if (torch.placementAction(arena, (int)tile.X * 64, (int)tile.Y * 64, null))
                     {
