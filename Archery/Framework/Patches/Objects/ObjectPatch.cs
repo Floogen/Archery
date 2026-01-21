@@ -1,11 +1,13 @@
 ﻿using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects;
 using Archery.Framework.Objects.Items;
+using Archery.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace Archery.Framework.Patches.Objects
@@ -21,10 +23,44 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(string), typeof(int), typeof(bool), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(ObjectConstructorPostfix)));
+            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(Vector2), typeof(string), typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(ObjectConstructorWorldPostfix)));
+
             harmony.Patch(AccessTools.Method(_object, "get_DisplayName", null), postfix: new HarmonyMethod(GetType(), nameof(GetNamePostfix)));
             harmony.Patch(AccessTools.Method(_object, "getDescription", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(Object.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
+        }
+
+        private static void ObjectConstructorPostfix(Object __instance, string itemId, int initialStack, bool isRecipe = false, int price = -1, int quality = 0)
+        {
+            HandleCustomFields(__instance);
+        }
+
+        private static void ObjectConstructorWorldPostfix(Object __instance, Vector2 tileLocation, string itemId, bool isRecipe = false)
+        {
+            HandleCustomFields(__instance);
+        }
+
+        private static void HandleCustomFields(Object instance)
+        {
+            if (Game1.objectData.TryGetValue(instance.ItemId, out var data) is false || data is null || data.CustomFields is null)
+            {
+                return;
+            }
+
+            if (data.CustomFields.ContainsKey(ModDataKeys.WEAPON_FLAG))
+            {
+                instance.modData[ModDataKeys.WEAPON_FLAG] = data.CustomFields[ModDataKeys.WEAPON_FLAG];
+            }
+            else if (data.CustomFields.ContainsKey(ModDataKeys.AMMO_FLAG))
+            {
+                instance.modData[ModDataKeys.AMMO_FLAG] = data.CustomFields[ModDataKeys.AMMO_FLAG];
+            }
+            else if (data.CustomFields.ContainsKey(ModDataKeys.RECIPE_FLAG))
+            {
+                instance.modData[ModDataKeys.RECIPE_FLAG] = data.CustomFields[ModDataKeys.RECIPE_FLAG];
+            }
         }
 
         private static void GetNamePostfix(Object __instance, ref string __result)

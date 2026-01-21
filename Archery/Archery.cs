@@ -14,6 +14,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -133,6 +134,40 @@ namespace Archery
                         data[model.Id] = model.Recipe.GetData();
                     }
                 });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, ObjectData>().Data;
+
+                    // Add the valid recipes
+                    foreach (AmmoModel model in modelManager.GetAllModels().Where(m => m is AmmoModel))
+                    {
+                        data[model.Id] = new ObjectData()
+                        {
+                            Name = model.Name,
+                            DisplayName = model.DisplayName,
+                            Description = model.Description,
+                            Type = "Basic",
+                            Category = 0,
+                            Price = model.Shop is not null ? model.Shop.Price : 0,
+                            Texture = model.TexturePath,
+                            SpriteIndex = 0,
+                            ExcludeFromFishingCollection = true,
+                            ExcludeFromShippingCollection = true,
+                            ExcludeFromRandomSale = true,
+                            CustomFields = new Dictionary<string, string>()
+                            {
+                                { ModDataKeys.AMMO_FLAG, model.Id }
+                            }
+                        };
+                    }
+                });
+            }
+            else if (e.DataType == typeof(Texture2D) && modelManager.GetAllModels().FirstOrDefault(m => e.Name.IsEquivalentTo(m.Id)) is BaseModel baseModel && baseModel is not null)
+            {
+                e.LoadFromModFile<Texture2D>(baseModel.TexturePath, StardewModdingAPI.Events.AssetLoadPriority.High);
             }
         }
 
