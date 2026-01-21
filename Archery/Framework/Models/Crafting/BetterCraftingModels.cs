@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Archery.Framework.Models.Crafting
 {
-    internal class Recipe : IRecipe
+    public class Recipe : IRecipe
     {
         private readonly BaseModel _baseModel;
 
@@ -43,6 +43,10 @@ namespace Archery.Framework.Models.Crafting
         public IIngredient[] Ingredients { get; protected set; }
 
         public bool Stackable => _baseModel is not WeaponModel;
+
+        public bool AllowRecycling => false;
+
+        string IRecipe.SortValue => string.Empty;
 
         public bool CanCraft(Farmer who)
         {
