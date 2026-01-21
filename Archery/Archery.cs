@@ -6,6 +6,7 @@ using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Characters;
+using Archery.Framework.Patches.ItemTypeDefinitions;
 using Archery.Framework.Patches.Locations;
 using Archery.Framework.Patches.Objects;
 using Archery.Framework.Patches.Renderer;
@@ -74,6 +75,7 @@ namespace Archery
                 new ObjectPatch(monitor, modHelper).Apply(harmony);
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);
+                new WeaponDataDefinitionPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Character patches
                 new FarmerPatch(monitor, modHelper).Apply(harmony);
@@ -160,6 +162,32 @@ namespace Archery
                             CustomFields = new Dictionary<string, string>()
                             {
                                 { ModDataKeys.AMMO_FLAG, model.Id }
+                            }
+                        };
+                    }
+                });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Weapons"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, StardewValley.GameData.Weapons.WeaponData>().Data;
+
+                    // Add the valid recipes
+                    foreach (WeaponModel model in modelManager.GetAllModels().Where(m => m is WeaponModel))
+                    {
+                        data[model.Id] = new StardewValley.GameData.Weapons.WeaponData()
+                        {
+                            Name = model.Name,
+                            DisplayName = model.DisplayName,
+                            Description = model.Description,
+                            Type = 4,
+                            CanBeLostOnDeath = true,
+                            Texture = model.TexturePath,
+                            SpriteIndex = 0,
+                            CustomFields = new Dictionary<string, string>()
+                            {
+                                { ModDataKeys.WEAPON_FLAG, model.Id }
                             }
                         };
                     }

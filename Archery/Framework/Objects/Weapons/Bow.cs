@@ -25,16 +25,7 @@ namespace Archery.Framework.Objects.Weapons
 
         public static Slingshot CreateInstance(WeaponModel weaponModel)
         {
-            var bow = new Slingshot();
-            bow.modData[ModDataKeys.WEAPON_FLAG] = weaponModel.Id;
-
-            // Hide attachment slot from bows with internal ammo
-            if (weaponModel.UsesInternalAmmo())
-            {
-                bow.numAttachmentSlots.Value = 0;
-            }
-
-            return bow;
+            return ItemRegistry.Create<Slingshot>(weaponModel.Id);
         }
 
         public static Slingshot CreateRecipe(WeaponModel weaponModel)
