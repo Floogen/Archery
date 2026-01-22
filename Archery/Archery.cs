@@ -450,6 +450,20 @@ namespace Archery
                             {
                                 weaponModel.ArmsTexture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, $"arms.png")).Name);
                             }
+
+                            // Handle formatting change from "/" to "." for separators
+                            if (string.IsNullOrEmpty(weaponModel.InternalAmmoId) is false)
+                            {
+                                weaponModel.InternalAmmoId = weaponModel.InternalAmmoId.Replace("/", ".");
+                            }
+
+                            if (weaponModel.WeightedInternalAmmoIds is not null)
+                            {
+                                for (int index = 0; index < weaponModel.WeightedInternalAmmoIds.Count; index++)
+                                {
+                                    weaponModel.WeightedInternalAmmoIds[index].Id = weaponModel.WeightedInternalAmmoIds[index].Id.Replace("/", ".");
+                                }
+                            }
                             break;
                         case AmmoModel ammoModel:
                             break;
