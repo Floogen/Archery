@@ -56,11 +56,6 @@ namespace Archery.Framework.Managers
             return (T)_contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T);
         }
 
-        internal BaseModel GetModelByRecipe(string recipeId)
-        {
-            return _contentPackModels.FirstOrDefault(m => m.Recipe is not null && m.Recipe.Id.EqualsIgnoreCase(recipeId));
-        }
-
         internal List<BaseModel> GetModelsForSale()
         {
             return GetAllModels().Where(m => m.Shop is not null && m.Shop.IsValid()).ToList();

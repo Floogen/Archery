@@ -46,11 +46,11 @@ namespace Archery.Framework.Patches.Objects
                 return true;
             }
 
-            foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player)))
+            foreach (var model in Archery.modelManager.GetModelsWithValidRecipes())
             {
-                if (playerRecipes.Contains(model.Recipe.Id))
+                if (playerRecipes.Contains(model.Id))
                 {
-                    playerRecipes.Remove(model.Recipe.Id);
+                    playerRecipes.Remove(model.Id);
                 }
             }
 
@@ -78,9 +78,9 @@ namespace Archery.Framework.Patches.Objects
                 pageLayout
             };
 
-            foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player)))
+            foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player) || Game1.player.knowsRecipe(m.Id)))
             {
-                var playerRecipe = model.Recipe.Id;
+                var playerRecipe = model.Id;
 
                 i++;
                 CraftingRecipe recipe = new CraftingRecipe(playerRecipe, false);

@@ -1,4 +1,5 @@
 ﻿using Archery.Framework.Models.Generic;
+using Archery.Framework.Models.Weapons;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Archery.Framework.Models.Crafting
             return true;
         }
 
-        internal string GetData()
+        internal string GetData(BaseModel baseModel)
         {
             // Append the ingredients
             string data = String.Join(" ", GetValidIngredients().Select(i => $"{i.GetObjectId()} {i.Amount}").ToList());
@@ -34,7 +35,7 @@ namespace Archery.Framework.Models.Crafting
             data += "/Home";
 
             // Append the default output item with yield (CraftingRecipePatch.CreateItemPrefix will return the correct stack value)
-            data += $"/{ParentId} {OutputAmount}";
+            data += $"/({(baseModel is WeaponModel ? "W" : "O")}){ParentId} {OutputAmount}";
 
             // Append the BigCraftable flag
             data += $"/false";

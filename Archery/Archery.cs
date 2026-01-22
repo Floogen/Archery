@@ -140,7 +140,7 @@ namespace Archery
                     // Add the valid recipes
                     foreach (var model in modelManager.GetAllModels().Where(m => m.Recipe is not null && m.Recipe.IsValid()))
                     {
-                        data[model.Id] = model.Recipe.GetData();
+                        data[model.Id] = model.Recipe.GetData(model);
                     }
                 });
             }
