@@ -22,8 +22,6 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(string), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(CraftingRecipeForIngredientsPrefix)));
-
             if (_helper.ModRegistry.IsLoaded("leclair.bettercrafting") is false)
             {
                 _monitor.Log($"Applying CraftingRecipePatch...", LogLevel.Trace);
@@ -37,19 +35,6 @@ namespace Archery.Framework.Patches.Objects
             {
                 _monitor.Log($"Skipped applying CraftingRecipePatch, due to Better Crafting being loaded!", LogLevel.Trace);
             }
-        }
-
-        private static bool CraftingRecipeForIngredientsPrefix(CraftingRecipe __instance, ref string ___DisplayName, ref string ___description, string name, bool isCookingRecipe)
-        {
-            var baseModel = Archery.modelManager.GetSpecificModel<BaseModel>(name);
-            if (baseModel is null)
-            {
-                return true;
-            }
-
-            _ = __instance.recipeList;
-
-            return true;
         }
 
         private static void CraftingRecipePostfix(CraftingRecipe __instance, ref string ___DisplayName, ref string ___description, string name, bool isCookingRecipe)
