@@ -2,8 +2,10 @@
 using Archery.Framework.Models;
 using Archery.Framework.Models.Crafting;
 using Archery.Framework.Models.Weapons;
+using Leclair.Stardew.BetterCrafting;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,11 @@ namespace Archery.Framework.Managers
         internal T GetSpecificModel<T>(string modelId) where T : BaseModel
         {
             return (T)_contentPackModels.FirstOrDefault(t => String.Equals(t.Id, modelId, StringComparison.OrdinalIgnoreCase) && t is T);
+        }
+
+        internal BaseModel GetModelByRecipe(string recipeId)
+        {
+            return _contentPackModels.FirstOrDefault(m => m.Recipe is not null && m.Recipe.Id.EqualsIgnoreCase(recipeId));
         }
 
         internal List<BaseModel> GetModelsForSale()

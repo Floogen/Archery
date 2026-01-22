@@ -48,9 +48,9 @@ namespace Archery.Framework.Patches.Objects
 
             foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player)))
             {
-                if (playerRecipes.Contains(model.Id))
+                if (playerRecipes.Contains(model.Recipe.Id))
                 {
-                    playerRecipes.Remove(model.Id);
+                    playerRecipes.Remove(model.Recipe.Id);
                 }
             }
 
@@ -80,7 +80,7 @@ namespace Archery.Framework.Patches.Objects
 
             foreach (var model in Archery.modelManager.GetModelsWithValidRecipes().Where(m => m.Recipe.HasRequirements(Game1.player)))
             {
-                var playerRecipe = model.Id;
+                var playerRecipe = model.Recipe.Id;
 
                 i++;
                 CraftingRecipe recipe = new CraftingRecipe(playerRecipe, false);

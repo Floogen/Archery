@@ -1,4 +1,6 @@
-﻿using Archery.Framework.Objects.Items;
+﻿using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
+using Archery.Framework.Objects.Weapons;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
@@ -16,8 +18,18 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Method(_object, "get_BaseName", null), postfix: new HarmonyMethod(GetType(), nameof(GetBaseNamePostfix)));
+
             harmony.Patch(AccessTools.Method(_object, nameof(Item.addToStack), new[] { typeof(Item) }), prefix: new HarmonyMethod(GetType(), nameof(AddToStackPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Item.canStackWith), new[] { typeof(ISalable) }), postfix: new HarmonyMethod(GetType(), nameof(CanStackWithPostfix)));
+        }
+
+        private static void GetBaseNamePostfix(Item __instance, ref string __result)
+        {
+            if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel is not null)
+            {
+                __result = weaponModel.Id;
+            }
         }
 
         private static bool AddToStackPrefix(Object __instance, ref int __result, Item otherStack)

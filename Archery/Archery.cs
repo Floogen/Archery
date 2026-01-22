@@ -4,6 +4,7 @@ using Archery.Framework.Managers;
 using Archery.Framework.Models;
 using Archery.Framework.Models.Enums;
 using Archery.Framework.Models.Weapons;
+using Archery.Framework.Objects.Items;
 using Archery.Framework.Objects.Weapons;
 using Archery.Framework.Patches.Characters;
 using Archery.Framework.Patches.ItemTypeDefinitions;
@@ -15,7 +16,10 @@ using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.GameData.Objects;
+using StardewValley.GameData.Shops;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,6 +80,9 @@ namespace Archery
                 new ToolPatch(monitor, modHelper).Apply(harmony);
                 new SlingshotPatch(monitor, modHelper).Apply(harmony);
                 new WeaponDataDefinitionPatch(monitor, modHelper).Apply(harmony);
+
+                // Apply Menu patches
+                new ShopMenuPatch(monitor, modHelper).Apply(harmony);
 
                 // Apply Character patches
                 new FarmerPatch(monitor, modHelper).Apply(harmony);
@@ -148,7 +155,7 @@ namespace Archery
                     {
                         data[model.Id] = new ObjectData()
                         {
-                            Name = model.Name,
+                            Name = model.Id,
                             DisplayName = model.DisplayName,
                             Description = model.Description,
                             Type = "Basic",
@@ -178,7 +185,7 @@ namespace Archery
                     {
                         data[model.Id] = new StardewValley.GameData.Weapons.WeaponData()
                         {
-                            Name = model.Name,
+                            Name = model.Id,
                             DisplayName = model.DisplayName,
                             Description = model.Description,
                             Type = 4,
@@ -190,6 +197,63 @@ namespace Archery
                                 { ModDataKeys.WEAPON_FLAG, model.Id }
                             }
                         };
+                    }
+                });
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops"))
+            {
+                e.Edit(asset =>
+                {
+                    var data = asset.AsDictionary<string, ShopData>().Data;
+                    foreach (var shopContext in data.Keys)
+                    {
+                        if (data[shopContext] is null)
+                        {
+                            continue;
+                        }
+
+                        var shopOwners = data[shopContext].Owners;
+
+                        // Add the weapons and ammo
+                        foreach (var model in modelManager.GetModelsForSale())
+                        {
+                            if (shopContext.EqualsIgnoreCase(model.Shop.Context) is false && shopOwners.Any(o => o.Id.EqualsIgnoreCase(model.Shop.Owner)) is false)
+                            {
+                                continue;
+                            }
+                            else if (model.Shop.HasRequirements(Game1.player) is false)
+                            {
+                                continue;
+                            }
+
+                            data[shopContext].Items.Add(new ShopItemData() { Id = model.Id, ItemId = model.Id, Price = model.Shop.Price, AvailableStock = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock() });
+                        }
+
+                        // Add the recipes
+                        foreach (var recipe in modelManager.GetRecipesForSale())
+                        {
+                            if (shopContext.EqualsIgnoreCase(recipe.Shop.Context) is false && shopOwners.Any(o => o.Id.EqualsIgnoreCase(recipe.Shop.Owner)) is false)
+                            {
+                                continue;
+                            }
+                            else if (recipe.Shop.HasRequirements(Game1.player) is false)
+                            {
+                                continue;
+                            }
+
+                            if (Game1.player.knowsRecipe(recipe.ParentId))
+                            {
+                                continue;
+                            }
+
+                            var model = modelManager.GetSpecificModel<BaseModel>(recipe.ParentId);
+                            if (model is null)
+                            {
+                                continue;
+                            }
+
+                            data[shopContext].Items.Add(new ShopItemData() { Id = recipe.Id, ItemId = model.Id, Price = recipe.Shop.Price, AvailableStock = 1, IsRecipe = true });
+                        }
                     }
                 });
             }

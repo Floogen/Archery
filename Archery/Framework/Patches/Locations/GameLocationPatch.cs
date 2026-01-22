@@ -65,6 +65,7 @@ namespace Archery.Framework.Patches.Locations
                             continue;
                         }
 
+                        /*
                         Item item;
                         switch (Archery.modelManager.GetSpecificModel<BaseModel>(recipe.ParentId))
                         {
@@ -81,6 +82,7 @@ namespace Archery.Framework.Patches.Locations
 
                         shopMenu.forSale.Add(item);
                         shopMenu.itemPriceAndStock.Add(item, new ItemStockInformation(1, 0));
+                        */
                     }
 
                     Game1.activeClickableMenu = shopMenu;

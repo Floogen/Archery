@@ -28,14 +28,6 @@ namespace Archery.Framework.Objects.Weapons
             return ItemRegistry.Create<Slingshot>(weaponModel.Id);
         }
 
-        public static Slingshot CreateRecipe(WeaponModel weaponModel)
-        {
-            var recipe = CreateInstance(weaponModel);
-            recipe.modData[ModDataKeys.RECIPE_FLAG] = true.ToString();
-
-            return recipe;
-        }
-
         internal static bool Use(Tool tool, GameLocation location, int x, int y, Farmer who)
         {
             return false;

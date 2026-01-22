@@ -5,7 +5,9 @@ using Leclair.Stardew.BetterCrafting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Extensions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Archery.Framework.Models.Crafting
 {
@@ -117,7 +119,7 @@ namespace Archery.Framework.Models.Crafting
                     continue;
                 }
 
-                ingredients.Add(_api.CreateBaseIngredient(ingredientId.Value, ingredient.Amount));
+                ingredients.Add(_api.CreateBaseIngredient(ingredientId, ingredient.Amount));
             }
 
             return new Recipe(baseModel, ingredients);

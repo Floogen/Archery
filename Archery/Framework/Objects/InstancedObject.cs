@@ -37,7 +37,7 @@ namespace Archery.Framework.Objects
 
         public static bool IsRecipe(Item item)
         {
-            if (item is not null && item.modData.ContainsKey(ModDataKeys.RECIPE_FLAG))
+            if (item is not null && item.IsRecipe)
             {
                 return true;
             }

@@ -9,6 +9,7 @@ namespace Archery.Framework.Models.Crafting
     public class RecipeModel : QueryableModel
     {
         internal string ParentId { get; set; }
+        public string Id { get { return $"{ParentId}.Recipe"; } }
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
 
@@ -33,7 +34,7 @@ namespace Archery.Framework.Models.Crafting
             data += "/Home";
 
             // Append the default output item with yield (CraftingRecipePatch.CreateItemPrefix will return the correct stack value)
-            data += $"/590 {OutputAmount}";
+            data += $"/{ParentId} {OutputAmount}";
 
             // Append the BigCraftable flag
             data += $"/false";
@@ -68,7 +69,7 @@ namespace Archery.Framework.Models.Crafting
                     continue;
                 }
 
-                if (items.Any(i => i.ParentSheetIndex == id && i.Stack >= ingredient.Amount) is false)
+                if (items.Any(i => i.ItemId == id && i.Stack >= ingredient.Amount) is false)
                 {
                     return false;
                 }

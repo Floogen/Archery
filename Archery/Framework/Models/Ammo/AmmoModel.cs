@@ -61,7 +61,7 @@ namespace Archery.Framework.Models.Weapons
 
         internal override void SetId(IContentPack contentPack)
         {
-            Id = String.Concat(contentPack.Manifest.UniqueID, "/", Type, "/", Name);
+            Id = String.Concat(contentPack.Manifest.UniqueID, ".", Type, ".", Name);
 
             base.SetId(contentPack);
         }

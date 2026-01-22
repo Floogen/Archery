@@ -57,10 +57,6 @@ namespace Archery.Framework.Patches.Objects
             {
                 instance.modData[ModDataKeys.AMMO_FLAG] = data.CustomFields[ModDataKeys.AMMO_FLAG];
             }
-            else if (data.CustomFields.ContainsKey(ModDataKeys.RECIPE_FLAG))
-            {
-                instance.modData[ModDataKeys.RECIPE_FLAG] = data.CustomFields[ModDataKeys.RECIPE_FLAG];
-            }
         }
 
         private static void GetNamePostfix(Object __instance, ref string __result)
