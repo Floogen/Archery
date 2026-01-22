@@ -10,7 +10,7 @@ namespace Archery.Framework.Models.Crafting
     public class RecipeModel : QueryableModel
     {
         internal string ParentId { get; set; }
-        public string Id { get { return $"{ParentId}.Recipe"; } }
+        public string Id { get { return $"{ParentId} Recipe"; } }
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
         public int OutputAmount { get; set; } = 1;
 

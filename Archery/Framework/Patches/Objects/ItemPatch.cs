@@ -18,13 +18,13 @@ namespace Archery.Framework.Patches.Objects
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, "get_BaseName", null), postfix: new HarmonyMethod(GetType(), nameof(GetBaseNamePostfix)));
+            harmony.Patch(AccessTools.Method(_object, "get_Name", null), postfix: new HarmonyMethod(GetType(), nameof(GetNamePostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(Item.addToStack), new[] { typeof(Item) }), prefix: new HarmonyMethod(GetType(), nameof(AddToStackPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Item.canStackWith), new[] { typeof(ISalable) }), postfix: new HarmonyMethod(GetType(), nameof(CanStackWithPostfix)));
         }
 
-        private static void GetBaseNamePostfix(Item __instance, ref string __result)
+        private static void GetNamePostfix(Item __instance, ref string __result)
         {
             if (Bow.GetModel<WeaponModel>(__instance) is WeaponModel weaponModel && weaponModel is not null)
             {
