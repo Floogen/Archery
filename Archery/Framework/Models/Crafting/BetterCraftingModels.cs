@@ -80,7 +80,7 @@ namespace Archery.Framework.Models.Crafting
 
         public bool HasRecipe(Farmer who)
         {
-            return _baseModel.Recipe.HasRequirements(who);
+            return _baseModel.Recipe.HasRequirements(who) || who.knowsRecipe(_baseModel.Id);
         }
     }
 
