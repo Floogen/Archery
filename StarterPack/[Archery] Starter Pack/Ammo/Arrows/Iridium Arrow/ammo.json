@@ -77,7 +77,7 @@
       "Stock": 1,
       "Price": 15000,
 
-      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Iridium Arrow, PLAYER_HAS_FLAG Current galaxySword"
+      "UnlockCondition": "!PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Arrow/Iridium Arrow, PLAYER_HAS_MAIL Current galaxySword"
     }
   },
 
@@ -87,7 +87,7 @@
     "Stock": -1,
     "Price": 5000,
 
-    "UnlockCondition": "PLAYER_HAS_FLAG Current galaxySword"
+    "UnlockCondition": "PLAYER_HAS_MAIL Current galaxySword"
   },
 
   "DirectionalSprites": {

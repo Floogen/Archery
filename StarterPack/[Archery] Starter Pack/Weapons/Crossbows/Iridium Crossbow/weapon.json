@@ -91,7 +91,7 @@
       "Stock": -1,
       "Price": 10000,
 
-      "UnlockCondition": "PLAYER_HAS_FLAG Current galaxySword, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Crossbow/Iridium Crossbow"
+      "UnlockCondition": "PLAYER_HAS_MAIL Current galaxySword, !PLAYER_HAS_CRAFTING_RECIPE Current PeacefulEnd.Archery.StarterPack/Crossbow/Iridium Crossbow"
     }
   },
 
@@ -103,7 +103,7 @@
     "Stock": -1,
     "Price": 50000,
 
-    "UnlockCondition": "PLAYER_HAS_FLAG Current galaxySword"
+    "UnlockCondition": "PLAYER_HAS_MAIL Current galaxySword"
   },
 
 
