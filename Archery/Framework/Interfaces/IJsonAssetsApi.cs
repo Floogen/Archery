@@ -2,12 +2,14 @@
 {
     public interface IJsonAssetsApi
     {
-        int GetObjectId(string name);
-        int GetCropId(string name);
-        int GetFruitTreeId(string name);
-        int GetBigCraftableId(string name);
-        int GetHatId(string name);
-        int GetWeaponId(string name);
-        int GetClothingId(string name);
+        string GetObjectId(string name);
+        string GetCropId(string name);
+        string GetFruitTreeId(string name);
+        string GetBigCraftableId(string name);
+        string GetHatId(string name);
+        string GetWeaponId(string name);
+        string GetClothingId(string name);
+        string GetPantsId(string name);
+        string GetShirtId(string name);
     }
 }

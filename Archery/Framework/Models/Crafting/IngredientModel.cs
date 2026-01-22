@@ -14,21 +14,21 @@
         // When SDV v1.6 is released, we'll want to support QualifiedItemIds
         internal string GetObjectId()
         {
-            int? actualId = null;
+            string actualId = null;
             if (int.TryParse(Id, out int parsedId))
             {
-                actualId = parsedId;
+                actualId = parsedId.ToString();
             }
             else if (Archery.apiManager.GetJsonAssetsApi() is not null)
             {
-                int jsonObjectId = Archery.apiManager.GetJsonAssetsApi().GetObjectId(Id);
-                if (jsonObjectId != -1)
+                string jsonObjectId = Archery.apiManager.GetJsonAssetsApi().GetObjectId(Id);
+                if (string.IsNullOrEmpty(jsonObjectId) is false)
                 {
                     actualId = jsonObjectId;
                 }
             }
 
-            return actualId is null ? null : actualId.ToString();
+            return actualId is null ? null : actualId;
         }
     }
 }
